@@ -83,7 +83,7 @@ axios.interceptors.response.use(
   },
   error => {
     try{
-      if(error.response.data.code == '3001'){
+      if(error.response.data.code == '3001' || error.response.status == 403){
         window.location.href='/login.html'
       }
     }catch(e){

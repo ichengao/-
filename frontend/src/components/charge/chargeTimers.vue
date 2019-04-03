@@ -1,27 +1,36 @@
 <template>
     <div class="container container-timers">
         <el-form :model="form" :rules="dataRule" status-icon ref="form" >
-            <el-form-item label="操作类型:" label-width="85px" class="item-single">
-                <router-link to="/">充值</router-link>
-                <router-link to="/">充次</router-link>
-            </el-form-item>
+            <!--<el-form-item label="操作类型:" label-width="85px" class="item-single">-->
+                <!--<router-link to="/">充值</router-link>-->
+                <!--<router-link to="/">充次</router-link>-->
+            <!--</el-form-item>-->
             <div class="money-box">
                 <el-form-item prop="product" label="选择商品:" label-width="85px" class="item-single">
-                    <el-input v-model="form.product"></el-input>
+
+                    <el-select v-model="form.product" multiple filterable placeholder="请选择">
+                        <el-option
+                            v-for="item in form.options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+
                 </el-form-item>
                 <el-form-item label="应收金额:" label-width="85px" class="item-single">
-                    <el-input v-model="form.receiveMoney"></el-input>
+                    <el-input v-model="form.payAmount"></el-input>
                 </el-form-item>
             </div>
             <div class="money-box">
                 <el-form-item label="支付方式:" label-width="85px" class="item-single">
-                    <el-radio v-model="form.payType" label="1" >现金</el-radio>
-                    <el-radio v-model="form.payType" label="2" >银行卡</el-radio>
-                    <el-radio v-model="form.payType" label="3" >支付宝</el-radio>
-                    <el-radio v-model="form.payType" label="4" >微信</el-radio>
+                    <el-radio v-model="form.payType" label="01" >现金</el-radio>
+                    <el-radio v-model="form.payType" label="04" >银行卡</el-radio>
+                    <el-radio v-model="form.payType" label="03" >支付宝</el-radio>
+                    <el-radio v-model="form.payType" label="02" >微信</el-radio>
                 </el-form-item>
                 <el-form-item label="充次次数:" label-width="85px" class="item-single">
-                    <el-input v-model="form.receiveMoney"></el-input>
+                    <el-input v-model="form.times"></el-input>
                 </el-form-item>
             </div>
             <el-form-item label="有效期限:" label-width="85px" class="item-single">
@@ -58,58 +67,110 @@
             </div>
         </div>
         <div class="container-table">
-            <el-radio-group v-model="form.searchData" size="small">
-                <el-radio-button label="今日"></el-radio-button>
-                <el-radio-button label="昨日"></el-radio-button>
-                <el-radio-button label="本周"></el-radio-button>
-                <el-radio-button label="其它"></el-radio-button>
+            <el-radio-group v-model="form.searchData" @change="searchDataChange" size="small">
+                <el-radio-button label="01">今日</el-radio-button>
+                <el-radio-button label="02">昨日</el-radio-button>
+                <el-radio-button label="03">本周</el-radio-button>
+                <el-radio-button label="04">其它</el-radio-button>
             </el-radio-group>
-            <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%" border class="data-table">
-                <el-table-column label="操作类型" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="支付类型" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="变动前金额" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="充值金额" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="赠送金额" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="变动后金额" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="充值时间" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column label="备注" show-overflow-tooltip prop="accountId"></el-table-column>
+            <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%" border class="data-table">
+                <el-table-column label="操作类型" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.orderType == '01'">账户充值</span>
+                        <span v-else-if="scope.row.orderType == '02'">账户消费</span>
+                        <span v-else-if="scope.row.orderType == '03'">次卡充值</span>
+                        <span v-else-if="scope.row.orderType == '04'">账户扣款</span>
+                        <span v-else-if="scope.row.orderType == '05'">账户退还</span>
+                        <span v-else>积分操作</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="支付类型" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.payType == '01'">现金</span>
+                        <span v-else-if="scope.row.payType == '02'">微信支付</span>
+                        <span v-else-if="scope.row.payType == '03'">支付宝付款</span>
+                        <span v-else-if="scope.row.payType == '04'">银行卡</span>
+                        <span v-else-if="scope.row.payType == '05'">账户支付</span>
+                        <span v-else>欠款</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="变动前金额" show-overflow-tooltip prop="beforeBalance"></el-table-column>
+                <el-table-column label="充值金额" show-overflow-tooltip prop="rechargeAmount"></el-table-column>
+                <el-table-column label="赠送金额" show-overflow-tooltip prop="giveAmount"></el-table-column>
+                <el-table-column label="变动后金额" show-overflow-tooltip prop="transAmount"></el-table-column>
+                <el-table-column label="充值时间" show-overflow-tooltip prop="createDate"></el-table-column>
+                <el-table-column label="备注" show-overflow-tooltip prop="orderRemark"></el-table-column>
             </el-table>
         </div>
     </div>
 </template>
 <script>
+import { getDate } from '@/common/utils';
+import { EventBus } from '@/components/eventEmitter/eventEmitter.js';
 export default {
     data(){
         return{
             form: {
+                goodsIds: [],
+                productOptions: [
+                    {
+                        value: '01',
+                        label: '黄金糕'
+                    }, {
+                        value: '02',
+                        label: '双皮奶'
+                    }, {
+                        value: '03',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '04',
+                        label: '龙须面'
+                    }, {
+                        value: '05',
+                        label: '北京烤鸭'
+                    }
+                ],
                 product: '',
-                inchargeMoney: '',
-                receiveMoney: '',
-                payType: '1',
+                payAmount: '',
+                times: '',
+                expDay: '',
                 reduceMoney: '1',
                 reduceMoneyOptions: [{label: '无优惠信息',value:'1'}],
                 remark: '',
                 print: false,
-                searchData: "今日",
+                searchData: "01",
                 date: '',
                 pickerOptions: {
                     shortcuts: [{
-                        text: '今天',
+                        text: '1个月',
                         onClick(picker) {
+                            const date = new Date();
+                            date.setMonth(date.getMonth() + 1);
+                            EventBus.$emit('expDayChange','01')
                             picker.$emit('pick', new Date());
                         }
                     }, {
-                        text: '昨天',
+                        text: '6个月',
                         onClick(picker) {
                             const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            date.setMonth(date.getMonth() + 6);
+                            EventBus.$emit('expDayChange','02')
                             picker.$emit('pick', date);
                         }
                     }, {
-                        text: '一周前',
+                        text: '一年',
                         onClick(picker) {
                             const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            date.setMonth(date.getMonth() + 12);
+                            EventBus.$emit('expDayChange','03')
+                            picker.$emit('pick', date);
+                        }
+                    },{
+                        text: '长期',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setFullYear(date.getFullYear() + 1000);
+                            EventBus.$emit('expDayChange','04')
                             picker.$emit('pick', date);
                         }
                     }]
@@ -119,9 +180,54 @@ export default {
                 product:[
                     { required: true, message: '商品不能为空', trigger: 'blur' },
                 ] 
+            },
+            initDataArray: [],
+            shopId: '',
+        }
+    },
+    mounted(){
+        EventBus.$on('expDayChange',(params)=>{
+            this.setExpDay(params)
+        })
+    },
+    methods: {
+        initData(){
+            let timerObj = getDate('01');
+            let params = {
+                shopId: this.$route.params.id,
+                memberId: this.memberId,
+            }
+            params = Object.assign({},params,timerObj)
+            requestGetSimplerecharge(params).then((res)=>{
+                this.initDataArray = res.data.data.list
+            })
+        },
+        searchDataChange(params){
+            let timerObj = getDate(params);
+            let params1 = {
+                shopId: this.$route.params.id,
+                memberId: this.memberId,
+            };
+            params1 = Object.assign({},params1,timerObj)
+            requestGetSimplerecharge(params1).then((res)=>{
+                this.initDataArray = res.data.data.list
+            })
+        },
+        // 设置过期时间
+        setExpDay(params){
+            switch (params) {
+                case '01':
+                    return this.form.expDay = '30'
+                case '02':
+                    return this.form.expDay = '183'
+                case '03':
+                    return this.form.expDay = '365'
+                case '04':
+                    return this.form.expDay = '10000000'
             }
         }
     }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -163,6 +269,13 @@ export default {
     .container-timers{
         .ensure-btn{
             @include buttonType1();
+        }
+        .el-radio__input.is-checked .el-radio__inner {
+            border-color: $color;
+            background: $color;
+        }
+        .el-radio__input.is-checked+.el-radio__label{
+            color: $color;
         }
     }
 </style>
