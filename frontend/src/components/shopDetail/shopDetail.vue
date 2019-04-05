@@ -15,7 +15,7 @@
 import headerSection from '@/components/header/headerShopDetail/headerShopDetail';
 import asideSection from '@/components/common/aside';
 import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
-import editMemberCardModal from '@/components/modal/editMemberModal/editMemberModal'
+import editMemberCardModal from '@/components/modal/editMemberModal/editMemberModal';
 export default {
     components: {
         headerSection,

@@ -2,10 +2,10 @@
     <div class="container supplier-vendor-container">
         <div class="section-header">
             <div class="section-header-lf">
-                <router-link to="/">
-                    <div>供应商管理</div>   
+                <router-link :to="'/stockManage/'+currentId+'/supplierVendor'" active-class="active">
+                    <div>供应商管理</div>
                 </router-link>
-                <router-link to="/">
+                <router-link :to="'/stockManage/'+currentId+'/storeControl'" active-class="active">
                     <div>仓库管理</div>
                 </router-link>
             </div>
@@ -69,10 +69,11 @@ import { Message } from 'element-ui'
 export default {
     data(){
         return{
+            currentId: '',
         }
     },
     mounted(){
-        
+        this.currentId = this.$route.params.id;
     },
     methods: {
 
@@ -93,13 +94,15 @@ export default {
                 display: flex;
                 a{
                     div{
-                        height: 60px;
+                        height: 57px;
                         line-height: 60px;
                         font-size: 18px;
                         cursor: pointer;
                         margin-right: 20px;
                         border-bottom: 3px solid transparent;
-                        &.active{
+                    }
+                    &.active{
+                        div{
                             border-bottom: 3px solid $color;
                         }
                     }

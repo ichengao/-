@@ -17,6 +17,9 @@ const mutations = {
     editMemberCardStatus(state,payload){
         state.editMemberCardStatus = payload
     },
+    createPruductCategoryStatus(state,payload){
+        state.createPruductCategoryStatus = payload
+    },
 }
 
 export default mutations;

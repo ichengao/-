@@ -2,15 +2,12 @@
     <div class="container supplier-vendor-container">
         <div class="section-header">
             <div class="section-header-lf">
-                <router-link :to="'/stockManage/'+currentId+'/purchaseStock'" active-class="active">
-                    <div>采购进货</div>
-                </router-link>
-                <router-link :to="'/stockManage/'+currentId+'/returnStock'" active-class="active">
-                    <div>采购退货</div>
+                <router-link :to="'/stockManage/'+currentId+'/inventoryProduct'" active-class="active">
+                    <div>产品盘点</div>
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增进货</el-button>
+                <el-button class="header-button">新增退货</el-button>
                 <ul>
                     <li>修改</li>
                     <li>删除</li>

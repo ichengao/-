@@ -8,18 +8,18 @@
                 <router-link :to="'/shopdetail/'+currentId+'/charge/chargeTimers'" active-class="active">
                     <div>会员充次</div>
                 </router-link>
-                <router-link :to="'/shopdetail/'+currentId+'/charge/chargeMoney'" active-class="active">
+                <router-link :to="'/shopdetail/'+currentId+'/timersExpire'" active-class="active">
                     <div>记次过期明细</div>
                 </router-link>
             </div>
             <div class="section-header-center">
-                <span class="header-export">导出</span>
-                <span class="header-print">打印</span>
+                <!--<span class="header-export">导出</span>-->
+                <!--<span class="header-print">打印</span>-->
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
+                <!--<el-input placeholder="请输入内容"  class="input-with-select">-->
+                    <!--<el-button slot="append" icon="el-icon-search"></el-button>-->
+                <!--</el-input>-->
             </div>
         </div>
         <div class="section-content">

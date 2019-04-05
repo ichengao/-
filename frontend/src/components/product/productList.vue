@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>商品列表</span>
-                <el-button class="btn-new">新增商品</el-button>
+                <el-button class="btn-new el-icon-plus">新增商品</el-button>
             </div>
             <div class="section-header-center">
                 <ul>
@@ -188,16 +188,18 @@ export default {
             height: 60px;
             padding: 0 20px;
             .section-header-lf{
+                font-size: 18px;
                 span{
                     padding-left: 10px;
                     border-left: 3px solid $color;
                 }
                 .btn-new{
-                    padding: 5px 15px 5px 40px;
-                    background: url('../../assets/images/icon_card.png') 10px center no-repeat;
-                    background-size: 20px;
                     @include buttonType1;
                     margin-left: 20px;
+                    padding: 8px 10px;
+                    &:before{
+                        margin-right: 15px;
+                    }
                 }
             }
             .section-header-center{
@@ -206,25 +208,26 @@ export default {
                     li{
                         padding-left: 40px;
                         margin-right: 20px;
+                        font-size: 16px;
                         cursor: pointer;
                         &:hover{
                             opacity: .6;
                         }
                         &:first-child{
                             background: url('../../assets/images/icon_edit.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(2){
                             background: url('../../assets/images/icon_import.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(3){
                             background: url('../../assets/images/icon_export.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(4){
                             background: url('../../assets/images/icon_type.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                     }
                 }

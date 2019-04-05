@@ -10,7 +10,7 @@
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增进货</el-button>
+                <el-button class="header-button">新增退货</el-button>
                 <ul>
                     <li>修改</li>
                     <li>删除</li>

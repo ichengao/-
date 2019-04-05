@@ -2,20 +2,20 @@
     <div class="container add-product-container">
         <div class="section-header">
             <div class="section-header-lf">
-                <router-link to="/">
+                <router-link :to="'/product/'+form.shopId+'/addProduct'" active-class="active">
                     <div>新增商品</div>   
                 </router-link>
-                <router-link to="/">
+                <router-link :to="'/product/'+form.shopId+'/addService'" active-class="active">
                     <div>新增服务</div>
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增分组</el-button>
+                <el-button class="header-button" @click="addNewCategory">新增分组</el-button>
                 <el-button class="header-button">批量删除</el-button>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容" class="input-with-select" v-model="searchData">
+                    <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
                 </el-input>
             </div>
         </div>
@@ -107,7 +107,7 @@
                                 <el-form-item prop="" class="item-select">
                                     <el-select v-model="form.commissionUnit" placeholder="请选择">
                                         <el-option
-                                            v-for="item in options"
+                                            v-for="item in form.commissionUnitOptions"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -144,19 +144,22 @@
     </div>
 </template>
 <script>
-import { requestAddProduct } from '@/services/service';
+import { requestAddProduct,requestGetGoodsmenu } from '@/services/service';
 import { Message } from 'element-ui'
 export default {
     data(){
-        const data = [{
-            id: 1,
-            label: '一级 1',
-            children: [{
-            id: 4,
-            label: '二级 1-1',
-                
-                }]
-            }, {
+        const data = [
+            {
+                id: 1,
+                label: '一级 1',
+                children: [
+                    {
+                        id: 4,
+                        label: '二级 1-1',
+                    }
+                ]
+            },
+            {
                 id: 2,
                 label: '一级 2',
                 children: [{
@@ -166,7 +169,8 @@ export default {
                 id: 6,
                 label: '二级 2-2'
                 }]
-            }, {
+            },
+            {
                 id: 3,
                 label: '一级 3',
                 children: [{
@@ -175,7 +179,8 @@ export default {
                 }, {
                 id: 8,
                 label: '二级 3-2'
-            }]
+            }
+            ]
         }];
         return{
             form: {
@@ -203,7 +208,12 @@ export default {
                 integral: '',
                 goodsPicture: '',
                 weight: false,
-
+                commissionUnitOptions: [
+                    {
+                        label: '%',
+                        value: '%'
+                    }
+                ]
             },
             data4: JSON.parse(JSON.stringify(data)),
             dataRule: {
@@ -211,11 +221,13 @@ export default {
                 goodsName: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
                 salePrice: [{ required: true, message: '销售单价不能为空', trigger: 'blur' }],
                 stockPrice: [{ required: true, message: '进货价不能为空', trigger: 'blur' }],
-            }
+            },
+            searchData: ''
         }
     },
     mounted(){
-        this.form.shopId = this.$route.params.id
+        this.form.shopId = this.$route.params.id;
+        this.initData()
     },
     methods: {
         renderContent(h, { node, data, store }) {
@@ -283,6 +295,24 @@ export default {
                     })
                 }
             })
+        },
+        handleSearch(){
+
+        },
+        initData(){
+            let params = {
+                shopId: this.$route.params.id,
+                type: '01'
+            }
+            requestGetGoodsmenu(params).then((res)=>{
+
+            })
+        },
+        handleAvatarSuccess(){
+        },
+        beforeAvatarUpload(){},
+        addNewCategory(){
+            this.$store.dispatch('openPruductCategoryModal')
         }
     }
 }
@@ -301,13 +331,15 @@ export default {
                 display: flex;
                 a{
                     div{
-                        height: 60px;
+                        height: 57px;
                         line-height: 60px;
                         font-size: 18px;
                         cursor: pointer;
                         margin-right: 20px;
                         border-bottom: 3px solid transparent;
-                        &.active{
+                    }
+                    &.active{
+                        div{
                             border-bottom: 3px solid $color;
                         }
                     }

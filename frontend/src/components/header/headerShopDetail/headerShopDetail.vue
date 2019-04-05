@@ -61,8 +61,8 @@ export default {
         },
         // 页面跳转
         changePage(){
-            let path = this.$route.path;
-            this.$router.push(path+'/charge')
+            let params = this.$route.params.id
+            this.$router.push(`/shopdetail/${params}/charge/chargeMoney`)
         }
     }
 }

@@ -2,10 +2,10 @@
     <div class="container add-product-container">
         <div class="section-header">
             <div class="section-header-lf">
-                <router-link to="/">
-                    <div>新增商品</div>   
+                <router-link :to="'/product/'+form.shopId+'/addProduct'" active-class="active">
+                    <div>新增商品</div>
                 </router-link>
-                <router-link to="/">
+                <router-link :to="'/product/'+form.shopId+'/addService'" active-class="active">
                     <div>新增服务</div>
                 </router-link>
             </div>
@@ -291,13 +291,15 @@ export default {
                 display: flex;
                 a{
                     div{
-                        height: 60px;
+                        height: 57px;
                         line-height: 60px;
                         font-size: 18px;
                         cursor: pointer;
                         margin-right: 20px;
                         border-bottom: 3px solid transparent;
-                        &.active{
+                    }
+                    &.active{
+                        div{
                             border-bottom: 3px solid $color;
                         }
                     }

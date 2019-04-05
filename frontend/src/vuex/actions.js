@@ -42,7 +42,15 @@ const actions = {
     // 关闭会员开卡编辑弹框
     closeEditMemberCardStatus({state,commit}){
         commit('editMemberCardStatus',{status: false,memberId: ''})
-    }
+    },
+    // 商品大类弹框
+    openPruductCategoryModal({state,commit}){
+        commit('createPruductCategoryStatus',true)
+    },
+    // 商品大类弹框
+    closePruductCategoryModal({state,commit}){
+        commit('createPruductCategoryStatus',false)
+    },
 }
 
 export default actions;

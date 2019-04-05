@@ -24,9 +24,9 @@
                 <div class="tab-router-list">
                     <router-link :to="'/stockManage/'+currentId+'/supplierVendor'"><p>供应商管理</p></router-link>
                     <router-link :to="'/stockManage/'+currentId+'/storeControl'"><p>仓库管理</p></router-link>
-                    <router-link :to="'/stockManage/'+currentId+'/supplierVendor'"><p>采购进货</p></router-link>
-                    <router-link :to="'/stockManage/'+currentId+'/supplierVendor'"><p>采购退货</p></router-link>
-                    <router-link :to="'/stockManage/'+currentId+'/supplierVendor'"><p>产品盘点</p></router-link>
+                    <router-link :to="'/stockManage/'+currentId+'/purchaseStock'"><p>采购进货</p></router-link>
+                    <router-link :to="'/stockManage/'+currentId+'/returnStock'"><p>采购退货</p></router-link>
+                    <router-link :to="'/stockManage/'+currentId+'/inventoryProduct'"><p>产品盘点</p></router-link>
                 </div>
             </li>
             <li class="item5">
@@ -50,14 +50,14 @@
             <li class="item7">
                 系统管理
                 <div class="tab-router-list">
-                    <router-link to="/"><p>店铺资料</p></router-link>
-                    <router-link to="/"><p>员工管理</p></router-link>
-                    <router-link to="/"><p>会员配置</p></router-link>
-                    <router-link to="/"><p>商品配置</p></router-link>
-                    <router-link to="/"><p>销售配置</p></router-link>
-                    <router-link to="/"><p>打印配置</p></router-link>
-                    <router-link to="/"><p>支付设置</p></router-link>
-                    <router-link to="/"><p>硬件设置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/systemShopDetail'"><p>店铺资料</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/staffManage'"><p>员工管理</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/memberSetting'"><p>会员配置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/productSetting'"><p>商品配置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/sellSetting'"><p>销售配置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/paySetting'"><p>打印配置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/printSetting'"><p>支付设置</p></router-link>
+                    <router-link :to="'/systemSetting/'+currentId+'/hardwareSetting'"><p>硬件设置</p></router-link>
                 </div>
             </li>
         </ul>

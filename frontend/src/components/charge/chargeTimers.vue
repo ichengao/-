@@ -18,8 +18,8 @@
                     </el-select>
 
                 </el-form-item>
-                <el-form-item label="应收金额:" label-width="85px" class="item-single">
-                    <el-input v-model="form.payAmount"></el-input>
+                <el-form-item label="应收金额:" prop="rechargeAmount" label-width="85px" class="item-single">
+                    <el-input v-model="form.rechargeAmount"></el-input>
                 </el-form-item>
             </div>
             <div class="money-box">
@@ -29,11 +29,11 @@
                     <el-radio v-model="form.payType" label="03" >支付宝</el-radio>
                     <el-radio v-model="form.payType" label="02" >微信</el-radio>
                 </el-form-item>
-                <el-form-item label="充次次数:" label-width="85px" class="item-single">
+                <el-form-item label="充次次数:" prop="times" label-width="85px" class="item-single">
                     <el-input v-model="form.times"></el-input>
                 </el-form-item>
             </div>
-            <el-form-item label="有效期限:" label-width="85px" class="item-single">
+            <el-form-item label="有效期限:" label-width="85px" class="item-single"  prop="date">
                 <el-date-picker
                     v-model="form.date"
                     type="datetime"
@@ -60,7 +60,7 @@
         <div class="container-footer">
             <div class="container-footer-left">
                 <el-checkbox v-model="form.print">打印充值小票</el-checkbox>
-                合计充值：<span>￥123</span>
+                合计充值：<span>￥{{ computedMoney }}</span>
             </div>
             <div class="container-footer-rgt">
                 <el-button class="ensure-btn">确定</el-button>
@@ -106,7 +106,9 @@
 </template>
 <script>
 import { getDate } from '@/common/utils';
+import { requestRechargetimes,requestGetSimplerechargetimes } from '@/services/service'
 import { EventBus } from '@/components/eventEmitter/eventEmitter.js';
+import { Message } from 'element-ui'
 export default {
     data(){
         return{
@@ -131,10 +133,11 @@ export default {
                     }
                 ],
                 product: '',
-                payAmount: '',
+                rechargeAmount: '',
                 times: '',
                 expDay: '',
                 reduceMoney: '1',
+                payType: '01',
                 reduceMoneyOptions: [{label: '无优惠信息',value:'1'}],
                 remark: '',
                 print: false,
@@ -177,12 +180,36 @@ export default {
                 },
             },
             dataRule: {
-                product:[
+                product: [
                     { required: true, message: '商品不能为空', trigger: 'blur' },
-                ] 
+                ],
+                rechargeAmount: [
+                    { required: true, message: '金额不能为空', trigger: 'blur' },
+                ],
+                times: [
+                    { required: true, message: '次数不能为空', trigger: 'blur' },
+                ],
+                date: [
+                    { required: true, message: '有效期不能为空', trigger: 'blur' },
+                ]
             },
             initDataArray: [],
             shopId: '',
+        }
+    },
+    props: [
+        'memberId'
+    ],
+    computed: {
+        computedMoney(){
+            return this.form.rechargeAmount|| 0
+        }
+    },
+    watch: {
+        memberId(newVal,oldVal){
+            if(newVal){
+
+            }
         }
     },
     mounted(){
@@ -198,8 +225,26 @@ export default {
                 memberId: this.memberId,
             }
             params = Object.assign({},params,timerObj)
-            requestGetSimplerecharge(params).then((res)=>{
+            requestGetSimplerechargetimes(params).then((res)=>{
                 this.initDataArray = res.data.data.list
+            })
+        },
+        handleCommit(){
+            let params1 = {
+                shopId: this.$route.params.id,
+                memberId: this.memberId,
+                payAmount: this.form.rechargeAmount,
+                orderAmount: this.computedMoney
+            }
+            let params = Object.assign({},this.form,params1);
+            requestRechargetimes(params).then((res)=>{
+                if(res.data.code == '0000'){
+                    Message.success('充值成功');
+                }else{
+                    Message.error(res.data.msg);
+                }
+            }).catch(function(){
+                Message.error('充值失败');
             })
         },
         searchDataChange(params){
@@ -209,7 +254,7 @@ export default {
                 memberId: this.memberId,
             };
             params1 = Object.assign({},params1,timerObj)
-            requestGetSimplerecharge(params1).then((res)=>{
+            requestGetSimplerechargetimes(params1).then((res)=>{
                 this.initDataArray = res.data.data.list
             })
         },
@@ -227,7 +272,6 @@ export default {
             }
         }
     }
-
 }
 </script>
 <style lang="scss" scoped>

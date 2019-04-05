@@ -97,6 +97,14 @@ export function requestRecharge(params){
 export function requestGetSimplerecharge(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/order/simplerecharge`,params)
 }
+// 会员冲次
+export function requestRechargetimes(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/order/rechargetimes`,params)
+}
+// 会员充次列表
+export function requestGetSimplerechargetimes(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/order/simplerechargetimes`,params)
+}
 
 
 /**
@@ -113,4 +121,12 @@ export function requestGetProductList(params){
 // 添加商品
 export function requestAddProduct(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/add`,params)
+}
+// 添加商品大类
+export function requestAddcategory(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/addcategory`,params)
+}
+// 获取商品大类
+export function requestGetGoodsmenu(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/goodsmenu`,params)
 }
