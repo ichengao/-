@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-import { requestRegister } from '../../services/service';
+import { requestRegister,requestGetRegisterCode } from '../../services/service';
 import md5 from 'js-md5';
 import { Message } from 'element-ui';
 export default {
@@ -82,7 +82,8 @@ export default {
                 code: '',
                 isCanGet: false,     // 是否可获取验证码
                 isGetCode: false,    // 是否已获取验证码
-                getCodeTime: 5,      // 倒计时时间
+                getCodeTime: 30,      // 倒计时时间
+                initGetCodeTime: 30,  // 倒计时时间初始化
                 timer: null,         // 倒计时定时器
             },
             dataRule: {
@@ -117,19 +118,30 @@ export default {
         getCode(){
             if(!this.form.isCanGet){
                 return
-            }
-            this.form.isGetCode = true;
-            clearInterval(this.form.timer);
-            this.form.timer = setInterval(()=>{
-                console.log(this.form.getCodeTime )
-                if(this.form.getCodeTime > 1){
-                    this.form.getCodeTime --;
-                }else{
-                    this.form.isGetCode = false;
-                    this.form.getCodeTime = 30;
+            };
+            let params = {
+                mobile: this.form.mobile
+            };
+            requestGetRegisterCode(params).then((res)=>{
+                if(res.data.code == '0000'){
+                    Message.success('短信已发送,请注意查收!');
+                    this.form.isGetCode = true;
                     clearInterval(this.form.timer);
+                    this.form.timer = setInterval(()=>{
+                        if(this.form.getCodeTime > 1){
+                            this.form.getCodeTime --;
+                        }else{
+                            this.form.isGetCode = false;
+                            this.form.getCodeTime = this.form.initGetCodeTime;
+                            clearInterval(this.form.timer);
+                        }
+                    },1000)
+                }else{
+                    Message.error(res.data.msg);
                 }
-            },1000)
+            }).catch(()=>{
+                Message.error('发送失败,请重试!');
+            });
         },
         // 注册
         doRegister(){
@@ -143,7 +155,7 @@ export default {
                     }
                     requestRegister(params).then(function(res){
                         if(res.data.msg == '注册成功！'){
-                            window.location.href='/login.html'
+                            window.location.href='/login.html';
                         }else{
                             Message.error(res.data.msg);
                         }

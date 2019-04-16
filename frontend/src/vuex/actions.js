@@ -75,6 +75,10 @@ const actions = {
     closeExchangeIntegralModalStatus({state,commit}){
         commit('exchangeIntegralModalStatus',false)
     },
-}
+    // 设置数据字典
+    setDictList({state,commit},params){
+        commit('dictList',params)
+    }
+};
 
 export default actions;

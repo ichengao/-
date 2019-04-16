@@ -3,11 +3,10 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>会员列表</span>
-                <!-- <el-button class="btn-new">会员开卡</el-button> -->
             </div>
             <div class="section-header-center">
                 <ul>
-                    <li>修改</li>
+                    <li>补卡</li>
                     <li>导入</li>
                     <li>导出</li>
                     <li>筛选</li>
@@ -123,9 +122,12 @@ import {
     requestGetMemberbaseData,
     requestSearchMemberlist,
     requestGetMemberList,
-    requestDeleteMember
+    requestDeleteMember,
+    requestGetDictList
 } from '@/services/service';
-import { Message } from 'element-ui' 
+import { Message } from 'element-ui';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName'
 export default {
     data(){
         return{
@@ -136,15 +138,22 @@ export default {
         }
     },
     mounted(){
-        this.init()
+        this.init();
+        EventBus.$on(CREATE_MEMEBR_CARD,()=>{
+            this.init();
+        });
     },
     methods: {
         handleSelectionChange(){},
         init(){
-            let _this  = this
+            let _this  = this;
             let params = {
                 shopId: this.$route.params.id
-            }
+            };
+            // 设置数据字典
+            requestGetDictList(params).then((res)=>{
+                this.$store.dispatch('setDictList',res.data.data);
+            });
             requestGetMemberbaseData(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.baseData = res.data.data
@@ -167,7 +176,7 @@ export default {
             let params = {
                 memberId: arr.memberId
             }
-            let _this = this
+            let _this = this;
             requestDeleteMember(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.init();
@@ -211,7 +220,7 @@ export default {
             
         },
         // 分页
-        pageChange(){
+        pageChange(params){
 
         }
     }

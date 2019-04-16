@@ -9,6 +9,18 @@ export function requestLogin(params){
 export function requestRegister(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/action/register`,params)
 }
+// 获取验证码
+export function requestGetRegisterCode(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/msg/register`,params)
+}
+
+/**
+ * 字典模块
+ */
+// 获取数据字典
+export function requestGetDictList(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/dict/list`,params)
+}
 
 /**
  * 首页

@@ -15,8 +15,8 @@
                 </div>
                 <div class="section-item">
                     <span>公众号是否已认证：</span>
-                    <el-checkbox v-model="form.wxReg">已认证</el-checkbox>
-                    <el-checkbox v-model="!form.wxReg">未认证</el-checkbox>
+                    <el-radio v-model="form.wxReg" label="0">已认证</el-radio>
+                    <el-radio v-model="form.wxReg" label="1">未认证</el-radio>
                 </div>
             </div>
             <div class="section2">
@@ -68,7 +68,7 @@
                 currentType: '0',
                 form: {
                     wxType: true,
-                    wxReg: true,
+                    wxReg: '0',
                     AppId: '',
                     AppSecret: '',
                     EncodingAESKey: '',

@@ -1,5 +1,6 @@
 const state = {
     userInfo: {},                         // 用户信息
+    dictList: {},                         // 数据字典
     changePwdModalStatus1: false,         // 是否显示密码修改弹框changePwdModal
     changePhoneModalStatus: false,        // 是否显示修改手机号弹框
     createShopModalStatus: false,         // 是否显示新建店铺弹框

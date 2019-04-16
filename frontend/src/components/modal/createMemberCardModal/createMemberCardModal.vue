@@ -140,7 +140,9 @@
 <script>
 import { requestCreateMemberCard,requestGetGradelist,requestGetTypelist } from '@/services/service';
 import { Message } from 'element-ui'
-import { LEVEL_OPTIONS,SERVER_URL } from '@/common/config'
+import { LEVEL_OPTIONS,SERVER_URL } from '@/common/config';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName'
 export default { 
     data(){
         return{
@@ -249,21 +251,22 @@ export default {
                         memberNo: this.form.memberNo,
                         memberTypeId: this.form.memberTypeId,
                         gradeId: this.form.gradeId,
-                        createDate: this.form.createDate,
+                        // createDate: this.form.createDate,
                         openAdmin: this.form.openAdmin,
                         balance: this.form.balance,
                         giveBalance: this.form.giveBalance,
                         payType: this.form.payType,
                         referencesId: this.form.referencesId,
                         headPicture: this.form.headPicture,
-                    }
+                    };
                     requestCreateMemberCard(params).then(function(res){
-                        _this.handleCloseModal()
+                        _this.handleCloseModal();
                         if(res.data.code == '0000'){
                             Message({
                                 message: '新建成功',
                                 type: 'success'
-                            })
+                            });
+                            EventBus.$emit(CREATE_MEMEBR_CARD);
                         }else{
                             Message({
                                 message: res.data.msg,

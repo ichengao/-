@@ -29,6 +29,9 @@ const mutations = {
     exchangeIntegralModalStatus(state,payload){
         state.exchangeIntegralModalStatus = payload
     },
+    dictList(state,payload){
+        state.dictList = Object.assign({},state.dictList,payload)
+    }
 }
 
 export default mutations;
