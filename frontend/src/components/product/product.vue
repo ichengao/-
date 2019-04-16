@@ -9,6 +9,8 @@
         </div>
         <createMemberCardModal />
         <addProductCategoryModal />
+        <addServiceCategoryModal />
+
     </div>
 </template>
 <script>
@@ -16,12 +18,14 @@ import headerSection from '@/components/header/headerShopDetail/headerShopDetail
 import asideSection from '@/components/common/aside';
 import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
 import addProductCategoryModal from '@/components/modal/addProductCategoryModal/addProductCategoryModal'
+import addServiceCategoryModal from '@/components/modal/addServiceCategoryModal/addServiceCategoryModal'
 export default {
     components: {
         headerSection,
         asideSection,
         createMemberCardModal,
-        addProductCategoryModal
+        addProductCategoryModal,
+        addServiceCategoryModal
     }
 }
 </script>

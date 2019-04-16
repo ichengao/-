@@ -7,7 +7,6 @@
             <!--</el-form-item>-->
             <div class="money-box">
                 <el-form-item prop="product" label="选择商品:" label-width="85px" class="item-single">
-
                     <el-select v-model="form.product" multiple filterable placeholder="请选择">
                         <el-option
                             v-for="item in form.options"
@@ -107,7 +106,7 @@
 <script>
 import { getDate } from '@/common/utils';
 import { requestRechargetimes,requestGetSimplerechargetimes } from '@/services/service'
-import { EventBus } from '@/components/eventEmitter/eventEmitter.js';
+import EventBus from '@/components/eventEmitter/eventEmitter.js';
 import { Message } from 'element-ui'
 export default {
     data(){

@@ -25,6 +25,25 @@ const returnStock = ()=>import('@/components/stockManage/returnStock');
 const inventoryProduct = ()=>import('@/components/stockManage/inventoryProduct');
 const systemSetting = ()=>import('@/components/systemSetting/systemSetting');
 const systemShopDetail = ()=>import('@/components/systemSetting/shopDetail');
+const staffManage = ()=>import('@/components/systemSetting/staffManage');
+const memberSetting = ()=>import('@/components/systemSetting/memberSetting');
+const productSetting = ()=>import('@/components/systemSetting/productSetting');
+const sellSetting = ()=>import('@/components/systemSetting/sellSetting');
+const paySetting = ()=>import('@/components/systemSetting/paySetting');
+const printSetting = ()=>import('@/components/systemSetting/printSetting');
+const hardwareSetting = ()=>import('@/components/systemSetting/hardwareSetting');
+const changeShiftsManage = ()=>import('@/components/systemSetting/staffManage/changeShiftsManage');
+const loginLogManage = ()=>import('@/components/systemSetting/staffManage/loginLogManage');
+const operatorLogManage = ()=>import('@/components/systemSetting/staffManage/operatorLogManage');
+const operatorManage = ()=>import('@/components/systemSetting/staffManage/operatorManage');
+const responsibilityManage = ()=>import('@/components/systemSetting/staffManage/responsibilityManage');
+const staffDetailManage = ()=>import('@/components/systemSetting/staffManage/staffDetailManage');
+const integralManage = ()=>import('@/components/integralManage/integralManage');
+const integralChange = ()=>import('@/components/integralManage/integralChange');
+const giftsExchange = ()=>import('@/components/integralManage/giftsExchange');
+const giftsManage = ()=>import('@/components/integralManage/giftsManage');
+const bindPayWay = ()=>import('@/components/systemSetting/paySetting/bindPayWay');
+const paySettingDetail = ()=>import('@/components/systemSetting/paySetting/paySettingDetail');
 
 export default new Router(
     {
@@ -78,7 +97,28 @@ export default new Router(
                   path: 'timersExpire',
                   component: timersExpire,
                   name: 'timersExpire'
-                }
+                },
+                  {
+                      path: 'integral',
+                      component: integralManage,
+                      children: [
+                          {
+                              path: 'integralChange',
+                              component: integralChange,
+                              name: integralChange
+                          },
+                          {
+                              path: 'giftsExchange',
+                              component: giftsExchange,
+                              name: giftsExchange
+                          }
+                      ]
+                  },
+                  {
+                      path: 'giftsManage',
+                      component: giftsManage,
+                      name: giftsManage
+                  }
               ]
             },
             {
@@ -141,17 +181,96 @@ export default new Router(
               ]
             },
             {
-                path: 'systemSetting/:id',
+                path: '/systemSetting/:id',
                 component: systemSetting,
-                redirect: 'systemSetting/:id/systemShopDetail',
+                redirect: '/systemSetting/:id/systemShopDetail',
                 children: [
                     {
                         path: 'systemShopDetail',
                         component: systemShopDetail,
                         name: 'systemShopDetail'
-                    }
+                    },
+                    {
+                        path: 'staffManage',
+                        component: staffManage,
+                        redirect: '/systemSetting/:id/staffManage/responsibilityManage',
+                        children: [
+                            {
+                                path: 'responsibilityManage',
+                                component: responsibilityManage,
+                                name: 'responsibilityManage'
+                            },
+                            {
+                                path: 'staffDetailManage',
+                                component: staffDetailManage,
+                                name: 'staffDetailManage'
+                            },
+                            {
+                                path: 'operatorManage',
+                                component: operatorManage,
+                                name: 'operatorManage'
+                            },
+                            {
+                                path: 'operatorLogManage',
+                                component: operatorLogManage,
+                                name: 'operatorLogManage'
+                            },
+                            {
+                                path: 'loginLogManage',
+                                component: loginLogManage,
+                                name: 'loginLogManage'
+                            },
+                            {
+                                path: 'changeShiftsManage',
+                                component: changeShiftsManage,
+                                name: 'changeShiftsManage'
+                            },
+                        ]
+                    },
+                    {
+                        path: 'memberSetting',
+                        component: memberSetting,
+                        name: 'memberSetting'
+                    },
+                    {
+                        path: 'productSetting',
+                        component: productSetting,
+                        name: 'productSetting'
+                    },
+                    {
+                        path: 'sellSetting',
+                        component: sellSetting,
+                        name: 'sellSetting'
+                    },
+                    {
+                        path: 'paySetting',
+                        component: paySetting,
+                        redirect: '/systemSetting/:id/paySetting/bindPayWay',
+                        children: [
+                            {
+                                component: bindPayWay,
+                                path: 'bindPayWay',
+                                name: 'bindPayWay'
+                            },
+                            {
+                                component: paySettingDetail,
+                                path: 'paySettingDetail',
+                                name: 'paySettingDetail'
+                            }
+                        ]
+                    },
+                    {
+                        path: 'printSetting',
+                        component: printSetting,
+                        name: 'printSetting'
+                    },
+                    {
+                        path: 'hardwareSetting',
+                        component: hardwareSetting,
+                        name: 'hardwareSetting'
+                    },
                 ]
-            }
+            },
         ]
     },
 )

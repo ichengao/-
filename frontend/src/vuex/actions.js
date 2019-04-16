@@ -51,6 +51,30 @@ const actions = {
     closePruductCategoryModal({state,commit}){
         commit('createPruductCategoryStatus',false)
     },
+    // 服务大类弹框
+    openServiceCategoryModal({state,commit}){
+        commit('createServiceCategoryStatus',true)
+    },
+    // 服务大类弹框
+    closeServiceCategoryModal({state,commit}){
+        commit('createServiceCategoryStatus',false)
+    },
+    // 新建礼品弹框
+    openCreateGiftsModal({state,commit}){
+        commit('createGiftsModalStatus',true)
+    },
+    // 新建礼品弹框
+    closeCreateGiftsModal({state,commit}){
+        commit('createGiftsModalStatus',false)
+    },
+    // 新建礼品弹框
+    openExchangeIntegralModalStatus({state,commit}){
+        commit('exchangeIntegralModalStatus',true)
+    },
+    // 新建礼品弹框
+    closeExchangeIntegralModalStatus({state,commit}){
+        commit('exchangeIntegralModalStatus',false)
+    },
 }
 
 export default actions;

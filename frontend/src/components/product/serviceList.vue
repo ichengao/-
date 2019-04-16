@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>服务列表</span>
-                <el-button class="btn-new">新增服务</el-button>
+                <el-button class="btn-new" @click="handldAddService">新增服务</el-button>
             </div>
             <div class="section-header-center">
                 <ul>
@@ -14,8 +14,8 @@
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容"  class="input-with-select" v-model="searchData" >
+                    <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
                 </el-input>
             </div>
         </div>
@@ -64,16 +64,16 @@
             <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="服务名称" show-overflow-tooltip >
+                <el-table-column label="序号" show-overflow-tooltip prop="barcode"></el-table-column>
+                <el-table-column prop="goodsName" label="服务名称" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="服务类别" show-overflow-tooltip>
+                <el-table-column prop="categoryName" label="服务类别" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="服务次数" show-overflow-tooltip>
+                <el-table-column prop="count" label="服务次数" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="服务时长" show-overflow-tooltip>
+                <el-table-column prop="expDay" label="服务时长" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="销售单价" width="80" show-overflow-tooltip>
+                <el-table-column prop="salePrice" label="销售单价" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="shopName" label="所属店铺" show-overflow-tooltip>
                 </el-table-column>
@@ -87,7 +87,7 @@
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDeleteMmeber(scope.row)">删除</el-button>
+                        @click="handleDelete(scope.row)">删除</el-button>
                     </template> 
                 
                 </el-table-column>
@@ -98,8 +98,8 @@
 <script>
 import { 
     requestGetMemberbaseData,
-    requestGetMemberList,
-    requestDeleteMember
+    requestGetServerlist,
+    requestDeleteGoods
 } from '@/services/service';
 import { Message } from 'element-ui' 
 export default {
@@ -107,36 +107,41 @@ export default {
         return{
             initData: [],
             baseData: {},
+            currentId: '',
+            searchData: ''
         }
     },
     mounted(){
+        this.currentId = this.$route.params.id;
         this.init()
     },
     methods: {
         handleSelectionChange(){},
         init(){
-            let _this  = this
+            let _this  = this;
             let params = {
-                shopId: this.$route.params.id
+                shopId: this.$route.params.id,
+                type: '02'
             }
-            requestGetMemberbaseData(params).then(function(res){
-                if(res.data.code == '0000'){
-                    _this.baseData = res.data.data
-                }
-            })
-            requestGetMemberList(params).then(function(res){
+            // requestGetProductData(params).then(function(res){
+            //     if(res.data.code == '0000'){
+            //         _this.baseData = res.data.data
+            //     }
+            // });
+            requestGetServerlist(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.initData = res.data.data.list
                 }
             })
         },
         // 删除操作
-        handleDeleteMmeber(arr){
+        handleDelete(arr){
             let params = {
-                memberId: arr.memberId
-            }
-            let _this = this
-            requestDeleteMember(params).then(function(res){
+                shopId: this.$route.params.id,
+                goodsIds: arr.goodsId
+            };
+            let _this = this;
+            requestDeleteGoods(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.init();
                     Message({
@@ -154,6 +159,22 @@ export default {
                     message: '删除失败',
                     type: 'error'
                 });
+            })
+        },
+        handldAddService(){
+            this.$router.push(`/product/${this.currentId}/addService`);
+        },
+        handleSearch(){
+            let _this  = this;
+            let params = {
+                shopId: this.$route.params.id,
+                type: '01',
+                keyword: this.searchData
+            }
+            requestGetProductList(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initData = res.data.data.list
+                }
             })
         }
     }

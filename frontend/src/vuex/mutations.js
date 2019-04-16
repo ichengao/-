@@ -20,6 +20,15 @@ const mutations = {
     createPruductCategoryStatus(state,payload){
         state.createPruductCategoryStatus = payload
     },
+    createServiceCategoryStatus(state,payload){
+        state.createServiceCategoryStatus = payload
+    },
+    createGiftsModalStatus(state,payload){
+        state.createGiftsModalStatus = payload
+    },
+    exchangeIntegralModalStatus(state,payload){
+        state.exchangeIntegralModalStatus = payload
+    },
 }
 
 export default mutations;

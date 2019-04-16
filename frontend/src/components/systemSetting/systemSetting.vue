@@ -41,10 +41,18 @@
     import asideSection from '@/components/common/aside';
     import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
     export default {
+        data(){
+            return{
+                currentId: ''
+            }
+        },
         components: {
             headerSection,
             asideSection,
             createMemberCardModal
+        },
+        mounted(){
+            this.currentId = this.$route.params.id;
         }
     }
 </script>
@@ -56,7 +64,12 @@
         .content-section{
             display: flex;
             .content-nav{
+                background: #fff;
+                height: 60px;
                 display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
                 a{
                     div{
                         height: 57px;

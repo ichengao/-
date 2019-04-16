@@ -9,6 +9,8 @@
         </div>
         <createMemberCardModal />
         <editMemberCardModal />
+        <createGiftModal />
+        <exchangeIntegralModal />
     </div>
 </template>
 <script>
@@ -16,12 +18,16 @@ import headerSection from '@/components/header/headerShopDetail/headerShopDetail
 import asideSection from '@/components/common/aside';
 import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
 import editMemberCardModal from '@/components/modal/editMemberModal/editMemberModal';
+import createGiftModal from '@/components/modal/createGiftModal/createGiftModal';
+import exchangeIntegralModal from '@/components/modal/exchangeIntegralModal/exchangeIntegralModal'
 export default {
     components: {
         headerSection,
         asideSection,
         createMemberCardModal,
-        editMemberCardModal
+        editMemberCardModal,
+        createGiftModal,
+        exchangeIntegralModal
     }
 }
 </script>

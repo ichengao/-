@@ -20,7 +20,9 @@
 </template>
 <script>
     import { requestAddcategory } from '@/services/service';
-    import { Message } from 'element-ui'
+    import { Message } from 'element-ui';
+    import EventBus from '@/components/eventEmitter/eventEmitter';
+    import { addCategoryStatus } from '@/components/eventEmitter/eventName';
     export default {
         data(){
             return{
@@ -70,6 +72,9 @@
                                     message: '添加成功',
                                     type: 'success'
                                 })
+                                EventBus.$emit(addCategoryStatus,()=>{
+                                    this.initData();
+                                });
                             }else{
                                 Message({
                                     message: res.data.msg,

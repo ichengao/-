@@ -130,3 +130,52 @@ export function requestAddcategory(params) {
 export function requestGetGoodsmenu(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/goodsmenu`,params)
 }
+// 删除商品或目录
+export function requestDeleteGoods(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/del`,params)
+}
+// 获取服务列表
+export function requestGetServerlist(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/serverlist`,params)
+}
+
+/**
+ * 积分模块
+ */
+// 积分新增或删除
+export function requestGetIntegralOperate(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/integral/operate`,params)
+}
+// 积分操作日志
+export function requestGetIntegralList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/integral/list`,params)
+}
+
+/**
+ * 礼品模块
+ */
+// 查看礼品
+export function requestGetGiftList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/gift/list`,params)
+}
+// 新增礼品
+export function requestAddGift(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/gift/add`,params)
+}
+// 更新礼品
+export function requestUpdateGift(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/gift/update`,params)
+}
+// 删除礼品
+export function requestDeleteGift(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/gift/del`,params)
+}
+
+
+/**
+ * 库存管理，供应商管理
+ */
+// 供应商列表
+export function requestGetWarehouseSupplierlist(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/supplierlist`,params)
+}

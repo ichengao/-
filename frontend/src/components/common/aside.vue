@@ -7,7 +7,7 @@
                 <div class="tab-router-list">
                     <router-link :to="'/shopdetail/'+currentId+'/member'"><p>会员列表</p></router-link>
                     <router-link :to="'/shopdetail/'+currentId+'/charge/chargeMoney'"><p>会员充值</p></router-link>
-                    <router-link :to="'/shopdetail/'+currentId+'/charge/chargeTimers'"><p>积分管理</p></router-link>
+                    <router-link :to="'/shopdetail/'+currentId+'/integral/integralChange'"><p>积分管理</p></router-link>
                 </div>
             </li>
             <li class="item3">

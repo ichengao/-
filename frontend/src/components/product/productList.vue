@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>商品列表</span>
-                <el-button class="btn-new el-icon-plus">新增商品</el-button>
+                <el-button class="btn-new el-icon-plus" @click="handldAddProduct">新增商品</el-button>
             </div>
             <div class="section-header-center">
                 <ul>
@@ -14,8 +14,8 @@
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容"  class="input-with-select" v-model="searchData">
+                    <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
                 </el-input>
             </div>
         </div>
@@ -24,11 +24,11 @@
                 <li class="item-birth">
                     <p>共有商品</p>
                     <div class="item-content">
-                        <span>{{baseData.thisMonthBirthday}}</span>种
+                        <span>{{baseData.inventoryCount}}</span>种
                     </div>
                     <div class="item-footer">
                         <div class="item-footer-lf">
-                            库存中商品共<span>{{baseData.todayBirthday}}</span>件
+                            库存中商品共<span>{{baseData.goodsCount}}</span>件
                         </div>
                         <span class="item-footer-rgt"></span>
                     </div>
@@ -36,7 +36,7 @@
                 <li class="item-all">
                     <p>库存中商品总成本</p>
                     <div class="item-content">
-                        <span>{{parseInt(baseData.memberCount)}}</span>元
+                        <span>{{parseInt(baseData.allStockPrice)}}</span>元
                     </div>
                     <div class="item-footer">
                         <div class="item-footer-lf">
@@ -48,7 +48,7 @@
                 <li class="item-pay">
                     <p>库存中低于100件的商品</p>
                     <div class="item-content">
-                        <span>{{parseInt(baseData.sumAmount)}}</span>件
+                        <span>{{parseInt(baseData.lowCount)}}</span>件
                     </div>
                     <div class="item-footer">
                         <div class="item-footer-lf">
@@ -76,20 +76,20 @@
             <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="商品名称" show-overflow-tooltip >
+                <el-table-column label="序号" show-overflow-tooltip prop="goodsId"></el-table-column>
+                <el-table-column prop="goodsName" width="80" label="商品名称" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="商品类别" show-overflow-tooltip>
+                <el-table-column prop="categoryName" width="80" label="商品类别" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="商品编码" show-overflow-tooltip>
+                <el-table-column prop="barcode" width="80" label="商品编码" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="商品规格" show-overflow-tooltip>
+                <el-table-column prop="describe" width="80" label="商品规格" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="销售单价" width="80" show-overflow-tooltip>
+                <el-table-column prop="salePrice" label="销售单价" width="80" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="库存数量" width="80" show-overflow-tooltip>
+                <el-table-column prop="count" label="库存数量" width="80" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="userName" label="入库时间" show-overflow-tooltip>
+                <el-table-column prop="createDate" label="入库时间" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="shopName" label="所属店铺" show-overflow-tooltip>
                 </el-table-column>
@@ -103,7 +103,7 @@
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDeleteMmeber(scope.row)">删除</el-button>
+                        @click="handleDelete(scope.row)">删除</el-button>
                     </template> 
                 
                 </el-table-column>
@@ -115,7 +115,7 @@
 import { 
     requestGetProductData,
     requestGetProductList,
-    requestDeleteMember
+    requestDeleteGoods
 } from '@/services/service';
 import { Message } from 'element-ui' 
 export default {
@@ -123,9 +123,12 @@ export default {
         return{
             initData: [],
             baseData: {},
+            currentId: '',
+            searchData: ''
         }
     },
     mounted(){
+        this.currentId = this.$route.params.id;
         this.init()
     },
     methods: {
@@ -140,7 +143,7 @@ export default {
                 if(res.data.code == '0000'){
                     _this.baseData = res.data.data
                 }
-            })
+            });
             requestGetProductList(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.initData = res.data.data.list
@@ -148,12 +151,13 @@ export default {
             })
         },
         // 删除操作
-        handleDeleteMmeber(arr){
+        handleDelete(arr){
             let params = {
-                memberId: arr.memberId
-            }
+                shopId: this.$route.params.id,
+                goodsIds: arr.goodsId
+            };
             let _this = this
-            requestDeleteMember(params).then(function(res){
+            requestDeleteGoods(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.init();
                     Message({
@@ -171,6 +175,22 @@ export default {
                     message: '删除失败',
                     type: 'error'
                 });
+            })
+        },
+        handldAddProduct(){
+            this.$router.push(`/product/${this.currentId}/addProduct`);
+        },
+        handleSearch(){
+            let _this  = this;
+            let params = {
+                shopId: this.$route.params.id,
+                type: '01',
+                keyword: this.searchData
+            }
+            requestGetProductList(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initData = res.data.data.list
+                }
             })
         }
     }

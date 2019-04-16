@@ -24,3 +24,8 @@ export function getDate(params){
             }
     }
 }
+
+// 时间戳转化
+export function timeStampTrans(params){
+    return new Date(params).toLocaleString()
+}

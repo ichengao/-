@@ -1,21 +1,21 @@
 <template>
-    <div class="container add-product-container">
+    <div class="container add-service-container">
         <div class="section-header">
             <div class="section-header-lf">
-                <router-link :to="'/product/'+form.shopId+'/addProduct'" active-class="active">
+                <router-link :to="'/product/'+currentId+'/addProduct'" active-class="active">
                     <div>新增商品</div>
                 </router-link>
-                <router-link :to="'/product/'+form.shopId+'/addService'" active-class="active">
+                <router-link :to="'/product/'+currentId+'/addService'" active-class="active">
                     <div>新增服务</div>
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增分组</el-button>
-                <el-button class="header-button">批量删除</el-button>
+                <el-button class="header-button" @click="addNewCategory">新增分组</el-button>
+                <el-button class="header-button" @click="handleDeleteTrees">批量删除</el-button>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容"  class="input-with-select"  v-model="searchData">
+                    <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
                 </el-input>
             </div>
         </div>
@@ -26,11 +26,14 @@
                         <li>
                             <el-tree
                                 class="tree-component"
-                                :data="data4"
                                 show-checkbox
+                                :data="initDataTree"
+                                @check-change="handleCheckChange"
                                 node-key="id"
                                 default-expand-all
                                 :expand-on-click-node="false"
+                                :filter-node-method="filterNode"
+                                ref='tree'
                                 :render-content="renderContent">
                             </el-tree>
                         </li>
@@ -41,33 +44,33 @@
                 <div class="content-rgt-header">
                     新增服务
                 </div>
-                <div class="content-rgt-content">
+                <div class="content-rgt-content" v-show="form.categoryId">
                     <el-form :model="form" :rules="dataRule" status-icon ref="form" class="form-box">
                         <div class="form-lf">
                             <p>1.服务项目资料</p>
-                            <el-form-item prop="goodsId" label="服务编号" label-width="100px" class="item-single">
-                                <el-input placeholder="请输入服务编号"  class="input-box" v-model="form.goodsId" maxlength="20" ></el-input>
+                            <el-form-item prop="barcode" label="服务编号" label-width="100px" class="item-single">
+                                <el-input placeholder="请输入服务编号"  class="input-box" v-model="form.barcode" maxlength="20" ></el-input>
                             </el-form-item>
                             <el-form-item prop="goodsName" label="服务名称" label-width="100px" class="item-single">
                                 <el-input placeholder="请输入服务名称"  class="input-box" v-model="form.goodsName" maxlength="20" ></el-input>
                             </el-form-item>
-                            <el-form-item prop="" label="服务时长" label-width="100px" class="item-single">
-                                <el-input placeholder="请输入服务时长"  class="input-box" v-model="form.brand" maxlength="20" ></el-input>
+                            <el-form-item prop="expDay" label="服务时长" label-width="100px" class="item-single">
+                                <el-input placeholder="请输入服务时长"  class="input-box" v-model="form.expDay" maxlength="20" ></el-input>
                             </el-form-item>
-                            <el-form-item prop="" label="助词码" label-width="100px" class="item-single">
+                            <el-form-item prop="simpleName" label="助词码" label-width="100px" class="item-single">
                                 <el-input placeholder="请输入助词码"  class="input-box" v-model="form.simpleName" maxlength="20" ></el-input>
                             </el-form-item>
-                            <el-form-item prop="" label="服务次数" label-width="100px" class="item-single">
-                                <el-input placeholder="请输入服务次数"  class="input-box" v-model="form.count" maxlength="20" ></el-input>
+                            <el-form-item prop="times" label="服务次数" label-width="100px" class="item-single">
+                                <el-input placeholder="请输入服务次数"  class="input-box" v-model="form.times" maxlength="20" ></el-input>
                             </el-form-item>
                             <el-form-item prop="" label="商品规格" label-width="100px" class="item-single">
                                 <el-input placeholder="请输入商品规格"  class="input-box" v-model="form.describe" maxlength="20" ></el-input>
                             </el-form-item>
                             <el-form-item prop="" label="回访期" label-width="100px" class="item-single">
-                                <el-input placeholder="请输入回访期"  class="input-box" v-model="form.originPlace" maxlength="20" ></el-input>
+                                <el-input placeholder="请输入回访期"  class="input-box" v-model="form.returnDate" maxlength="20" ></el-input>
                             </el-form-item>
                             <el-form-item prop="" label="跟踪期" label-width="100px" class="item-single">
-                                <el-input placeholder="请输入跟踪期"  class="input-box" v-model="form.expDay" maxlength="20" ></el-input>
+                                <el-input placeholder="请输入跟踪期"  class="input-box" v-model="form.traceDate" maxlength="20" ></el-input>
                             </el-form-item>
                             <el-form-item prop="" label="服务描述" label-width="100px" class="item-single">
                                 <el-input placeholder="请输入服务描述" class="input-box" type="textarea" v-model="form.remark" maxlength="20" ></el-input>
@@ -97,7 +100,7 @@
                                 <el-form-item prop="" class="item-select">
                                     <el-select v-model="form.commissionUnit" placeholder="请选择">
                                         <el-option
-                                            v-for="item in options"
+                                            v-for="item in options.commissionUnitOptions"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -122,8 +125,8 @@
                         </div>
                     </el-form>
                 </div>
-                <div class="content-footer">
-                    <el-checkbox v-model="form.weight">支持预约</el-checkbox>
+                <div class="content-footer" v-show="form.categoryId">
+                    <el-checkbox v-model="form.order">支持预约</el-checkbox>
                     <div class="button-group">
                         <el-button class="ensure" @click="handleCommit">保存</el-button>
                         <el-button class="cancle">取消</el-button>
@@ -134,44 +137,106 @@
     </div>
 </template>
 <script>
-import { requestAddProduct } from '@/services/service';
-import { Message } from 'element-ui'
+import { requestAddProduct,requestGetGoodsmenu,requestDeleteGoods } from '@/services/service';
+import { Message } from 'element-ui';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { addServiceCategoryStatus } from '@/components/eventEmitter/eventName';
 export default {
     data(){
-        const data = [{
-            id: 1,
-            label: '一级 1',
-            children: [{
-            id: 4,
-            label: '二级 1-1',
-                
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                id: 5,
-                label: '二级 2-1'
-                }, {
-                id: 6,
-                label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                id: 7,
-                label: '二级 3-1'
-                }, {
-                id: 8,
-                label: '二级 3-2'
-            }]
-        }];
         return{
             form: {
+                type: '02',
+                shopId: '',
+                barcode: '',
+                categoryId: '',
+                goodsName: '',
+                times: '',
+                brand: '',
+                simpleName: '',     // 助词码
+                count: '',
+                unit: '',
+                describe: '',
+                originPlace: '',
+                expDay: '',
+                expDate: '',
+                remark: '',
+                salePrice: '',
+                stockPrice: '',
+                memberPrice: '',
+                minPrice: '',
+                minDiscount: '',
+                deliveryPrice: '',
+                commission: '',
+                commissionUnit: '',
+                integral: '',
+                goodsPicture: '',
+                order: false,
+            },
+            data4: [],
+            dataRule: {
+                barcode: [{ required: true, message: '服务编号不能为空', trigger: 'blur' }],
+                goodsName: [{ required: true, message: '服务名称不能为空', trigger: 'blur' }],
+                salePrice: [{ required: true, message: '销售单价不能为空', trigger: 'blur' }],
+                stockPrice: [{ required: true, message: '进货价不能为空', trigger: 'blur' }],
+            },
+            currentId: '',
+            options: {
+                commissionUnitOptions: [
+                    {
+                        label: '%',
+                        value: '%'
+                    }
+                ],
+            },
+            initDataTree: [],
+            searchData: ''
+        }
+    },
+    mounted(){
+        this.currentId = this.$route.params.id;
+        this.initData();
+        EventBus.$on(addServiceCategoryStatus,()=>{
+            this.initData();
+        });
+    },
+    methods: {
+        initData(){
+            let params = {
+                shopId: this.$route.params.id,
+                type: '02'
+            };
+            requestGetGoodsmenu(params).then((res)=>{
+                this.initDataTree = [];
+                let data = res.data.data;
+                data.map(item=>{
+                    item.id = item.categoryId;
+                    item.label = item.name;
+                    item.level = 1;
+                    item.children = [];
+                    if(item.goodsNameDTOS){
+                        item.goodsNameDTOS.map(littleItem=>{
+                            littleItem.id = littleItem.goodsId;
+                            littleItem.label = littleItem.goodsName;
+                            littleItem.level = 2;
+                            item.children.push(littleItem);
+                        })
+                    }
+                    this.initDataTree.push(item)
+                })
+            })
+        },
+        // 树过滤器
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+        // 初始化数据
+        initFormData(){
+            this.form = {
+                type: '02',
                 shopId: '',
                 goodsId: '',
-                categoryId: '01',
+                categoryId: '',
                 goodsName: '',
                 brand: '',
                 simpleName: '',     // 助词码
@@ -193,44 +258,66 @@ export default {
                 integral: '',
                 goodsPicture: '',
                 weight: false,
-
-            },
-            data4: JSON.parse(JSON.stringify(data)),
-            dataRule: {
-                goodsId: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
-                goodsName: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
-                salePrice: [{ required: true, message: '销售单价不能为空', trigger: 'blur' }],
-                stockPrice: [{ required: true, message: '进货价不能为空', trigger: 'blur' }],
-            }
-        }
-    },
-    mounted(){
-        this.form.shopId = this.$route.params.id
-    },
-    methods: {
+            };
+        },
+        // 操作渲染
         renderContent(h, { node, data, store }) {
             return (
                 <span class="custom-tree-node">
-                    <span>{node.label}</span>
+                <span>{node.label}</span>
                     {
-                        node.level == 1 ? 
+                        node.level == 1 ?
+                    <span>
+                        <el-button size="mini" type="text" on-click={ () => this.addProductToCategory(node, data) }>新增服务</el-button>
+                        </span> :
                         <span>
-                            <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>新增商品</el-button>
-                        </span> : 
-                        <span>
-                            <el-button size="mini" type="text" on-click={ () => this.append(data) }>禁用</el-button>
-                            <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
+                        <el-button size="mini" type="text" on-click={ () => this.disabledProduct(node, data) }>禁用</el-button>
+                        <el-button size="mini" type="text" on-click={ () => this.deleteProduct(node, data) }>删除</el-button>
                         </span>
-                    }
-                </span>
-            );
+                        }
+                    </span>
+                );
+        },
+        addProductToCategory(node, data){
+            this.initFormData();
+            this.form.categoryId = node.data.categoryId;
+        },
+        disabledProduct(node, data){},
+        // 删除操作
+        deleteProduct(node, data){
+            let params = {
+                shopId: this.$route.params.id,
+                goodsIds: [node.data.id]
+            }
+            requestDeleteGoods(params).then((res)=>{
+                if(res.data.code == '0000'){
+                    Message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.initData()
+                }else{
+                    Message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(()=>{
+                Message({
+                    message: '删除失败',
+                    type: 'error'
+                });
+            })
         },
         handleCommit(){
             this.$refs['form'].validate((valid)=>{
                 if(valid){
                     let params = {
+                        shopId: '',
+                        barcode: '',
                         categoryId: '',
                         goodsName: '',
+                        times: '',
                         brand: '',
                         simpleName: '',     // 助词码
                         count: '',
@@ -250,15 +337,17 @@ export default {
                         commissionUnit: '',
                         integral: '',
                         goodsPicture: '',
-                        weight: false,
+                        order: false,
                     }
-                    params = Object.assign({},params,this.form);
+                    params = Object.assign({},params,this.form,{'shopId': this.$route.params.id});
                     requestAddProduct(params).then((res)=>{
                         if(res.data.code == '0000'){
                             Message({
                                 message: '新增成功',
                                 type: 'success'
-                            })
+                            });
+                            this.initData();
+                            this.form.categoryId = '';
                         }else{
                             Message({
                                 message: res.data.msg,
@@ -273,7 +362,69 @@ export default {
                     })
                 }
             })
-        }
+        },
+        // 选中状态切换
+        handleCheckChange(param1, param2,param3){
+            if(param1.level == 2){
+                let idx = this.goodsIds.indexOf(Number(param1.goodsId));
+                if(param2){
+                    idx && this.goodsIds.push(Number(param1.goodsId))
+                }else{
+                    idx && this.goodsIds.splice(idx,1);
+                }
+            }
+            if(param1.level == 1){
+                let idx = this.categoryIds.indexOf(Number(param1.categoryId));
+                if(param2){
+                    idx && this.categoryIds.push(Number(param1.categoryId))
+                }else{
+                    idx && this.categoryIds.splice(idx,1);
+                }
+            }
+        },
+        // 批量删除
+        handleDeleteTrees(){
+            if((this.goodsIds.length == 0)&&(this.categoryIds.length == 0)){
+                Message({
+                    message: '请选择',
+                    type: 'error'
+                });
+                return
+            }
+            let params = {
+                shopId: this.$route.params.id,
+                goodsIds: this.goodsIds.join(','),
+                categoryIds: this.categoryIds.join(',')
+            }
+            requestDeleteGoods(params).then((res)=>{
+                if(res.data.code == '0000'){
+                    Message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.initData()
+                }else{
+                    Message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(()=>{
+                Message({
+                    message: '删除失败',
+                    type: 'error'
+                });
+            })
+        },
+        handleAvatarSuccess(){
+        },
+        beforeAvatarUpload(){},
+        addNewCategory(){
+            this.$store.dispatch('openServiceCategoryModal')
+        },
+        handleSearch(){
+            this.$refs.tree.filter(val);
+        },
     }
 }
 </script>
@@ -386,3 +537,22 @@ export default {
     }
 </style>
 <style lang="scss">
+    @import '@/assets/scss/common.scss';
+    .add-service-container{
+        .custom-tree-node {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            padding-right: 8px;
+        }
+        .tree-component{
+            .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+                background-color: $color;
+                border-color: $color;
+            }
+        }
+    }
+
+</style>

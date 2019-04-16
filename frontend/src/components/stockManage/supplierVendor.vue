@@ -23,21 +23,21 @@
             </div>
         </div>
         <div class="section-content">
-            <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
+            <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
                 <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="供应商" show-overflow-tooltip >
+                <el-table-column prop="gradeName" label="供应商" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="mobile" label="应付欠款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="gradeId" label="应收退款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="integral" label="联系人" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" width="80" show-overflow-tooltip>
+                <el-table-column prop="balance" label="联系电话" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" width="80" show-overflow-tooltip>
+                <el-table-column prop="guestFromName" label="操作员" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="userName" label="备注" show-overflow-tooltip>
                 </el-table-column>
@@ -64,18 +64,29 @@
     </div>
 </template>
 <script>
-import { requestAddProduct } from '@/services/service';
+import { requestGetWarehouseSupplierlist } from '@/services/service';
 import { Message } from 'element-ui'
 export default {
     data(){
         return{
             currentId: '',
+            initDataArray: []
         }
     },
     mounted(){
         this.currentId = this.$route.params.id;
+        this.initData();
     },
     methods: {
+        initData(){
+            let params = {
+                shopId: this.$route.params.id
+            };
+            requestGetWarehouseSupplierlist(params).then((res)=>{
+                this.initDataArray = res.data.data.list
+            })
+        },
+        handleSelectionChange(){},
 
     }
 }

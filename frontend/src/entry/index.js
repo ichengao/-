@@ -26,33 +26,37 @@ import {
   RadioButton,
   Tree,
   Switch,
-  Pagination
+  Pagination,
+    Tooltip,
+    TimeSelect
 } from 'element-ui'
 import qs from 'qs';
 import store from '../vuex/store'
 
-Vue.use(Pagination)
-Vue.use(Switch)
-Vue.use(Tree)
-Vue.use(RadioButton)
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(Dropdown)
-Vue.use(DropdownItem)
-Vue.use(DropdownMenu)
-Vue.use(Button)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Input)
-Vue.use(Radio)
-Vue.use(RadioGroup)
-Vue.use(Cascader)
-Vue.use(Dialog)
-Vue.use(select)
-Vue.use(Option)
-Vue.use(Upload)
-Vue.use(DatePicker)
-Vue.use(Checkbox)
+Vue.use(Pagination);
+Vue.use(Switch);
+Vue.use(Tree);
+Vue.use(RadioButton);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Dropdown);
+Vue.use(DropdownItem);
+Vue.use(DropdownMenu);
+Vue.use(Button);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Radio);
+Vue.use(RadioGroup);
+Vue.use(Cascader);
+Vue.use(Dialog);
+Vue.use(select);
+Vue.use(Option);
+Vue.use(Upload);
+Vue.use(DatePicker);
+Vue.use(Checkbox);
+Vue.use(Tooltip);
+Vue.use(TimeSelect);
 
 Vue.config.productionTip = false
 
@@ -65,7 +69,7 @@ axios.interceptors.request.use(
       config.headers.authorization = token
     }
     if(config.method === 'post' && (config.headers['Content-Type'] != false) ){
-      config.data = qs.stringify(config.data)
+        config.data = qs.stringify(config.data)
     }
     return config
   },

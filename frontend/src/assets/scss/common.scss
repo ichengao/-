@@ -20,6 +20,17 @@ li{
 $color:#ff6600; 
 $color-level1: #ffc095;
 $color-level2: #ffe1ce;
+$color-btn-green: #31c17b;
+
+@font-face {
+    font-family: 'iconfont';
+}
+
+@mixin buttonSet($params){
+    background-color: $params;
+    color: #fff;
+    border-color: $params;
+}
 @mixin buttonType1(){
     background-color: $color;
     color: #fff;

@@ -104,8 +104,7 @@
                         size="mini"
                         type="danger"
                         @click="handleDeleteMmeber(scope.row)">删除</el-button>
-                    </template> 
-                
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="pagenation">
