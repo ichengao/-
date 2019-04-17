@@ -78,10 +78,10 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item prop="createDate" label="开卡日期" label-width="100px" class="form-item-box form-item-phone">
-                        <el-date-picker v-model="form.createDate" type="date" class="form-date" placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form-item>
+                    <!--<el-form-item prop="createDate" label="开卡日期" label-width="100px" class="form-item-box form-item-phone">-->
+                        <!--<el-date-picker v-model="form.createDate" type="date" class="form-date" placeholder="选择日期">-->
+                        <!--</el-date-picker>-->
+                    <!--</el-form-item>-->
                     <el-form-item prop="openAdmin" label="开卡员工" label-width="100px" class="form-item-box form-item-phone">
                         <el-input placeholder="请输入开卡员工"  class="pwd input-box" v-model="form.openAdmin" maxlength="20" ></el-input>
                     </el-form-item>

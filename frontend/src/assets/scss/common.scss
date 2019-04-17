@@ -30,6 +30,9 @@ $color-btn-green: #31c17b;
     background-color: $params;
     color: #fff;
     border-color: $params;
+    &:hover{
+        opacity: .7;
+    }
 }
 @mixin buttonType1(){
     background-color: $color;

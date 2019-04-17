@@ -27,5 +27,11 @@ export function getDate(params){
 
 // 时间戳转化
 export function timeStampTrans(params){
-    return new Date(params).toLocaleString()
+    let dateArr = new Date(params).toLocaleDateString().split('/');
+    let newDateArr = [];
+    dateArr.map(item=>{
+        item = item.length == 1 ? `0${item}` : item;
+        newDateArr.push(item)
+    });
+    return newDateArr.join('-');
 }

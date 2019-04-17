@@ -9,7 +9,7 @@
                     <li>补卡</li>
                     <li>导入</li>
                     <li>导出</li>
-                    <li>筛选</li>
+                    <li @click="toggleFilterMode">筛选</li>
                 </ul>
             </div>
             <div class="section-header-rgt">
@@ -18,7 +18,94 @@
                 </el-input>
             </div>
         </div>
-        <div class="section-content">
+        <div :class=" filterMode ? 'section-filter active' : 'section-filter' ">
+            <ul>
+                <li>
+                    <div class="filter-lf">
+                        员工查询
+                    </div>
+                    <div class="filter-rgt">
+                        <el-select v-model="filterParams.member" placeholder="请选择">
+                            <el-option
+                                v-for="item in optionsParams.staffOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        会员来源
+                    </div>
+                    <div class="filter-rgt">
+                        <el-select v-model="filterParams.memberOrigin" placeholder="请选择">
+                            <el-option
+                                v-for="item in optionsParams.memberOriginOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        会员等级
+                    </div>
+                    <div class="filter-rgt">
+                        <span>全部</span>
+                        <span>默认等级</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        会员标签
+                    </div>
+                    <div class="filter-rgt">
+                        <span>全部</span>
+                        <span>默认等级</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        客户流失
+                    </div>
+                    <div class="filter-rgt">
+                        <span>全部</span>
+                        <span>1个月没购买</span>
+                        <span>3个月没购买</span>
+                        <span>半年没购买</span>
+                        <span>一年没购买</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        欠款会员
+                    </div>
+                    <div class="filter-rgt">
+                        <span>全部</span>
+                        <span>正常</span>
+                        <span>欠款</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="filter-lf">
+                        过期时间
+                    </div>
+                    <div class="filter-rgt">
+                        <span>全部</span>
+                        <span>近一个月内过期</span>
+                        <span>已过期会员</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="filter-btn-group">
+                <el-button class="filter-btn">搜索</el-button>
+            </div>
+        </div>
+        <div class="section-content" v-show="!filterMode">
             <ul class="section-content-box">
                 <li class="item-birth">
                     <p>今日生日会员</p>
@@ -29,7 +116,7 @@
                         <div class="item-footer-lf">
                             本月生日会员<span>{{baseData.todayBirthday}}</span>位
                         </div>
-                        <span class="item-footer-rgt">详情</span>
+                        <span class="item-footer-rgt" @click="searchBirthdayMember">详情</span>
                     </div>
                 </li>
                 <li class="item-all">
@@ -127,7 +214,8 @@ import {
 } from '@/services/service';
 import { Message } from 'element-ui';
 import EventBus from '@/components/eventEmitter/eventEmitter';
-import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName'
+import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName';
+import { timeStampTrans } from '@/common/utils'
 export default {
     data(){
         return{
@@ -135,6 +223,16 @@ export default {
             baseData: {},
             searchKey: '',
             totalCount: 0,
+            birthdayParams: '',
+            filterParams: {
+                member: '',
+                memberOrigin: '',
+            },
+            optionsParams: {
+                staffOptions: [],
+                memberOriginOptions: [],
+            },
+            filterMode: false,
         }
     },
     mounted(){
@@ -158,13 +256,13 @@ export default {
                 if(res.data.code == '0000'){
                     _this.baseData = res.data.data
                 }
-            })
+            });
             requestGetMemberList(params).then(function(res){
                 if(res.data.code == '0000'){
-                    _this.initData = res.data.data.list
+                    _this.initData = res.data.data.list;
                     _this.totalCount = res.data.data.totalCount
                 }
-            })
+            });
         },
         // 编辑操作
         handleEditMember(params1,params2){
@@ -199,29 +297,53 @@ export default {
         },
         // 搜索
         handleSearch(){
-            let _this = this
+            let _this = this;
+            this.birthdayParams = '';
             let params = {
                 keyword: this.searchKey,
-                shopId: this.$route.params.id
-            }
+                shopId: this.$route.params.id,
+                pageNum: 1,
+            };
             if(this.searchKey){
                 requestSearchMemberlist(params).then(function(res){
                     if(res.data.code == '0000'){
-                        _this.initData = res.data.data.list
+                        _this.initData = res.data.data.list;
+                        _this.totalCount = res.data.data.totalCount;
                     }
                 })
             }else{
                 requestGetMemberList(params).then(function(res){
                     if(res.data.code == '0000'){
-                        _this.initData = res.data.data.list
+                        _this.initData = res.data.data.list;
+                        _this.totalCount = res.data.data.totalCount;
                     }
                 })
-            }
-            
+            };
         },
         // 分页
-        pageChange(params){
-
+        pageChange(params1){
+            let _this = this;
+            let params = {
+                pageNum: params1,
+                keyword: this.searchKey,
+                shopId: this.$route.params.id,
+                birthday: this.birthdayParams
+            };
+            requestGetMemberList(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
+                }
+            });
+        },
+        // 生日员工
+        searchBirthdayMember(){
+            this.birthdayParams = timeStampTrans(new Date().getTime());
+            this.pageChange(1);
+        },
+        // 切换筛选模式
+        toggleFilterMode(){
+            this.filterMode = !this.filterMode;
         }
     }
 }
@@ -282,15 +404,66 @@ export default {
                 }
             }
         }
+        .section-filter{
+            background: #fff;
+            height: 0;
+            overflow: hidden;
+            margin-top: 10px;
+            &.active{
+                height: 100%;
+                transition: all 1s;
+                padding: 20px;
+            }
+            ul{
+                background: rgb(247,247,247);
+                li{
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding: 15px 0;
+                    border: 1px solid rgb(231,231,231);
+                    border-top: 0;
+                    &:first-child{
+                        border-top: 1px solid rgb(231,231,231);
+                    }
+                    .filter-lf{
+                        padding: 0 15px;
+                        margin-right: 10px;
+                        border-right: 1px solid rgb(231,231,231);
+                    }
+                    .filter-rgt{
+                        display: flex;
+                        > span{
+                            padding: 5px 10px;
+                            border: 1px solid transparent;
+                            cursor: pointer;
+                            &.active{
+                                border-color: $color;
+                                &:active{
+                                    background: $color;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .filter-btn-group{
+                background: rgb(247,247,247);
+                text-align: center;
+                padding: 10px;
+                .filter-btn{
+                    @include buttonSet($color);
+                }
+            }
+        }
         .section-content{
             .section-content-box{
                 display: flex;
                 justify-content: flex-start;
                 padding: 0;
-                margin-top: 20px;
                 >li{
-                    width: 22%;
-                    margin-right: 4%;
+                    width: 24.25%;
+                    margin-right: 1%;
                     background: #fff;
                     font-size: 12px;
                     p{
@@ -343,7 +516,7 @@ export default {
             }
         }
         .section-footer{
-            margin-top: 20px;
+            margin-top: 10px;
             .pagenation{
                 text-align: right;
                 margin-bottom: 20px;
