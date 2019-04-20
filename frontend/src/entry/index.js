@@ -31,7 +31,8 @@ import {
     TimeSelect
 } from 'element-ui'
 import qs from 'qs';
-import store from '../vuex/store'
+import store from '../vuex/store';
+import * as filters from '@/common/filter'
 
 Vue.use(Pagination);
 Vue.use(Switch);
@@ -58,19 +59,27 @@ Vue.use(Checkbox);
 Vue.use(Tooltip);
 Vue.use(TimeSelect);
 
-Vue.config.productionTip = false
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+});
+
+Vue.config.productionTip = false;
 
 axios.interceptors.request.use(
   config => {
-    config.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
-    config.timeout = 6000
-    let token = localStorage.getItem('access_token')
+    config.withCredentials = true; // 允许携带token ,这个是解决跨域产生的相关问题
+    config.timeout = 6000;
+    let token = localStorage.getItem('access_token');
     if (token) {
       config.headers.authorization = token
     }
+
     if(config.method === 'post' && (config.headers['Content-Type'] != false) ){
-        config.data = qs.stringify(config.data)
+        if(config.url != '/zv-member/zv/purchase/stock'){
+            config.data = qs.stringify(config.data)
+        }
     }
+
     return config
   },
   error => {

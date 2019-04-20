@@ -10,15 +10,15 @@
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增供应商</el-button>
+                <el-button class="header-button" @click="OpenCreateSupplierVendorModal">新增供应商</el-button>
                 <ul>
-                    <li>修改</li>
-                    <li>删除</li>
+                    <li @click="handEdit">修改</li>
+                    <li @click="handleDelete">删除</li>
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入供应商"  class="input-with-select" v-model="keyword">
+                    <el-button slot="append" icon="el-icon-search" @click="handSearch"></el-button>
                 </el-input>
             </div>
         </div>
@@ -26,68 +26,161 @@
             <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" label="供应商" show-overflow-tooltip >
+                <el-table-column prop="supplierId" label="序号" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="name" label="供应商" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="gradeId" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="realArrearsBalance" label="应付欠款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="realGetBalance" label="应收退款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" show-overflow-tooltip>
+                <el-table-column prop="contact" label="联系人" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" show-overflow-tooltip>
+                <el-table-column prop="mobile" label="联系电话" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="userName" label="备注" show-overflow-tooltip>
+                <el-table-column prop="opName" label="操作员" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="remark" label="备注" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column
                 label="操作"
-                show-overflow-tooltip>
+                >
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
                         @click="handleEdit(scope.$index, scope.row)">还款</el-button>
+                        <br>
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDeleteMmeber(scope.row)">还款记录</el-button>
+                        @click="handleDeleteMmeber(scope.row)" class="table-btn">还款记录</el-button>
+                        <br>
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDeleteMmeber(scope.row)">供货记录</el-button>
+                        @click="handleDeleteMmeber(scope.row)" class="table-btn">供货记录</el-button>
                     </template> 
                 
                 </el-table-column>
             </el-table>
+            <div class="pagenation">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change='pageChange'
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import { requestGetWarehouseSupplierlist } from '@/services/service';
-import { Message } from 'element-ui'
+import { requestGetWarehouseSupplierlist,requestDelsupplier } from '@/services/service';
+import { Message } from 'element-ui';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { CREATE_SUPPLIER_VENDOR } from '@/components/eventEmitter/eventName';
 export default {
     data(){
         return{
             currentId: '',
-            initDataArray: []
+            initDataArray: [],
+            selectedIdsArr: '',     //  选中id列表
+            selectedDetailArr: '',  //  选中详细信息
+            keyword: '',
+            totalCount: 0,
         }
     },
     mounted(){
         this.currentId = this.$route.params.id;
         this.initData();
+        EventBus.$on(CREATE_SUPPLIER_VENDOR,()=>{
+            this.initData();
+        });
     },
     methods: {
         initData(){
             let params = {
-                shopId: this.$route.params.id
+                shopId: this.$route.params.id,
+                pageNum: 1
             };
             requestGetWarehouseSupplierlist(params).then((res)=>{
-                this.initDataArray = res.data.data.list
+                this.initDataArray = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
             })
         },
-        handleSelectionChange(){},
-
+        handleSelectionChange(params){
+            let selectedIdsArr = [];
+            this.selectedDetailArr = params;
+            params.map(item=>{
+                selectedIdsArr.push(item.supplierId);
+            });
+            this.selectedIdsArr = selectedIdsArr;
+        },
+        OpenCreateSupplierVendorModal(){
+            this.$store.dispatch('openCreateSupplierVendorModal');
+        },
+        handleDelete(){
+            if(!this.selectedIdsArr.length){
+                Message.error('至少选择一个');
+                return
+            }
+            let params = {
+                shopId: this.$route.params.id,
+                supplierIds: this.selectedIdsArr
+            };
+            requestDelsupplier(params).then((res)=>{
+                if(res.data.code == '0000'){
+                    Message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.initData()
+                }else{
+                    Message({
+                        message: res.data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(function(){
+                Message({
+                    message:'删除失败',
+                    type: 'error'
+                });
+            })
+        },
+        handEdit(){
+            if(this.selectedIdsArr.length != 1){
+                Message.error('请选择一个');
+                return
+            };
+            this.$store.dispatch('openEditSupplierVendorModal',this.selectedDetailArr[0])
+        },
+        handSearch(){
+            let params = {
+                shopId: this.$route.params.id,
+                pageNum: 1,
+                keyword: this.keyword
+            };
+            requestGetWarehouseSupplierlist(params).then((res)=>{
+                this.initDataArray = res.data.data.list;
+                this.totalCount = res.data.data.totalCount
+            })
+        },
+        // 分页
+        pageChange(params1){
+            let _this = this;
+            let params = {
+                pageNum: params1,
+                keyword: this.keyword,
+                shopId: this.$route.params.id
+            };
+            requestGetWarehouseSupplierlist(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initDataArray = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
+                }
+            });
+        },
     }
 }
 </script>
@@ -132,6 +225,7 @@ export default {
                         padding-left: 40px;
                         margin-right: 20px;
                         cursor: pointer;
+                        font-size: 16px;
                         &:hover{
                             opacity: .6;
                         }
@@ -149,6 +243,15 @@ export default {
         }
         .section-content{
             margin-top: 10px;
+            .table-btn{
+                margin-top: 5px;
+            }
+            .pagenation{
+                text-align: right;
+                margin-bottom: 20px;
+                background: #fff;
+                padding: 20px 20px 20px 0;
+            }
         }
     }
 </style>

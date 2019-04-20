@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>服务列表</span>
-                <el-button class="btn-new" @click="handldAddService">新增服务</el-button>
+                <el-button class="btn-new el-icon-plus" @click="handldAddService">新增服务</el-button>
             </div>
             <div class="section-header-center">
                 <ul>
@@ -122,12 +122,12 @@ export default {
             let params = {
                 shopId: this.$route.params.id,
                 type: '02'
-            }
-            // requestGetProductData(params).then(function(res){
-            //     if(res.data.code == '0000'){
-            //         _this.baseData = res.data.data
-            //     }
-            // });
+            };
+            requestGetMemberbaseData(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.baseData = res.data.data
+                }
+            });
             requestGetServerlist(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.initData = res.data.data.list
@@ -171,7 +171,7 @@ export default {
                 type: '01',
                 keyword: this.searchData
             }
-            requestGetProductList(params).then(function(res){
+            requestGetServerlist(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.initData = res.data.data.list
                 }
@@ -197,11 +197,12 @@ export default {
                     border-left: 3px solid $color;
                 }
                 .btn-new{
-                    padding: 5px 15px 5px 40px;
-                    background: url('../../assets/images/icon_card.png') 10px center no-repeat;
-                    background-size: 20px;
                     @include buttonType1;
                     margin-left: 20px;
+                    padding: 8px 10px;
+                    &:before{
+                        margin-right: 15px;
+                    }
                 }
             }
             .section-header-center{
@@ -211,6 +212,7 @@ export default {
                         padding-left: 40px;
                         margin-right: 20px;
                         cursor: pointer;
+                        font-size: 16px;
                         &:hover{
                             opacity: .6;
                         }

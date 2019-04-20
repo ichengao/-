@@ -8,17 +8,36 @@
             </div>
         </div>
         <createMemberCardModal />
+        <createSupplierVendorModal />
+        <editSupplierVendorModal />
+        <createStoreControlModal />
+        <editStoreControlModal />
+        <updateProductQuantityModal />
+        <inventoryRecordListModal />
     </div>
 </template>
 <script>
 import headerSection from '@/components/header/headerShopDetail/headerShopDetail';
 import asideSection from '@/components/common/aside';
-import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
+import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal';
+import createSupplierVendorModal from '@/components/modal/createSupplierVendorModal/createSupplierVendorModal';
+import editSupplierVendorModal from '@/components/modal/editSupplierVendorModal/editSupplierVendorModal';
+import createStoreControlModal from '@/components/modal/createStoreControlModal/createStoreControlModal';
+import editStoreControlModal from '@/components/modal/editStoreControlModal/editStoreControlModal';
+import updateProductQuantityModal from '@/components/modal/updateProductQuantityModal/updateProductQuantityModal';
+import inventoryRecordListModal from '@/components/modal/inventoryRecordListModal/inventoryRecordListModal';
+
 export default {
     components: {
         headerSection,
         asideSection,
-        createMemberCardModal
+        createMemberCardModal,
+        createSupplierVendorModal,
+        editSupplierVendorModal,
+        createStoreControlModal,
+        editStoreControlModal,
+        updateProductQuantityModal,
+        inventoryRecordListModal
     }
 }
 </script>

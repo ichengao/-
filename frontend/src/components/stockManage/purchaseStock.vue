@@ -9,35 +9,34 @@
                     <div>采购退货</div>
                 </router-link>
             </div>
-            <div class="section-header-center">
-                <el-button class="header-button">新增进货</el-button>
+            <div class="section-header-center" v-if="currentStatus">
+                <el-button class="header-button" @click="handleToggleStatus">新增进货</el-button>
                 <ul>
                     <li>修改</li>
                     <li>删除</li>
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
+                <el-input placeholder="请输入内容"  class="input-with-select" v-if="currentStatus">
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
         </div>
-        <div class="section-content">
-            <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
+        <div class="section-content" v-if="currentStatus">
+            <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="供应商" show-overflow-tooltip >
+                <el-table-column prop="gradeName" label="供应商" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="mobile" label="应付欠款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="gradeId" label="应收退款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="integral" label="联系人" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" width="80" show-overflow-tooltip>
+                <el-table-column prop="balance" label="联系电话" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" width="80" show-overflow-tooltip>
+                <el-table-column prop="guestFromName" label="操作员" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="userName" label="备注" show-overflow-tooltip>
                 </el-table-column>
@@ -48,10 +47,12 @@
                         <el-button
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)">还款</el-button>
+                        <br>
                         <el-button
                             size="mini"
                             type="danger"
                             @click="handleDeleteMmeber(scope.row)">还款记录</el-button>
+                        <br>
                         <el-button
                             size="mini"
                             type="danger"
@@ -61,22 +62,35 @@
                 </el-table-column>
             </el-table>
         </div>
+        <addPurchaseStock  v-else />
     </div>
 </template>
 <script>
     import { requestAddProduct } from '@/services/service';
     import { Message } from 'element-ui'
+    import addPurchaseStock from '@/components/stockManage/purchaseStock/addPurchaseStock'
     export default {
         data(){
             return{
                 currentId: '',
+                initDataArray: [],
+                currentStatus: true,      // false 为新增进货状态
             }
+        },
+        components: {
+            addPurchaseStock
         },
         mounted(){
             this.currentId = this.$route.params.id;
         },
         methods: {
+            initData(){
 
+            },
+            handleSelectionChange(){},
+            handleToggleStatus(){
+                this.currentStatus = false
+            }
         }
     }
 </script>
@@ -121,6 +135,7 @@
                         padding-left: 40px;
                         margin-right: 20px;
                         cursor: pointer;
+                        font-size: 16px;
                         &:hover{
                             opacity: .6;
                         }

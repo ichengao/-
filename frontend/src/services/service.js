@@ -191,3 +191,51 @@ export function requestDeleteGift(params) {
 export function requestGetWarehouseSupplierlist(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/supplierlist`,params)
 }
+// 新增供应商
+export function requestAddsupplier(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/addsupplier`,params)
+}
+// 删除供应商
+export function requestDelsupplier(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/delsupplier`,params)
+}
+// 更新供应商
+export function requestUpdatesupplier(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/updatesupplier`,params)
+}
+// 仓库列表
+export function requestGetWarehouselist(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/list`,params)
+}
+// 新增仓库
+export function requestAddWarehouse(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/add`,params)
+}
+// 删除仓库
+export function requestDelwarehouse(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/del`,params)
+}
+// 更新仓库
+export function requestUpdatewarehouse(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/warehouse/update`,params)
+}
+// 创建进货订单
+export function requestCreateStockOrder(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/stock`,params)
+}
+
+/**
+ * 商品盘点
+ */
+// 商品盘点列表
+export function requestGetInventorylist(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/inventorylist`,params)
+}
+// 更新商品数量
+export function requestUpdateInventory(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/inventoryadjust`,params)
+}
+// 商品盘点日志
+export function requestInventoryLog(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/inventorylog`,params)
+}

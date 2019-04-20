@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <span>商品列表</span>
-                <el-button class="btn-new el-icon-plus" @click="handldAddProduct">新增商品</el-button>
+                <el-button class="btn-new el-icon-plus" @click="handleAddProduct">新增商品</el-button>
             </div>
             <div class="section-header-center">
                 <ul>
@@ -77,19 +77,22 @@
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
                 <el-table-column label="序号" show-overflow-tooltip prop="goodsId"></el-table-column>
-                <el-table-column prop="goodsName" width="80" label="商品名称" show-overflow-tooltip >
+                <el-table-column prop="goodsName" label="商品名称" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="categoryName" width="80" label="商品类别" show-overflow-tooltip>
+                <el-table-column prop="categoryName" label="商品类别" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="barcode" width="80" label="商品编码" show-overflow-tooltip>
+                <el-table-column prop="barcode" label="商品编码" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="describe" width="80" label="商品规格" show-overflow-tooltip>
+                <el-table-column prop="describe" label="商品规格" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="salePrice" label="销售单价" width="80" show-overflow-tooltip>
+                <el-table-column prop="salePrice" label="销售单价" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="count" label="库存数量" width="80" show-overflow-tooltip>
+                <el-table-column prop="count" label="库存数量" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="createDate" label="入库时间" show-overflow-tooltip>
+                <el-table-column prop="" label="入库时间" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        {{ scope.row.createDate | timeStampTrans }}
+                    </template>
                 </el-table-column>
                 <el-table-column prop="shopName" label="所属店铺" show-overflow-tooltip>
                 </el-table-column>
@@ -99,15 +102,19 @@
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
                         type="danger"
                         @click="handleDelete(scope.row)">删除</el-button>
-                    </template> 
-                
+                    </template>
                 </el-table-column>
             </el-table>
+            <div class="pagenation">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change='pageChange'
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -117,14 +124,15 @@ import {
     requestGetProductList,
     requestDeleteGoods
 } from '@/services/service';
-import { Message } from 'element-ui' 
+import { Message } from 'element-ui';
 export default {
     data(){
         return{
             initData: [],
             baseData: {},
             currentId: '',
-            searchData: ''
+            searchData: '',
+            totalCount: 0
         }
     },
     mounted(){
@@ -146,7 +154,8 @@ export default {
             });
             requestGetProductList(params).then(function(res){
                 if(res.data.code == '0000'){
-                    _this.initData = res.data.data.list
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
                 }
             })
         },
@@ -177,7 +186,7 @@ export default {
                 });
             })
         },
-        handldAddProduct(){
+        handleAddProduct(){
             this.$router.push(`/product/${this.currentId}/addProduct`);
         },
         handleSearch(){
@@ -186,13 +195,29 @@ export default {
                 shopId: this.$route.params.id,
                 type: '01',
                 keyword: this.searchData
-            }
+            };
             requestGetProductList(params).then(function(res){
                 if(res.data.code == '0000'){
-                    _this.initData = res.data.data.list
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
                 }
-            })
-        }
+            });
+        },
+        pageChange(params1){
+            let _this  = this;
+            let params = {
+                shopId: this.$route.params.id,
+                type: '01',
+                keyword: this.searchData,
+                pageNum: params1
+            };
+            requestGetProductList(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
+                }
+            });
+        },
     }
 }
 </script>
@@ -315,6 +340,11 @@ export default {
         }
         .section-footer{
             margin-top: 20px;
+            .pagenation{
+                padding: 20px 0;
+                background: #fff;
+                text-align: right;
+            }
         }
     }
 </style>

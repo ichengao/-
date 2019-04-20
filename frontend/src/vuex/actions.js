@@ -78,7 +78,55 @@ const actions = {
     // 设置数据字典
     setDictList({state,commit},params){
         commit('dictList',params)
-    }
+    },
+    // 新建供应商弹框
+    openCreateSupplierVendorModal({state,commit}){
+        commit('createSupplierVendorModalStatus',true)
+    },
+    // 新建供应商弹框
+    closeCreateSupplierVendorModal({state,commit}){
+        commit('createSupplierVendorModalStatus',false)
+    },
+    // 修改供应商弹框
+    openEditSupplierVendorModal({state,commit},params){
+        commit('editSupplierVendorModalStatus',{status: true,data: params})
+    },
+    // 修改供应商弹框
+    closeEditSupplierVendorModal({state,commit}){
+        commit('editSupplierVendorModalStatus',{status: false,data: {}})
+    },
+    // 新建仓库弹框
+    openCreateStoreControlModal({state,commit}){
+        commit('createStoreControlModalStatus',true)
+    },
+    // 新建仓库弹框
+    closeCreateStoreControlModal({state,commit}){
+        commit('createStoreControlModalStatus',false)
+    },
+    // 修改仓库弹框
+    openEditStoreControlModal({state,commit},params){
+        commit('editStoreControlModalStatus',{status: true,data: params})
+    },
+    // 修改仓库弹框
+    closeEditStoreControlModal({state,commit}){
+        commit('editStoreControlModalStatus',{status: false,data: {}})
+    },
+    // 修改产品数量
+    openUpdateProductQuantityModal({state,commit},params){
+        commit('updateProductQuantityStatus',{status: true,data: params})
+    },
+    // 修改产品数量
+    closeUpdateProductQuantityModal({state,commit}){
+        commit('updateProductQuantityStatus',{status: false,data: {}})
+    },
+    // 商品盘点记录
+    openInventoryRecordListModal({state,commit},params){
+        commit('inventoryRecordListModalStatus',{status: true,data: params})
+    },
+    // 商品盘点记录
+    closeInventoryRecordListModal({state,commit}){
+        commit('inventoryRecordListModalStatus',{status: false,data: {}})
+    },
 };
 
 export default actions;

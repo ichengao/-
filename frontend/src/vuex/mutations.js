@@ -31,7 +31,25 @@ const mutations = {
     },
     dictList(state,payload){
         state.dictList = Object.assign({},state.dictList,payload)
-    }
+    },
+    createSupplierVendorModalStatus(state,payload){
+        state.createSupplierVendorModalStatus = payload;
+    },
+    editSupplierVendorModalStatus(state,payload){
+        state.editSupplierVendorModalStatus = Object.assign({},state.editSupplierVendorModalStatus,payload);
+    },
+    createStoreControlModalStatus(state,payload){
+        state.createStoreControlModalStatus = payload;
+    },
+    editStoreControlModalStatus(state,payload){
+        state.editStoreControlModalStatus = Object.assign({},state.editStoreControlModalStatus,payload);
+    },
+    updateProductQuantityStatus(state,payload){
+        state.updateProductQuantityStatus = Object.assign({},state.updateProductQuantityStatus,payload);
+    },
+    inventoryRecordListModalStatus(state,payload){
+        state.inventoryRecordListModalStatus = Object.assign({},state.inventoryRecordListModalStatus,payload);
+    },
 }
 
 export default mutations;

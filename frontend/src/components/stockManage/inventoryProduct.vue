@@ -7,36 +7,42 @@
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增退货</el-button>
                 <ul>
-                    <li>修改</li>
-                    <li>删除</li>
+                    <li>导出</li>
+                    <li>筛选</li>
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容"  class="input-with-select" v-model="keyword">
+                    <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
                 </el-input>
             </div>
         </div>
         <div class="section-content">
-            <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
+            <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                       @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="供应商" show-overflow-tooltip >
+                <el-table-column type="selection" width="25"></el-table-column>
+                <el-table-column prop="goodsId" label="序号" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="barcode" label="商品编码" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="goodsName" label="商品名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="count" label="入库数量" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" width="80" show-overflow-tooltip>
+                <el-table-column label="入库时间" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        {{ scope.row.createDate | timeStampTrans }}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" width="80" show-overflow-tooltip>
+                <el-table-column label="上次盘点时间" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        {{ scope.row.inventoryDate | timeStampTrans }}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="userName" label="备注" show-overflow-tooltip>
+                <el-table-column prop="describe" label="规格" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="remark" label="备注" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column
                     label="操作"
@@ -44,36 +50,87 @@
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">还款</el-button>
+                            type="danger"
+                            @click="handleOpenUpdateProductQuantityModal(scope.row)">数量调整</el-button>
+                        <br>
                         <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDeleteMmeber(scope.row)">还款记录</el-button>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDeleteMmeber(scope.row)">供货记录</el-button>
+                            class="btn-control"
+                            @click="handleOpenInventoryRecordListModal(scope.row)">盘点记录</el-button>
                     </template>
-
                 </el-table-column>
             </el-table>
+            <div class="pagenation">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change='pageChange'
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
 <script>
-    import { requestAddProduct } from '@/services/service';
-    import { Message } from 'element-ui'
+    import { requestGetInventorylist } from '@/services/service';
+    import EventBus from '@/components/eventEmitter/eventEmitter';
+    import { UPDATE_PRODUCT_QUANTITY } from '@/components/eventEmitter/eventName';
     export default {
         data(){
             return{
                 currentId: '',
+                initDataArray: [],
+                totalCount: 0,
+                keyword: ''
             }
         },
         mounted(){
             this.currentId = this.$route.params.id;
+            this.initData();
+            EventBus.$on(UPDATE_PRODUCT_QUANTITY,()=>{
+                this.initData();
+            })
         },
         methods: {
-
+            initData(){
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestGetInventorylist(params).then((res)=>{
+                    this.initDataArray = res.data.data.list;
+                    this.totalCount = res.data.data.totalCount;
+                })
+            },
+            pageChange(params1){
+                let params = {
+                    shopId: this.$route.params.id,
+                    pageNum: params,
+                    keyword: this.keyword
+                };
+                requestGetInventorylist(params).then((res)=>{
+                    this.initDataArray = res.data.data.list;
+                    this.totalCount = res.data.data.totalCount;
+                })
+            },
+            handleSearch(){
+                let params = {
+                    shopId: this.$route.params.id,
+                    pageNum: 1,
+                    keyword: this.keyword
+                };
+                requestGetInventorylist(params).then((res)=>{
+                    this.initDataArray = res.data.data.list;
+                    this.totalCount = res.data.data.totalCount;
+                })
+            },
+            handleSelectionChange(){},
+            handleOpenUpdateProductQuantityModal(params){
+                this.$store.dispatch('openUpdateProductQuantityModal',params)
+            },
+            handleOpenInventoryRecordListModal(params){
+                this.$store.dispatch('openInventoryRecordListModal',params)
+            }
         }
     }
 </script>
@@ -118,6 +175,7 @@
                         padding-left: 40px;
                         margin-right: 20px;
                         cursor: pointer;
+                        font-size: 16px;
                         &:hover{
                             opacity: .6;
                         }
@@ -135,6 +193,14 @@
         }
         .section-content{
             margin-top: 10px;
+            .btn-control{
+                margin-top: 5px;
+            }
+            .pagenation{
+                padding: 20px 0;
+                background: #fff;
+                text-align: right;
+            }
         }
     }
 </style>

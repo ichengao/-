@@ -36,7 +36,7 @@
                 </el-table-column>
                 <el-table-column label="操作时间" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span>{{timeStampTrans(scope.row.createDate)}}</span>
+                        <span>{{ scope.row.createDate | timeStampTrans }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="剩余积分" show-overflow-tooltip prop="afterIntegral"></el-table-column>
@@ -53,7 +53,6 @@
     import { Message } from 'element-ui';
     import { INTEGRAL_CHANGE } from '@/components/eventEmitter/eventName';
     import EventEmitter from '@/components/eventEmitter/eventEmitter';
-    import { timeStampTrans } from '@/common/utils'
     export default {
         data(){
             return{
@@ -148,9 +147,6 @@
                     Message.error('操作失败');
                 })
             },
-            timeStampTrans(params){
-                return timeStampTrans(params)
-            }
         }
     }
 </script>

@@ -39,3 +39,16 @@ $color-btn-green: #31c17b;
     color: #fff;
     border-color: $color;
 }
+
+@mixin scrollBar(){
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: #eee;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: #eee;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #3DB6A4;
+    }
+}

@@ -121,6 +121,7 @@
                         padding-left: 40px;
                         margin-right: 20px;
                         cursor: pointer;
+                        font-size: 16px;
                         &:hover{
                             opacity: .6;
                         }
