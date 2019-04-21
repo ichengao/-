@@ -239,3 +239,16 @@ export function requestUpdateInventory(params) {
 export function requestInventoryLog(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/purchase/inventorylog`,params)
 }
+
+
+/**
+ * 系统设置模块
+ */
+// 获取店铺资料
+export function requestGetShopDetail(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/detail`,params)
+}
+// 更新店铺资料
+export function requestUpdateShopDetail(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/update`,params)
+}

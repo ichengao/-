@@ -16,6 +16,7 @@ const state = {
     editStoreControlModalStatus: {status: false, data: {}},   // 修改仓库弹框
     updateProductQuantityStatus: {status: false, data: {}},   // 修改数量弹框
     inventoryRecordListModalStatus: {status: false, data: {}},// 盘点纪录弹框
+    updateShopModal: { status: false, data: {} },             // 店铺信息更新
 };
 
 export default state;

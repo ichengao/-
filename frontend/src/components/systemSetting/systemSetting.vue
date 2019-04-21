@@ -34,12 +34,15 @@
             </div>
         </div>
         <createMemberCardModal />
+        <updateShopModal />
     </div>
 </template>
 <script>
     import headerSection from '@/components/header/headerShopDetail/headerShopDetail';
     import asideSection from '@/components/common/aside';
     import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
+    import updateShopModal from '@/components/modal/updateShopModal/updateShopModal';
+
     export default {
         data(){
             return{
@@ -49,7 +52,8 @@
         components: {
             headerSection,
             asideSection,
-            createMemberCardModal
+            createMemberCardModal,
+            updateShopModal
         },
         mounted(){
             this.currentId = this.$route.params.id;

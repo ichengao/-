@@ -6,3 +6,4 @@ export const CREATE_MEMEBR_CARD = 'CREATE_MEMEBR_CARD';   // 会员开卡
 export const CREATE_SUPPLIER_VENDOR = 'CREATE_SUPPLIER_VENDOR'; // 新增供应商
 export const CREATE_STORE_CONTROL = 'CREATE_STORE_CONTROL'; // 新增供应商
 export const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';  // 修改商品盘点数量
+export const UPDATE_SHOP_DETAIL = 'UPDATE_SHOP_DETAIL';    // 更新店铺信息

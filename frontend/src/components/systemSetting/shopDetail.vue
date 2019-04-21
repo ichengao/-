@@ -2,31 +2,63 @@
     <div class="container shop-detail-container">
         <div class="section-header">
             <div class="section-header-logo">
-                <img src="../../assets/images/icon_logo_white.png" alt="">
+                <img :src="initDataObj.shopLogoPath ? initDataObj.shopLogoPath : defaultLogoPath " alt="">
                 <p>安徽雪儿教育</p>
             </div>
             <ul class="section-header-list">
-                <li>123123</li>
-                <li>18267535353</li>
-                <li>373737373@qq.com</li>
-                <li>永久</li>
+                <li>{{ initDataObj.shopId }}</li>
+                <li>{{ initDataObj.adminMobile }}</li>
+                <li>{{ initDataObj.email }}</li>
+                <li>{{ initDataObj.deadDate | timeStampTrans }}</li>
             </ul>
         </div>
         <div class="section-content">
             <ul>
-                <li><span>店铺信息</span><span class="btn-change">【修改】</span></li>
-                <li><span>店铺名称</span><span>安徽学士教育</span></li>
-                <li><span>店主姓名</span><span>蒋先生</span></li>
-                <li><span>微信账号</span><span>12123</span></li>
-                <li><span>行业类型</span><span>通用行业</span></li>
-                <li><span>店铺简称</span><span>安徽学士教育</span></li>
-                <li><span>店铺电话</span><span>12312321</span></li>
-                <li><span>注册时间</span><span>2018-10-10</span></li>
-                <li><span>店铺地址</span><span>安徽省寿县板桥</span></li>
+                <li><span>店铺信息</span><span class="btn-change" @click="handleOpenUpdateShopModal">【修改】</span></li>
+                <li><span>店铺名称</span><span>{{ initDataObj.shopName }}</span></li>
+                <li><span>店主姓名</span><span>{{ initDataObj.shopManage }}</span></li>
+                <li><span>行业类型</span><span>{{ initDataObj.businessBelong }}</span></li>
+                <li><span>店铺简称</span><span>{{ initDataObj.simpleName }}</span></li>
+                <li><span>店铺电话</span><span>{{ initDataObj.shopTel }}</span></li>
+                <li><span>注册时间</span><span>{{ initDataObj.createDate | timeStampTrans }}</span></li>
+                <li><span>店铺地址</span><span>{{ initDataObj.address }}</span></li>
             </ul>
         </div>
     </div>
 </template>
+<script>
+    import { requestGetShopDetail } from '@/services/service';
+    import defaultLogoPath from '@/assets/images/icon_logo_white.png';
+    import EventBus from '@/components/eventEmitter/eventEmitter';
+    import { UPDATE_SHOP_DETAIL } from '@/components/eventEmitter/eventName';
+    export default {
+        data(){
+            return{
+                initDataObj: {},
+                defaultLogoPath: defaultLogoPath
+            }
+        },
+        mounted(){
+            this.initData();
+            EventBus.$on(UPDATE_SHOP_DETAIL,()=>{
+                this.initData();
+            })
+        },
+        methods: {
+            initData(){
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestGetShopDetail(params).then((res)=>{
+                    this.initDataObj = res.data.data;
+                });
+            },
+            handleOpenUpdateShopModal(){
+                this.$store.dispatch('openUpdateShopModal',this.initDataObj);
+            }
+        }
+    }
+</script>
 <style lang="scss" scoped>
     .container{
         .section-header{

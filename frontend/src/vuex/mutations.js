@@ -50,6 +50,9 @@ const mutations = {
     inventoryRecordListModalStatus(state,payload){
         state.inventoryRecordListModalStatus = Object.assign({},state.inventoryRecordListModalStatus,payload);
     },
+    updateShopModal(state,payload){
+        state.updateShopModal = Object.assign({},state.updateShopModal,payload);
+    },
 }
 
 export default mutations;

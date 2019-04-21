@@ -112,6 +112,7 @@
                     background
                     layout="prev, pager, next"
                     @current-change='pageChange'
+                    v-show="initData.length"
                     :total="totalCount">
                 </el-pagination>
             </div>

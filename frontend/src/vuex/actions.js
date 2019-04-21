@@ -127,6 +127,14 @@ const actions = {
     closeInventoryRecordListModal({state,commit}){
         commit('inventoryRecordListModalStatus',{status: false,data: {}})
     },
+    // 店铺更新
+    openUpdateShopModal({state,commit},params){
+        commit('updateShopModal',{status: true,data: params})
+    },
+    // 店铺更新
+    closeUpdateShopModal({state,commit}){
+        commit('updateShopModal',{status: false,data: {}})
+    },
 };
 
 export default actions;

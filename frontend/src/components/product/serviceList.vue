@@ -92,6 +92,15 @@
                 
                 </el-table-column>
             </el-table>
+            <div class="pagenation">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change='pageChange'
+                    v-show="initData.length"
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -108,7 +117,8 @@ export default {
             initData: [],
             baseData: {},
             currentId: '',
-            searchData: ''
+            searchData: '',
+            totalCount: 0
         }
     },
     mounted(){
@@ -130,7 +140,8 @@ export default {
             });
             requestGetServerlist(params).then(function(res){
                 if(res.data.code == '0000'){
-                    _this.initData = res.data.data.list
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
                 }
             })
         },
@@ -173,10 +184,26 @@ export default {
             }
             requestGetServerlist(params).then(function(res){
                 if(res.data.code == '0000'){
-                    _this.initData = res.data.data.list
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
                 }
             })
-        }
+        },
+        pageChange(params1){
+            let _this  = this;
+            let params = {
+                shopId: this.$route.params.id,
+                type: '02',
+                keyword: this.searchData,
+                pageNum: params1
+            };
+            requestGetProductList(params).then(function(res){
+                if(res.data.code == '0000'){
+                    _this.initData = res.data.data.list;
+                    _this.totalCount = res.data.data.totalCount;
+                }
+            });
+        },
     }
 }
 </script>
@@ -192,6 +219,7 @@ export default {
             height: 60px;
             padding: 0 20px;
             .section-header-lf{
+                font-size: 18px;
                 span{
                     padding-left: 10px;
                     border-left: 3px solid $color;
@@ -298,6 +326,11 @@ export default {
         }
         .section-footer{
             margin-top: 20px;
+            .pagenation{
+                padding: 20px 0;
+                background: #fff;
+                text-align: right;
+            }
         }
     }
 </style>

@@ -62,6 +62,15 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <div class="pagenation">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change='pageChange'
+                    v-show="initDataArray.length"
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -77,7 +86,8 @@ export default {
             initDataArray: [],
             selectedDetailArr: [],
             selectedIdsArr: [],
-            keyword: ''
+            keyword: '',
+            totalCount: 0
         }
     },
     mounted(){
@@ -250,6 +260,12 @@ export default {
         }
         .section-content{
             margin-top: 10px;
+            .pagenation{
+                text-align: right;
+                margin-bottom: 20px;
+                background: #fff;
+                padding: 20px 20px 20px 0;
+            }
         }
     }
 </style>
