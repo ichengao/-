@@ -44,6 +44,7 @@ const giftsExchange = ()=>import('@/components/integralManage/giftsExchange');
 const giftsManage = ()=>import('@/components/integralManage/giftsManage');
 const bindPayWay = ()=>import('@/components/systemSetting/paySetting/bindPayWay');
 const paySettingDetail = ()=>import('@/components/systemSetting/paySetting/paySettingDetail');
+const cashier = ()=>import('@/components/cashier/cashier');
 
 export default new Router(
     {
@@ -270,6 +271,11 @@ export default new Router(
                         name: 'hardwareSetting'
                     },
                 ]
+            },
+            {
+                path: '/cashier/:id',
+                component: cashier,
+                name: 'cashier'
             },
         ]
     },

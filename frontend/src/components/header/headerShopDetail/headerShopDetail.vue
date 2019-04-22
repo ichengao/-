@@ -6,7 +6,8 @@
         </div>
         <div class="container-header-center">
             <ul>
-                <li class="tab-money">收银台</li>
+                <li class="return-home" v-if="currentPage" @click="changeCashierPage">返回首页</li>
+                <li class="tab-money" v-else @click="changeCashierPage">收银台</li>
                 <li class="tab-card" @click="openMemberCardModal">会员开卡</li>
                 <li class="tab-pay" @click="changePage">会员充值</li>
             </ul>
@@ -35,10 +36,12 @@ export default {
     data(){
         return{
             userMsg: {},     // 用户数据
+            currentPage: true,
         }
     },
     mounted(){
-        this.initData()
+        this.initData();
+        this.currentPage = this.$route.name == 'cashier' ? true : false;
     },
     computed: {
         adminName: {
@@ -63,6 +66,14 @@ export default {
         changePage(){
             let params = this.$route.params.id
             this.$router.push(`/shopdetail/${params}/charge/chargeMoney`)
+        },
+        changeCashierPage(){
+            if(this.currentPage){
+                this.$router.push(`/`);
+            }else{
+                let params = this.$route.params.id;
+                this.$router.push(`/cashier/${params}`);
+            }
         }
     }
 }

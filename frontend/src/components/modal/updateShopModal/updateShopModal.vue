@@ -5,8 +5,8 @@
                 <el-form-item prop="shopName" label="店铺名称:" label-width="100px" class="form-item">
                     <el-input placeholder="请输入店铺名称"  class="pwd input-box" v-model="form.shopName" ></el-input>
                 </el-form-item>
-                <el-form-item prop="shopManage" label="店主姓名:" label-width="100px" class="form-item">
-                    <el-input placeholder="请输入店主姓名"  class="pwd input-box" v-model="form.shopManage" maxlength="20"></el-input>
+                <el-form-item prop="shopManager" label="店主姓名:" label-width="100px" class="form-item">
+                    <el-input placeholder="请输入店主姓名"  class="pwd input-box" v-model="form.shopManager" maxlength="20"></el-input>
                 </el-form-item>
                 <el-form-item prop="businessBelong" label="行业类型:" label-width="100px" class="form-item">
                     <el-input placeholder="请输入行业类型"  class="pwd input-box" v-model="form.businessBelong" maxlength="20"></el-input>
@@ -46,7 +46,7 @@
             return{
                 form: {
                     shopName: '',
-                    shopManage: '',
+                    shopManager: '',
                     businessBelong: '',
                     simpleName: '',
                     shopTel: '',
@@ -57,7 +57,7 @@
                     shopName: [
                         { required: true, message: '店铺名称不能为空', trigger: 'blur' }
                     ],
-                    shopManage: [
+                    shopManager: [
                         { required: true, message: '店主姓名不能为空', trigger: 'blur' }
                     ],
                     businessBelong: [
@@ -83,7 +83,7 @@
                     let storeData = this.$store.state.updateShopModal.data;
                     this.form = {
                         shopName: storeData.shopName,
-                        shopManage: storeData.shopManage,
+                        shopManager: storeData.shopManager,
                         businessBelong: storeData.businessBelong,
                         simpleName: storeData.simpleName,
                         shopTel: storeData.shopTel,

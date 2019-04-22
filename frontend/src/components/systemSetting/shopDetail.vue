@@ -16,7 +16,7 @@
             <ul>
                 <li><span>店铺信息</span><span class="btn-change" @click="handleOpenUpdateShopModal">【修改】</span></li>
                 <li><span>店铺名称</span><span>{{ initDataObj.shopName }}</span></li>
-                <li><span>店主姓名</span><span>{{ initDataObj.shopManage }}</span></li>
+                <li><span>店主姓名</span><span>{{ initDataObj.shopManager }}</span></li>
                 <li><span>行业类型</span><span>{{ initDataObj.businessBelong }}</span></li>
                 <li><span>店铺简称</span><span>{{ initDataObj.simpleName }}</span></li>
                 <li><span>店铺电话</span><span>{{ initDataObj.shopTel }}</span></li>
