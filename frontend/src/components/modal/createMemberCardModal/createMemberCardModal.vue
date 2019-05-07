@@ -112,7 +112,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="上传头像" label-width="100px" class="form-item-box">
-                        <el-upload 
+                        <el-upload
                             class="avatar-uploader"
                             action="/zv-member/zv/upload/oss"
                             :show-file-list="false"
@@ -143,7 +143,7 @@ import { Message } from 'element-ui'
 import { LEVEL_OPTIONS,SERVER_URL } from '@/common/config';
 import EventBus from '@/components/eventEmitter/eventEmitter';
 import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName'
-export default { 
+export default {
     data(){
         return{
             form: {
@@ -222,7 +222,7 @@ export default {
             }else{
                 this.form.gradeIdOptions = res.data.data.list
             }
-            
+
         })
         requestGetTypelist(params).then((res)=>{
             this.form.memberTypeIdOptions = res.data.data.list
@@ -280,7 +280,7 @@ export default {
                         });
                     })
                 }
-            }) 
+            })
         },
         handleCloseModal(){
             this.$store.dispatch('closecreateMemberCardStatus')
@@ -317,7 +317,7 @@ export default {
         }
         &:last-child{
             background: $color;
-            border-color: $color; 
+            border-color: $color;
         }
     }
     .input-box{
@@ -410,25 +410,24 @@ export default {
 
 <style lang="scss">
     @import '../../../assets/scss/common.scss';
-
-    .el-dialog__headerbtn{
-        .el-dialog__close{
-            &:hover{
-                color: $color !important;
+    .create-member-card-modal{
+        .el-dialog__headerbtn{
+            .el-dialog__close{
+                &:hover{
+                    color: $color !important;
+                }
             }
         }
-    }
-    .form-item-box{
-        .el-form-item__label{
-            margin-top: 20px;
+        .form-item-box{
+            .el-form-item__label{
+                margin-top: 20px;
+            }
         }
-    }
-    .gender-item{
-        .el-form-item__label{
-            margin-top: 20px;
+        .gender-item{
+            .el-form-item__label{
+                margin-top: 20px;
+            }
         }
-    }
-    .create-member-card-modal{
         .el-form-item__error{
             left: 24px;
         }
@@ -443,5 +442,5 @@ export default {
             border-color: $color;
         }
     }
-    
+
 </style>

@@ -53,6 +53,39 @@ const mutations = {
     updateShopModal(state,payload){
         state.updateShopModal = Object.assign({},state.updateShopModal,payload);
     },
+    createStaffModal(state,payload){
+        state.createStaffModal = payload;
+    },
+    createRoleModal(state,payload){
+        state.createStaffModal = payload;
+    },
+    discountModalStatus(state,payload){
+        state.discountModalStatus = payload;
+    },
+    updateProductPriceModalStatus(state,payload){
+        state.updateProductPriceModalStatus = payload;
+    },
+    unprocessedOrderListModalStatus(state,payload){
+        state.unprocessedOrderListModalStatus = payload;
+    },
+    deductionTimesModalStatus(state,payload){
+        state.deductionTimesModalStatus = payload;
+    },
+    memberManageModalStatus(state,payload){
+        state.memberManageModalStatus = payload;
+    },
+    selectMemberModalStatus(state,payload){
+        state.selectMemberModalStatus = payload;
+    },
+    addResponsibilityManageStatus(state,payload){
+        state.addResponsibilityManageStatus = payload;
+    },
+    updatePermissionModalStatus(state,payload){
+        state.updatePermissionModalStatus = Object.assign({},state.updatePermissionModalStatus,payload);
+    },
+    permissionDetailModalStatus(state,payload){
+        state.permissionDetailModalStatus = Object.assign({},state.permissionDetailModalStatus,payload);
+    },
 }
 
 export default mutations;

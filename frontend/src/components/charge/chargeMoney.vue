@@ -128,7 +128,7 @@ export default {
     watch: {
         memberId(newVal,oldVal){
             if(newVal){
-                
+
             }
         }
     },
@@ -149,7 +149,8 @@ export default {
                 shopId: this.$route.params.id,
                 memberId: this.memberId,
                 payAmount: this.form.rechargeAmount,
-                orderAmount: this.computedMoney
+                orderAmount: this.computedMoney,
+                rate: 100
             }
             let params = Object.assign({},this.form,params1);
             requestRecharge(params).then((res)=>{
@@ -192,7 +193,7 @@ export default {
                 width: 50%;
             }
         }
-        .container-footer{ 
+        .container-footer{
             display: flex;
             justify-content: space-between;
             align-items: center;

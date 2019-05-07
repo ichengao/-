@@ -45,7 +45,7 @@ export function requestUpdatePhone(params){
 export function requestaddShop(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/home/addshop`,params)
 }
-// 获取用户信息 
+// 获取用户信息
 export function requestGetAccountInfo(){
     return axios.post(`${SERVER_URL}/zv-member/zv/home/accountinfo`,{})
 }
@@ -68,7 +68,7 @@ export function requestGetMemberbaseData(params){
 export function requestGetMemberList(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/member/list`,params)
 }
-// 删除会员 
+// 删除会员
 export function requestDeleteMember(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/member/delete`,params)
 }
@@ -76,11 +76,11 @@ export function requestDeleteMember(params){
 export function requestCreateMemberCard(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/member/create`,params)
 }
-// 获取会员详细信息 
+// 获取会员详细信息
 export function requestGetMemberDetail(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/member/detail`,params)
 }
-// 更新会员详细信息 
+// 更新会员详细信息
 export function requestUpdateMemberDetail(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/member/update`,params)
 }
@@ -99,12 +99,12 @@ export function requestSearchMemberlist(params){
 
 /**
  * 充值模块
- * @param {*} params 
+ * @param {*} params
  */
 // 会员充值
 export function requestRecharge(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/order/recharge`,params)
-} 
+}
 // 会员充值列表
 export function requestGetSimplerecharge(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/order/simplerecharge`,params)
@@ -117,16 +117,20 @@ export function requestRechargetimes(params){
 export function requestGetSimplerechargetimes(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/order/simplerechargetimes`,params)
 }
+// 会员充次列表
+export function requestGetTimescardlist(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/member/timescardlist`,params)
+}
 
 
 /**
- *   商品模块  
- *  */  
+ *   商品模块
+ *  */
 // 商品基础数据
 export function requestGetProductData(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/data`,params)
 }
-// 商品列表 
+// 商品列表
 export function requestGetProductList(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/goodslist`,params)
 }
@@ -252,3 +256,39 @@ export function requestGetShopDetail(params) {
 export function requestUpdateShopDetail(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/shop/update`,params)
 }
+// 新增用户
+export function requestCreateStaff(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/add`,params)
+}
+// 获取所有员工
+export function requestGetAllStaff(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/alllist`,params)
+}
+
+/**
+ * 门店概况
+ */
+export function requestStatisticsData1(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/statistics/data1`,params)
+}
+export function requestStatisticsData2(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/statistics/data2`,params)
+}
+
+
+/**
+ * 收银台模块
+ */
+// 待支付订单列表
+export function requestGetUnprocessedOrderList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/order/simplerladingbill`,params)
+}
+
+
+
+
+
+
+
+
+

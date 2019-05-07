@@ -135,6 +135,94 @@ const actions = {
     closeUpdateShopModal({state,commit}){
         commit('updateShopModal',{status: false,data: {}})
     },
+    // 新增员工
+    openCreateStaffModal({state,commit},params){
+        commit('createStaffModal',true)
+    },
+    // 新增员工
+    closeCreateStaffModal({state,commit}){
+        commit('createStaffModal',false)
+    },
+    // 新增岗位
+    openCreateRoleModal({state,commit},params){
+        commit('createRoleModal',true)
+    },
+    // 新增岗位
+    closeCreateRoleModal({state,commit}){
+        commit('createRoleModal',false)
+    },
+    // 折扣弹框
+    openDiscountModal({state,commit},params){
+        commit('discountModalStatus',true)
+    },
+    // 折扣弹框
+    closeDiscountModal({state,commit}){
+        commit('discountModalStatus',false)
+    },
+    // 改价弹框
+    openUpdateProductPriceModal({state,commit},params){
+        commit('updateProductPriceModalStatus',true)
+    },
+    // 改价弹框
+    closeUpdateProductPriceModal({state,commit}){
+        commit('updateProductPriceModalStatus',false)
+    },
+    // 待支付订单
+    openUnprocessedOrderListModal({state,commit},params){
+        commit('unprocessedOrderListModalStatus',true)
+    },
+    // 改价弹框
+    closeUnprocessedOrderListModalStatus({state,commit}){
+        commit('unprocessedOrderListModalStatus',false)
+    },
+    // 会员计次消费弹框
+    openDeductionTimesModal({state,commit},params){
+        commit('deductionTimesModalStatus',true)
+    },
+    // 会员计次消费弹框
+    closeDeductionTimesModal({state,commit}){
+        commit('deductionTimesModalStatus',false)
+    },
+    // 会员管理弹框
+    openMemberManageModal({state,commit},params){
+        commit('memberManageModalStatus',true)
+    },
+    // 会员管理弹框
+    closeMemberManageModal({state,commit}){
+        commit('memberManageModalStatus',false)
+    },
+    // 选择会员弹框
+    openSelectMemberModal({state,commit}){
+        commit('selectMemberModalStatus',true)
+    },
+    // 会员管理弹框
+    closeSelectMemberModal({state,commit}){
+        commit('selectMemberModalStatus',false)
+    },
+    // 新增岗位弹框
+    openAddResponsibilityManage({state,commit}){
+        commit('addResponsibilityManageStatus',true)
+    },
+    // 新增岗位弹框
+    closeAddResponsibilityManage({state,commit}){
+        commit('addResponsibilityManageStatus',false)
+    },
+    // 编辑岗位权限弹框
+    openUpdatePermissionModal({state,commit},params){
+        commit('updatePermissionModalStatus',{status: true,data: params})
+    },
+    // 编辑岗位权限弹框
+    closeUpdatePermissionModal({state,commit}){
+        commit('updatePermissionModalStatus',{status: false,data: {}})
+    },
+    // 编辑岗位权限详情弹框
+    openPermissionDetailModal({state,commit},params){
+        commit('permissionDetailModalStatus',{status: true,data: params})
+    },
+    // 编辑岗位权限详情弹框
+    closePermissionDetailModal({state,commit}){
+        commit('permissionDetailModalStatus',{status: false,data: {}})
+    },
 };
 
 export default actions;

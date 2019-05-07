@@ -17,6 +17,17 @@ const state = {
     updateProductQuantityStatus: {status: false, data: {}},   // 修改数量弹框
     inventoryRecordListModalStatus: {status: false, data: {}},// 盘点纪录弹框
     updateShopModal: { status: false, data: {} },             // 店铺信息更新
+    createStaffModal: false,                                  // 新增员工
+    createRoleModal: false,                                   // 新增岗位
+    discountModalStatus: false,                               // 折扣弹框
+    updateProductPriceModalStatus: false,                     // 改价弹框
+    unprocessedOrderListModalStatus: false,                   // 待支付订单列表
+    deductionTimesModalStatus: false,                         // 会员计次消费弹框
+    memberManageModalStatus: false,                           // 会员管理弹框
+    selectMemberModalStatus: false,                           // 选择会员弹框
+    addResponsibilityManageStatus: false,                     // 新增岗位弹框
+    updatePermissionModalStatus: {status: false, data: {}},   // 编辑岗位权限弹框
+    permissionDetailModalStatus: {status: false, data: {}},   // 权限编辑详情弹框
 };
 
 export default state;

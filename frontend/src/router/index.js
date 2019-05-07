@@ -45,6 +45,13 @@ const giftsManage = ()=>import('@/components/integralManage/giftsManage');
 const bindPayWay = ()=>import('@/components/systemSetting/paySetting/bindPayWay');
 const paySettingDetail = ()=>import('@/components/systemSetting/paySetting/paySettingDetail');
 const cashier = ()=>import('@/components/cashier/cashier');
+const shopOverview = ()=>import('@/components/shopOverview/shopOverview');
+const intelligentAnalysis = ()=>import('@/components/intelligentAnalysis/intelligentAnalysis');
+const shopAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis');
+const achievementAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/achievementAnalysis');
+const memberAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/memberAnalysis');
+const storeValueAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/storeValueAnalysis');
+const timersAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/timersAnalysis');
 
 export default new Router(
     {
@@ -277,6 +284,42 @@ export default new Router(
                 component: cashier,
                 name: 'cashier'
             },
+            {
+                path: '/shopOverview/:id',
+                component: shopOverview,
+                name: 'shopOverview'
+            },
+            {
+                path: '/intelligentAnalysis/:id',
+                component: intelligentAnalysis,
+                redirect: '/intelligentAnalysis/:id/shopAnalysis/achievementAnalysis',
+                children: [
+                    {
+                        component: shopAnalysis,
+                        path: 'shopAnalysis',
+                        children: [
+                            {
+                                name: 'achievementAnalysis',
+                                component: achievementAnalysis,
+                                path: 'achievementAnalysis',
+                            },{
+                                name: 'memberAnalysis',
+                                component: memberAnalysis,
+                                path: 'memberAnalysis',
+                            },{
+                                name: 'storeValueAnalysis',
+                                component: storeValueAnalysis,
+                                path: 'storeValueAnalysis',
+                            },{
+                                name: 'timersAnalysis',
+                                component: timersAnalysis,
+                                path: 'timersAnalysis',
+                            }
+                        ]
+                    },
+
+                ]
+            }
         ]
     },
 )

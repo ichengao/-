@@ -7,12 +7,12 @@
             <!--</el-form-item>-->
             <div class="money-box">
                 <el-form-item prop="product" label="选择商品:" label-width="85px" class="item-single">
-                    <el-select v-model="form.product" multiple filterable placeholder="请选择">
+                    <el-select v-model="form.product" filterable placeholder="请选择">
                         <el-option
-                            v-for="item in form.options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in form.productOptions"
+                            :key="item.goodsId"
+                            :label="item.goodsName"
+                            :value="item.goodsId">
                         </el-option>
                     </el-select>
 
@@ -32,15 +32,8 @@
                     <el-input v-model="form.times"></el-input>
                 </el-form-item>
             </div>
-            <el-form-item label="有效期限:" label-width="85px" class="item-single"  prop="date">
-                <el-date-picker
-                    v-model="form.date"
-                    type="datetime"
-                    format="yyyy-MM-dd"
-                    placeholder="选择日期时间"
-                    align="right"
-                    :picker-options="form.pickerOptions">
-                </el-date-picker>
+            <el-form-item label="有效期限:" label-width="85px" class="item-single"  prop="expDay">
+                <el-input v-model="form.expDay"></el-input>
             </el-form-item>
             <el-form-item label="优惠信息:" label-width="85px" class="item-single">
                 <el-select v-model="form.reduceMoney" placeholder="请选择">
@@ -62,7 +55,7 @@
                 合计充值：<span>￥{{ computedMoney }}</span>
             </div>
             <div class="container-footer-rgt">
-                <el-button class="ensure-btn">确定</el-button>
+                <el-button class="ensure-btn" @click="handleCommit">确定</el-button>
             </div>
         </div>
         <div class="container-table">
@@ -105,7 +98,7 @@
 </template>
 <script>
 import { getDate } from '@/common/utils';
-import { requestRechargetimes,requestGetSimplerechargetimes } from '@/services/service'
+import { requestRechargetimes,requestGetSimplerechargetimes,requestGetServerlist } from '@/services/service'
 import EventBus from '@/components/eventEmitter/eventEmitter.js';
 import { Message } from 'element-ui'
 export default {
@@ -114,22 +107,6 @@ export default {
             form: {
                 goodsIds: [],
                 productOptions: [
-                    {
-                        value: '01',
-                        label: '黄金糕'
-                    }, {
-                        value: '02',
-                        label: '双皮奶'
-                    }, {
-                        value: '03',
-                        label: '蚵仔煎'
-                    }, {
-                        value: '04',
-                        label: '龙须面'
-                    }, {
-                        value: '05',
-                        label: '北京烤鸭'
-                    }
                 ],
                 product: '',
                 rechargeAmount: '',
@@ -188,7 +165,7 @@ export default {
                 times: [
                     { required: true, message: '次数不能为空', trigger: 'blur' },
                 ],
-                date: [
+                expDay: [
                     { required: true, message: '有效期不能为空', trigger: 'blur' },
                 ]
             },
@@ -214,7 +191,8 @@ export default {
     mounted(){
         EventBus.$on('expDayChange',(params)=>{
             this.setExpDay(params)
-        })
+        });
+        this.getOptionsData()
     },
     methods: {
         initData(){
@@ -222,23 +200,26 @@ export default {
             let params = {
                 shopId: this.$route.params.id,
                 memberId: this.memberId,
-            }
-            params = Object.assign({},params,timerObj)
+            };
+            params = Object.assign({},params,timerObj);
             requestGetSimplerechargetimes(params).then((res)=>{
                 this.initDataArray = res.data.data.list
-            })
+            });
         },
         handleCommit(){
             let params1 = {
                 shopId: this.$route.params.id,
                 memberId: this.memberId,
                 payAmount: this.form.rechargeAmount,
-                orderAmount: this.computedMoney
-            }
+                orderAmount: this.computedMoney,
+                goodsIds: [this.form.product],
+                rate: 100
+            };
             let params = Object.assign({},this.form,params1);
             requestRechargetimes(params).then((res)=>{
                 if(res.data.code == '0000'){
                     Message.success('充值成功');
+                    this.clearData();
                 }else{
                     Message.error(res.data.msg);
                 }
@@ -269,6 +250,67 @@ export default {
                 case '04':
                     return this.form.expDay = '10000000'
             }
+        },
+        getOptionsData(){
+            let params = {
+                shopId: this.$route.params.id
+            };
+            requestGetServerlist(params).then((res)=>{
+                this.form.productOptions = res.data.data.list
+            })
+        },
+        clearData(){
+            this.form= {
+                goodsIds: [],
+                    productOptions: [
+                ],
+                product: '',
+                rechargeAmount: '',
+                times: '',
+                expDay: '',
+                reduceMoney: '1',
+                payType: '01',
+                reduceMoneyOptions: [{label: '无优惠信息',value:'1'}],
+                remark: '',
+                print: false,
+                searchData: "01",
+                date: '',
+                pickerOptions: {
+                shortcuts: [{
+                    text: '1个月',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setMonth(date.getMonth() + 1);
+                        EventBus.$emit('expDayChange','01')
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '6个月',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setMonth(date.getMonth() + 6);
+                        EventBus.$emit('expDayChange','02')
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一年',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setMonth(date.getMonth() + 12);
+                        EventBus.$emit('expDayChange','03')
+                        picker.$emit('pick', date);
+                    }
+                },{
+                    text: '长期',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setFullYear(date.getFullYear() + 1000);
+                        EventBus.$emit('expDayChange','04')
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
+            }
         }
     }
 }
@@ -289,7 +331,7 @@ export default {
                 width: 50%;
             }
         }
-        .container-footer{ 
+        .container-footer{
             display: flex;
             justify-content: space-between;
             align-items: center;

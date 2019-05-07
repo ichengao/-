@@ -1,7 +1,7 @@
 <template>
     <div class="aside-container">
         <ul>
-            <router-link to="/"><li class="item1">店铺概况</li></router-link>
+            <router-link :to="'/shopOverview/'+currentId"><li class="item1">店铺概况</li></router-link>
             <li class="item2">
                 会员管理
                 <div class="tab-router-list">
@@ -32,7 +32,7 @@
             <li class="item5">
                 智能分析
                 <div class="tab-router-list">
-                    <router-link to="/"><p>店铺概况</p></router-link>
+                    <router-link :to="'/intelligentAnalysis/'+currentId+'/shopAnalysis/achievementAnalysis'"><p>店铺概况</p></router-link>
                     <router-link to="/"><p>营业分析</p></router-link>
                     <router-link to="/"><p>会员分析</p></router-link>
                     <router-link to="/"><p>财务报表</p></router-link>
@@ -108,7 +108,7 @@ export default {
                     flex-wrap: nowrap;
                     a{
                         &:hover{
-                            background-color: rgba(0,0,0,.2); 
+                            background-color: rgba(0,0,0,.2);
                         }
                         p{
                             width: 90px;
@@ -125,76 +125,76 @@ export default {
                 }
                 &.item1{
                     background: url('../../assets/images/icon_aside1.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item2{
                     background: url('../../assets/images/icon_aside2.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item3{
                     background: url('../../assets/images/icon_aside3.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item4{
                     background: url('../../assets/images/icon_aside4.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item5{
                     background: url('../../assets/images/icon_aside5.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item6{
                     background: url('../../assets/images/icon_aside6.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
                 &.item7{
                     background: url('../../assets/images/icon_aside7.png') center 20px no-repeat;
-                    background-size: 30px; 
+                    background-size: 30px;
                     &:hover{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                     &.active{
-                        background-color: rgba(0,0,0,.2); 
+                        background-color: rgba(0,0,0,.2);
                     }
                 }
             }
-            
+
         }
     }
 </style>

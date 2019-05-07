@@ -4,7 +4,7 @@ import Vue from 'vue'
 import index from '../containers/index.vue'
 import router from '../router/index'
 import axios from 'axios'
-import { 
+import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -28,12 +28,20 @@ import {
   Switch,
   Pagination,
     Tooltip,
-    TimeSelect
+    TimeSelect,
+    Tabs,
+    tabPane,
+    row,
+    col
 } from 'element-ui'
 import qs from 'qs';
 import store from '../vuex/store';
 import * as filters from '@/common/filter'
 
+Vue.use(row);
+Vue.use(col);
+Vue.use(Tabs);
+Vue.use(tabPane);
 Vue.use(Pagination);
 Vue.use(Switch);
 Vue.use(Tree);
@@ -102,7 +110,7 @@ axios.interceptors.response.use(
     }catch(e){
 
     }
-    
+
     return Promise.reject(error)
   }
 )

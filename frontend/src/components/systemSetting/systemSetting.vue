@@ -35,6 +35,11 @@
         </div>
         <createMemberCardModal />
         <updateShopModal />
+        <createStaffModal />
+        <createRoleModal />
+        <addResponsibilityManage />
+        <updatePermissionModal />
+        <permissionDetailModal />
     </div>
 </template>
 <script>
@@ -42,6 +47,11 @@
     import asideSection from '@/components/common/aside';
     import createMemberCardModal from '@/components/modal/createMemberCardModal/createMemberCardModal'
     import updateShopModal from '@/components/modal/updateShopModal/updateShopModal';
+    import createStaffModal from '@/components/modal/createStaffModal/createStaffModal';
+    import createRoleModal from '@/components/modal/createRoleModal/createRoleModal';
+    import addResponsibilityManage from '@/components/modal/addResponsibilityManage';
+    import updatePermissionModal from '@/components/modal/updatePermissionModal';
+    import permissionDetailModal from '@/components/modal/permissionDetailModal';
 
     export default {
         data(){
@@ -53,7 +63,12 @@
             headerSection,
             asideSection,
             createMemberCardModal,
-            updateShopModal
+            updateShopModal,
+            createStaffModal,
+            createRoleModal,
+            addResponsibilityManage,
+            updatePermissionModal,
+            permissionDetailModal
         },
         mounted(){
             this.currentId = this.$route.params.id;
