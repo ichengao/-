@@ -143,6 +143,30 @@ const actions = {
     closeCreateStaffModal({state,commit}){
         commit('createStaffModal',false)
     },
+    // 编辑员工
+    openUpdateStaffModalStatus({state,commit},params){
+        commit('updateStaffModalStatus',{status: true,data: params})
+    },
+    // 编辑员工
+    closeUpdateStaffModalStatus({state,commit},params){
+        commit('updateStaffModalStatus',{status: false,data: params})
+    },
+    // 新增管理员
+    openCreateAdminStaffModal({state,commit},params){
+        commit('createAdminStaffModalStatus',true)
+    },
+    // 新增管理员
+    closeCreateAdminStaffModal({state,commit},params){
+        commit('createAdminStaffModalStatus',false)
+    },
+    // 更新管理员
+    openUpdateAdminStaffModal({state,commit},params){
+        commit('updateAdminStaffModal',{status: true,data: params})
+    },
+    // 新增管理员
+    closeUpdateAdminStaffModal({state,commit},params){
+        commit('updateAdminStaffModal',{status: false,data: {}})
+    },
     // 新增岗位
     openCreateRoleModal({state,commit},params){
         commit('createRoleModal',true)

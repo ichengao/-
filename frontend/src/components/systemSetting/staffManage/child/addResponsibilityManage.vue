@@ -6,19 +6,17 @@
         <div class="container-content">
             <el-form :model="form" :rules="dataRule" status-icon ref="form" class="form-box">
                 <div class="section1">
-                    <el-form-item prop="userName" label="顾客姓名" label-width="100px" class="form-item-box">
-                        <el-input placeholder="请输入顾客姓名"  class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
+                    <el-form-item prop="userName" label="岗位名称" label-width="100px" class="form-item-box">
+                        <el-input placeholder="请输入岗位名称"  class="pwd input-box" v-model="form.roleName" maxlength="20" ></el-input>
                     </el-form-item>
-                    <el-form-item prop="userName" label="顾客姓名" label-width="100px" class="form-item-box">
-                        <el-input placeholder="请输入顾客姓名"  class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
+                    <el-form-item prop="userName" label="岗位备注" label-width="100px" class="form-item-box">
+                        <el-input placeholder="请输入岗位备注"  class="pwd input-box" v-model="form.remark" maxlength="20" ></el-input>
                     </el-form-item>
                 </div>
-                <div class="section2">
+                <div class="section2" v-if="data.indexOf(0) != -1">
                     <div class="section2-header">
                         <div class="section2-lf">单项提成</div>
-                        <div class="section2-rgt">
-
-                        </div>
+                        <div class="section2-rgt"></div>
                     </div>
                     <div class="section2-content">
                         <div>
@@ -39,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section3">
+                <div class="section3" v-if="data.indexOf(1) != -1">
                     <div class="section3-header">
                         <div class="section3-lf">个人汇总提成</div>
                         <div class="section2-rgt">
@@ -116,7 +114,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section3">
+                <div class="section3" v-if="data.indexOf(2) != -1">
                     <div class="section3-header">
                         <div class="section3-lf">店面业绩汇总提成</div>
                         <div class="section2-rgt">
@@ -195,33 +193,91 @@
                 </div>
             </el-form>
         </div>
+        <div class="container-footer">
+            <el-button class="btn-save-return" @click="handleSave">保存并返回</el-button>
+        </div>
     </div>
 </template>
 <script>
+    import { requestCreateRole } from '@/services/service'
     export default {
         data(){
             return{
                 section2Options: [
                     {
                         label: '开卡业绩',
-                        value: '01'
+                        value: '01',
+                        disabled: false
                     },
                     {
                         label: '充值业绩',
-                        value: '02'
+                        value: '02',
+                        disabled: false
                     },
                     {
                         label: '商品业绩',
-                        value: '03'
+                        value: '03',
+                        disabled: false
                     },
                     {
                         label: '充次业绩',
-                        value: '04'
+                        value: '04',
+                        disabled: false
                     },
                 ],
                 section2Option: '',
+                section2Area: [
+                    // {
+                    //     start: 0,
+                    //     end: 1,
+                    //     percent: 0,
+                    // }
+                ],
+                section3Area: [
+                    // {
+                    //     start: 0,
+                    //     end: 1,
+                    //     percent: 0,
+                    // }
+                ],
+                section3Options: [
+                    {
+                        label: '开卡业绩',
+                        value: '01',
+                        disabled: false
+                    },
+                    {
+                        label: '充值业绩',
+                        value: '02',
+                        disabled: false
+                    },
+                    {
+                        label: '商品业绩',
+                        value: '03',
+                        disabled: false
+                    },
+                    {
+                        label: '充次业绩',
+                        value: '04',
+                        disabled: false
+                    },
+                ],
+                section3Option: '',
                 form: {
+                    roleName: '',
+                    remark: '',
+                    commissions: {
+                        // 01 开卡业务 02 充值业务 03 冲次业绩04 商品业绩
+                        "01": [{
+                                    "type":"01",
+                                    "commissionId":213,
+                                    "low": "213",
+                                    businessType: '01',
+                                    rate: '10',
+                                    "high":"215",
+                                }]
 
+                    }
                 },
                 dataRule: {
 
@@ -229,9 +285,42 @@
             }
         },
         props: ['data'],
+        watch: {
+            data(){
+                this.form = {
+                    roleName: '',
+                        remark: '',
+                        commissions: {
+                        // 01 开卡业务 02 充值业务 03 冲次业绩04 商品业绩
+                        "01": [{
+                            "type":"01",
+                            "commissionId":213,
+                            "low": "213",
+                            businessType: '01',
+                            rate: '10',
+                            "high":"215",
+                        }]
+
+                    }
+                }
+            }
+        },
         methods: {
             handleReturn(){
                 this.$parent.currentMode = true
+            },
+            handleSelectionChange(){},
+            handleSave(){
+                if(!this.form.roleName){
+                    return
+                }
+                let params1 = Object.assign({},this.form,{shopId: this.$route.params.id})
+                requestCreateRole(params1).then((res)=>{
+                    if(res.data.code == '0000'){
+                        this.$parent.currentMode = true;
+                        this.$parent.initData();
+                    }
+                })
             }
         }
     }
@@ -316,6 +405,12 @@
                         }
                     }
                 }
+            }
+        }
+        .container-footer{
+            padding: 10px;
+            .btn-save-return{
+                @include buttonSet($color)
             }
         }
     }

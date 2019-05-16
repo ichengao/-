@@ -1,6 +1,6 @@
 <template>
     <div class="modal-container create-staff-modal" v-if="modalStatus">
-        <el-dialog title="新增员工" :visible.sync="modalStatus" @close='handleCloseModal' >
+        <el-dialog title="编辑员工" :visible.sync="modalStatus" @close='handleCloseModal' >
             <el-form :model="form" :rules="dataRule" status-icon ref="form" >
                 <el-form-item prop="name" label="员工姓名" label-width="100px">
                     <el-input placeholder="请输入员工姓名"  class="pwd input-box" v-model="form.name" maxlength="20"></el-input>
@@ -57,7 +57,7 @@
     </div>
 </template>
 <script>
-    import { requestShopList,requestGetRoleList,requestCreateStaff } from '@/services/service';
+    import { requestShopList,requestGetRoleList,requestUpdateStaff } from '@/services/service';
     import { Message } from 'element-ui';
     import EventBus from '@/components/eventEmitter/eventEmitter';
     import { ADD_STAFF } from '@/components/eventEmitter/eventName';
@@ -92,7 +92,7 @@
         computed: {
             modalStatus: {
                 get(){
-                    return (this.$store.state.createStaffModal || false)
+                    return (this.$store.state.updateStaffModalStatus.status || false)
                 },
                 set(){
 
@@ -101,9 +101,9 @@
         },
         watch: {
             modalStatus(oldVal,newVal){
-                this.modalStatus = this.$store.state.createStaffModal;
+                this.modalStatus = this.$store.state.updateStaffModalStatus.status;
                 if(this.modalStatus){
-                    this.initData()
+                    this.initData();
                 }
             }
         },
@@ -114,23 +114,22 @@
                 };
                 requestShopList(params).then((res)=>{
                     this.shopOptions = res.data.data.shop;
-                    this.form.shopId = this.shopOptions[0].shopId;
                 });
                 requestGetRoleList(params).then((res)=>{
                     this.roleOptions = res.data.data.list;
-                    this.form.roleId = this.roleOptions[0].roleId;
-                })
+                });
+                this.form = Object.assign({},this.form,this.$store.state.updateStaffModalStatus.data)
             },
             handleConfirm(){
                 let _this = this;
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        let params = Object.assign({},this.form);
-                        requestCreateStaff(params).then(function(res){
+                        let params = Object.assign({},this.form,{createDate: ''});
+                        requestUpdateStaff(params).then(function(res){
                             _this.handleCloseModal();
                             if(res.data.code == '0000'){
                                 Message({
-                                    message: '新建成功',
+                                    message: '更新成功',
                                     type: 'success'
                                 })
                                 EventBus.$emit(ADD_STAFF);
@@ -142,7 +141,7 @@
                             }
                         }).catch(function(){
                             Message({
-                                message:'新建失败',
+                                message:'更新失败',
                                 type: 'error'
                             });
                         })
@@ -157,9 +156,8 @@
                     count: '',
                     unit: ''
                 }
-                this.$store.dispatch('closeCreateStaffModal')
+                this.$store.dispatch('closeUpdateStaffModalStatus')
             },
-            handleSelectionChange(){}
         }
     }
 </script>

@@ -214,11 +214,11 @@ export default {
         text-align: right;
         margin-top: 20px;
         margin-right: 21px;
-        
+
         .dialog-btn{
             padding: 10px 15px;
             background: $color;
-            border-color: $color; 
+            border-color: $color;
         }
     }
     .dialog-footer{
@@ -236,7 +236,7 @@ export default {
             }
             &:last-child{
                 background: $color;
-                border-color: $color; 
+                border-color: $color;
             }
         }
     }
@@ -247,7 +247,7 @@ export default {
             margin-left: 0;
         }
     }
-    
+
     .input-box{
         width: 500px;
         margin-left: 20px;
@@ -262,18 +262,6 @@ export default {
 <style lang="scss">
     @import '../../../assets/scss/common.scss';
 
-    .el-dialog__headerbtn{
-        .el-dialog__close{
-            &:hover{
-                color: $color !important;
-            }
-        }
-    }
-    .form-item-box{
-        .el-form-item__label{
-            margin-top: 20px;
-        }
-    }
     .change-phone-modal{
         .el-form-item__error{
             left: 24px;
@@ -281,7 +269,19 @@ export default {
         .el-form-item{
             margin-bottom: 0;
         }
+        .el-dialog__headerbtn{
+            .el-dialog__close{
+                &:hover{
+                    color: $color !important;
+                }
+            }
+        }
+        .form-item-box{
+            .el-form-item__label{
+                margin-top: 20px;
+            }
+        }
     }
-    
-    
+
+
 </style>

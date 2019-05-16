@@ -18,6 +18,9 @@ const state = {
     inventoryRecordListModalStatus: {status: false, data: {}},// 盘点纪录弹框
     updateShopModal: { status: false, data: {} },             // 店铺信息更新
     createStaffModal: false,                                  // 新增员工
+    updateStaffModalStatus: {state: false,data: {}},          // 编辑员工
+    createAdminStaffModalStatus: false,                       // 新增管理员用户
+    updateAdminStaffModal: {status: false,data: {}},          // 更新管理员用户
     createRoleModal: false,                                   // 新增岗位
     discountModalStatus: false,                               // 折扣弹框
     updateProductPriceModalStatus: false,                     // 改价弹框

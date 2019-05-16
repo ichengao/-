@@ -319,7 +319,7 @@ export default new Router(
                     },
 
                 ]
-            }
+            },
         ]
     },
 )

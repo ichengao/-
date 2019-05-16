@@ -1,7 +1,12 @@
 <template>
-    <div class="modal-container member-manage-modal" v-if="modalStatus">
+    <div class="modal-container select-member-modal" v-if="modalStatus">
         <el-dialog class="dialog-box" title="选择会员" :visible.sync="modalStatus" @close='handleCloseModal' >
+            <div class="select-member-lf">
 
+            </div>
+            <div class="select-member-rgt">
+
+            </div>
         </el-dialog>
     </div>
 </template>

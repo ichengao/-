@@ -88,7 +88,7 @@ export default {
                     {
                         label: '江苏',
                         cities: []
-                    }, 
+                    },
                     {
                         label: '浙江',
                         cities: []
@@ -190,7 +190,7 @@ export default {
                         });
                     })
                 }
-            }) 
+            })
         },
         handleCloseModal(){
             this.form = {
@@ -207,7 +207,7 @@ export default {
                     {
                         label: '江苏',
                         cities: []
-                    }, 
+                    },
                     {
                         label: '浙江',
                         cities: []
@@ -296,7 +296,7 @@ export default {
         }
         &:last-child{
             background: $color;
-            border-color: $color; 
+            border-color: $color;
         }
     }
     .input-box{
@@ -327,23 +327,6 @@ export default {
 <style lang="scss">
     @import '../../../assets/scss/common.scss';
 
-    .el-dialog__headerbtn{
-        .el-dialog__close{
-            &:hover{
-                color: $color !important;
-            }
-        }
-    }
-    .form-item-box{
-        .el-form-item__label{
-            margin-top: 20px;
-        }
-    }
-    .gender-item{
-        .el-form-item__label{
-            margin-top: 10px;
-        }
-    }
     .create-shop-modal{
         .el-form-item__error{
             left: 24px;
@@ -351,6 +334,23 @@ export default {
         .el-form-item{
             margin-bottom: 0;
         }
+        .el-dialog__headerbtn{
+            .el-dialog__close{
+                &:hover{
+                    color: $color !important;
+                }
+            }
+        }
+        .form-item-box{
+            .el-form-item__label{
+                margin-top: 20px;
+            }
+        }
+        .gender-item{
+            .el-form-item__label{
+                margin-top: 10px;
+            }
+        }
     }
-    
+
 </style>

@@ -10,3 +10,5 @@ export const UPDATE_SHOP_DETAIL = 'UPDATE_SHOP_DETAIL';    // 更新店铺信息
 export const UPDATE_PRODUCT_DISCOUNT = 'UPDATE_PRODUCT_DISCOUNT';   // 更新商品泽口信息
 export const UPDATE_PRODUCT_PRICE = 'UPDATE_PRODUCT_PRICE';         // 更新产品价格
 export const ADD_RESPONSIBILITY_MANAGE = 'ADD_RESPONSIBILITY_MANAGE'; // 新增岗位
+export const ADD_STAFF = 'ADD_STAFF';   // 新增员工
+export const ADD_ADMIN_STAFF = 'ADD_ADMIN_STAFF';   // 新增管理员

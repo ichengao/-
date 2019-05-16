@@ -108,7 +108,8 @@
                 this.handleCloseModal();
             },
             handleCloseModal(){
-                this.$store.dispatch('closeAddResponsibilityManage')
+                this.$store.dispatch('closeAddResponsibilityManage');
+                this.checkList = []
             }
         }
     }

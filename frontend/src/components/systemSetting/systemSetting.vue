@@ -40,6 +40,9 @@
         <addResponsibilityManage />
         <updatePermissionModal />
         <permissionDetailModal />
+        <updateStaffModal />
+        <addOperatorManage />
+        <updateAdminStaffModal />
     </div>
 </template>
 <script>
@@ -52,6 +55,9 @@
     import addResponsibilityManage from '@/components/modal/addResponsibilityManage';
     import updatePermissionModal from '@/components/modal/updatePermissionModal';
     import permissionDetailModal from '@/components/modal/permissionDetailModal';
+    import updateStaffModal from '@/components/modal/updateStaffModal';
+    import addOperatorManage from '@/components/modal/addOperatorManage';
+    import updateAdminStaffModal from '@/components/modal/UpdateAdminStaffModal';
 
     export default {
         data(){
@@ -68,7 +74,10 @@
             createRoleModal,
             addResponsibilityManage,
             updatePermissionModal,
-            permissionDetailModal
+            permissionDetailModal,
+            updateStaffModal,
+            addOperatorManage,
+            updateAdminStaffModal
         },
         mounted(){
             this.currentId = this.$route.params.id;

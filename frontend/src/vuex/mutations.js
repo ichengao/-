@@ -86,6 +86,15 @@ const mutations = {
     permissionDetailModalStatus(state,payload){
         state.permissionDetailModalStatus = Object.assign({},state.permissionDetailModalStatus,payload);
     },
+    updateStaffModalStatus(state,payload){
+        state.updateStaffModalStatus = Object.assign({},state.updateStaffModalStatus,payload);
+    },
+    createAdminStaffModalStatus(state,payload){
+        state.createAdminStaffModalStatus = payload;
+    },
+    updateAdminStaffModal(state,payload){
+        state.updateAdminStaffModal = Object.assign({},state.updateAdminStaffModal,payload);
+    },
 }
 
 export default mutations;

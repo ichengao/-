@@ -83,7 +83,7 @@ axios.interceptors.request.use(
     }
 
     if(config.method === 'post' && (config.headers['Content-Type'] != false) ){
-        if(config.url != '/zv-member/zv/purchase/stock'){
+        if(config.url != '/zv-member/zv/purchase/stock' && config.url != '/zv-member/zv/staff/addrole'){
             config.data = qs.stringify(config.data)
         }
     }

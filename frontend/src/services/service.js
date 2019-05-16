@@ -256,13 +256,57 @@ export function requestGetShopDetail(params) {
 export function requestUpdateShopDetail(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/shop/update`,params)
 }
-// 新增用户
+// 新增员工
 export function requestCreateStaff(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/staff/add`,params)
 }
 // 获取所有员工
 export function requestGetAllStaff(params){
-    return axios.post(`${SERVER_URL}/zv-member/zv/staff/alllist`,params)
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/list`,params)
+}
+// 删除员工
+export function requestDeleteStaff(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/del`,params)
+}
+// 更新员工
+export function requestUpdateStaff(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/update`,params)
+}
+// 获取管理员用户
+export function requestGetAdminStaff(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/adminstaff`,params)
+}
+// 新增管理员用户
+export function requestCreateAdminStaff(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/addadmin`,params)
+}
+// 删除管理员用户
+export function requestDeleteAdminStaff(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/deladmin`,params)
+}
+// 更新管理员用户
+export function requestUpdateAdminStaff(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/updateadmin`,params)
+}
+// 获取员工操作日志
+export function requestGetStaffAccesslog(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/accesslog`,params)
+}
+// 获取交接班纪录
+export function requestGetStaffSuccessionlog(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/successionlog`,params)
+}
+// 新增岗位
+export function requestCreateRole(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/addrole`,params)
+}
+// 获取岗位列表
+export function requestGetRoleList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/rolelist`,params)
+}
+// 删除岗位
+export function requestDeleteRole(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/delrole`,params)
 }
 
 /**
