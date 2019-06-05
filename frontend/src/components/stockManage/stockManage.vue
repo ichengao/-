@@ -14,6 +14,9 @@
         <editStoreControlModal />
         <updateProductQuantityModal />
         <inventoryRecordListModal />
+        <repaymentModal />
+        <checkStockModal />
+        <StockorderModal />
     </div>
 </template>
 <script>
@@ -26,6 +29,9 @@ import createStoreControlModal from '@/components/modal/createStoreControlModal/
 import editStoreControlModal from '@/components/modal/editStoreControlModal/editStoreControlModal';
 import updateProductQuantityModal from '@/components/modal/updateProductQuantityModal/updateProductQuantityModal';
 import inventoryRecordListModal from '@/components/modal/inventoryRecordListModal/inventoryRecordListModal';
+import repaymentModal from '@/components/modal/repaymentModal';
+import checkStockModal from '@/components/modal/checkStockModal';
+import StockorderModal from '@/components/modal/stockorderModal'
 
 export default {
     components: {
@@ -37,7 +43,10 @@ export default {
         createStoreControlModal,
         editStoreControlModal,
         updateProductQuantityModal,
-        inventoryRecordListModal
+        inventoryRecordListModal,
+        repaymentModal,
+        checkStockModal,
+        StockorderModal
     }
 }
 </script>

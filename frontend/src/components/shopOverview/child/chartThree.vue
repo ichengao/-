@@ -22,15 +22,15 @@
                     <ul class="tab-detail">
                         <li>
                             <span>今日交易总额</span>
-                            <p>123<span>元</span></p>
+                            <p>{{baseData.thisDayAmount}}<span>元</span></p>
                         </li>
                         <li>
                             <span>今月交易总额</span>
-                            <p>123<span>元</span></p>
+                            <p>{{baseData.thisMonthAmount}}<span>元</span></p>
                         </li>
                         <li>
                             <span>今年度交易总额</span>
-                            <p>123<span>元</span></p>
+                            <p>{{baseData.thisYearAmount}}<span>元</span></p>
                         </li>
                     </ul>
                     <ve-line :data="chartData1" :settings="chartSettings1"></ve-line>
@@ -42,11 +42,12 @@
 <script>
     import VePie from 'v-charts/lib/pie';
     import VeLine from 'v-charts/lib/line';
+    import { requestStatisticsData3,requestStatisticsData4 } from '@/services/service'
     export default {
         data(){
             this.chartSettings = {
-                dimension: '日期',
-                metrics: '访问用户'
+                dimension: '名称',
+                metrics: '金额'
             };
             this.chartSettings1 = {
                 xAxisType: 'time'
@@ -54,32 +55,52 @@
             return{
                 tabPosition: '0',
                 chartData: {
-                    columns: ['日期', '访问用户'],
+                    columns: ['名称', '金额'],
                     rows: [
-                        { '日期': '1/1', '访问用户': 1393 },
-                        { '日期': '1/2', '访问用户': 3530 },
-                        { '日期': '1/3', '访问用户': 2923 },
-                        { '日期': '1/4', '访问用户': 1723 },
-                        { '日期': '1/5', '访问用户': 3792 },
-                        { '日期': '1/6', '访问用户': 4593 }
+                        // { '日期': '1/1', '访问用户': 1393 },
                     ]
                 },
                 chartData1: {
-                    columns: ['日期', '访问用户', '下单用户', '下单率'],
+                    columns: ['日期', '访问用户'],
                     rows: [
-                        { '日期': '2018-01-01', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
-                        { '日期': '2018-01-02', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
-                        { '日期': '2018-01-03', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
-                        { '日期': '2018-01-05', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
-                        { '日期': '2018-01-10', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
-                        { '日期': '2018-01-20', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+                        // { '日期': '2018-01-01', '访问用户': 1393},
                     ]
-                }
+                },
+                baseData: {}
             }
         },
         components: {
             VePie,
             VeLine
+        },
+        created(){
+            this.initData()
+        },
+        methods: {
+            initData(){
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestStatisticsData3(params).then(res=>{
+                    let data = res.data.data.entity;
+                    data.forEach(item=>{
+                        this.chartData.rows.push({
+                            '名称': item.name,
+                            '金额': item.amount
+                        })
+                    })
+                })
+                requestStatisticsData4(params).then(res=>{
+                    let data = res.data.data.entity;
+                    this.baseData = res.data.data;
+                    data.forEach(item=>{
+                        this.chartData1.rows.push({
+                            '日期': '2018-01-01',
+                            '访问用户': item.amount
+                        })
+                    })
+                })
+            }
         }
     }
 </script>

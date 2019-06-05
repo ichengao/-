@@ -14,6 +14,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+    CheckboxGroup,
   Cascader,
   Dialog,
   select,
@@ -35,7 +36,7 @@ import {
     col
 } from 'element-ui'
 import qs from 'qs';
-import store from '../vuex/store';
+import store from '../store';
 import * as filters from '@/common/filter'
 
 Vue.use(row);
@@ -66,6 +67,7 @@ Vue.use(DatePicker);
 Vue.use(Checkbox);
 Vue.use(Tooltip);
 Vue.use(TimeSelect);
+Vue.use(CheckboxGroup);
 
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
@@ -83,7 +85,10 @@ axios.interceptors.request.use(
     }
 
     if(config.method === 'post' && (config.headers['Content-Type'] != false) ){
-        if(config.url != '/zv-member/zv/purchase/stock' && config.url != '/zv-member/zv/staff/addrole'){
+        if(    config.url != '/zv-member/zv/purchase/stock'
+            && config.url != '/zv-member/zv/staff/addrole'
+            && config.url != '/zv-member/zv/purchase/refund'
+        ){
             config.data = qs.stringify(config.data)
         }
     }

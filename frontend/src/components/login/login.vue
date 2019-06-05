@@ -53,13 +53,13 @@ export default {
                     // let params = {
                     //     mobile: this.form.phone + '',
                     //     password: md5(this.form.password)
-                    //     // 
+                    //     //
                     // }
                     let params = {
                         mobile: 15705593859 + '',
-                        password: '22222222222222222222222222222222'
+                        password: md5('123456')
                     }
-                    
+
                     requestLogin(params).then(function(res){
                         if(res.data.msg == 'success'){
                             sessionStorage.setItem('userMsg',JSON.stringify(res.data.data));
@@ -68,19 +68,19 @@ export default {
                         }
                     })
                 }
-            }) 
+            })
         }
     }
 }
 </script>
 <style lang="scss">
-    $color:#ff6600;  
+    $color:#ff6600;
     .container{
         background: url('../../assets/images/login_bg.jpg') 0 0 no-repeat;
         background-size: cover;
         .container-box{
             min-height: 100vh;
-            background-color: rgba(0,0,0,.5); 
+            background-color: rgba(0,0,0,.5);
             .container-header{
                 text-align: center;
                 padding: 50px 20px 20px;
@@ -123,14 +123,14 @@ export default {
                         input{
                             padding-left: 31px;
                             background: url('../../assets/images/icon_pwd.png') 8px center no-repeat;
-                            background-size: 18px auto; 
+                            background-size: 18px auto;
                         }
                     }
                     .phone-box{
                         input{
                             padding-left: 31px;
                             background: url('../../assets/images/icon_phone.png') 8px center no-repeat;
-                            background-size: 18px auto; 
+                            background-size: 18px auto;
                         }
                     }
                 }
@@ -143,6 +143,6 @@ export default {
                 }
             }
         }
-        
+
     }
 </style>

@@ -90,7 +90,6 @@
                     Message.error('至少选择一个');
                     return
                 }
-                console.log(this.selectedIdsArr)
                 let params = {
                     shopId: this.$route.params.id,
                     staffIds: this.selectedIdsArr

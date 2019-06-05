@@ -86,7 +86,7 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-                        </div>
+                    </div>
                     <p v-show="orderDataArray.length" class="cacl-data">
                         总数：<span>{{orderDataArray.length}}</span>,合计金额：<span>{{allMoney}}</span>
                     </p>
@@ -149,7 +149,7 @@
                     shopId: this.$route.params.id,
                     type: '01',
                     keyword: this.keyword
-                }
+                };
                 requestGetProductList(params).then(function(res){
                     if(res.data.code == '0000'){
                         _this.initDataArray = res.data.data.list;
@@ -198,9 +198,10 @@
                 let lists = [];
                 this.orderDataArray.map(item=>{
                     lists.push({
-                        businessId: item.shopId,
+                        businessId: item.goodsId,
                         number: item.number,
-                        stockPrice: item.salePrice
+                        stockPrice: item.salePrice,
+                        goodsName: item.goodsName
                     })
                 });
                 let params = {
@@ -208,11 +209,14 @@
                     shopId: this.$route.params.id,
                     remark: this.remark,
                     supplierId: this.purchase.selectPurchase,
-                    totalAmount: this.allMoney
+                    totalAmount: this.allMoney,
+                    realAmount: this.allMoney,
+                    bizId: `${new Date().getTime()}`
                 };
                 requestCreateStockOrder(params).then((res)=>{
                     if(res.data.code == '0000'){
                         Message.success('创建成功');
+                        this.$parent.currentStatus = true;
                     }else{
                         Message.error(res.data.msg);
                     }

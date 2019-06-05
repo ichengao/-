@@ -115,7 +115,7 @@ export default {
     },
     computed: {
         computedMoney(){
-            return (this.form.rechargeAmount - this.form.giveAmount) || 0
+            return Number(this.form.rechargeAmount) || 0
         }
     },
     props: [
@@ -138,7 +138,7 @@ export default {
             let params = {
                 shopId: this.$route.params.id,
                 memberId: this.memberId,
-            }
+            };
             params = Object.assign({},params,timerObj)
             requestGetSimplerecharge(params).then((res)=>{
                 this.initDataArray = res.data.data.list
@@ -151,7 +151,7 @@ export default {
                 payAmount: this.form.rechargeAmount,
                 orderAmount: this.computedMoney,
                 rate: 100
-            }
+            };
             let params = Object.assign({},this.form,params1);
             requestRecharge(params).then((res)=>{
                 if(res.data.code == '0000'){

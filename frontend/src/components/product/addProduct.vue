@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <router-link :to="'/product/'+currentId+'/addProduct'" active-class="active">
-                    <div>新增商品</div>   
+                    <div>新增商品</div>
                 </router-link>
                 <router-link :to="'/product/'+currentId+'/addService'" active-class="active">
                     <div>新增服务</div>
@@ -21,7 +21,7 @@
         </div>
         <div class="section-content">
             <div class="content-lf">
-                <div class="content-list"> 
+                <div class="content-list">
                     <ul>
                         <li>
                             <el-tree
@@ -124,7 +124,7 @@
                             <el-form-item prop="" label="上传图片" label-width="100px" class="item-single">
                                 <el-upload
                                     class="avatar-uploader"
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    action="/zv-member/zv/upload/oss"
                                     :show-file-list="false"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
@@ -278,10 +278,10 @@ export default {
                 <span class="custom-tree-node">
                     <span>{node.label}</span>
                     {
-                        node.level == 1 ? 
+                        node.level == 1 ?
                         <span>
                             <el-button size="mini" type="text" on-click={ () => this.addProductToCategory(node, data) }>新增商品</el-button>
-                        </span> : 
+                        </span> :
                         <span>
                             <el-button size="mini" type="text" on-click={ () => this.disabledProduct(node, data) }>禁用</el-button>
                             <el-button size="mini" type="text" on-click={ () => this.deleteProduct(node, data) }>删除</el-button>
@@ -352,7 +352,7 @@ export default {
                         goodsPicture: '',
                         weight: false,
                         goodsId: ''
-                    }
+                    };
                     params = Object.assign({},params,this.form,{'shopId': this.$route.params.id});
                     requestAddProduct(params).then((res)=>{
                         if(res.data.code == '0000'){
@@ -430,7 +430,8 @@ export default {
                 });
             })
         },
-        handleAvatarSuccess(){
+        handleAvatarSuccess(res, file){
+            this.form.goodsPicture = res.data.url;
         },
         beforeAvatarUpload(){},
         addNewCategory(){
@@ -484,7 +485,7 @@ export default {
                 .content-list{
                     min-height: calc(100vh - 200px);
                 }
-                
+
             }
             .content-rgt{
                 margin-left: 10px;
@@ -530,8 +531,12 @@ export default {
                                 }
                             }
                         }
-                        
-                        
+
+
+                    }
+                    .avatar{
+                        width: 100px;
+                        height: 100px;
                     }
                 }
                 .content-footer{
@@ -565,5 +570,5 @@ export default {
             }
         }
     }
-    
+
 </style>

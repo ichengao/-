@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="section-position">
-            <span>当前位置：</span> 设置 
+            <span>当前位置：</span> 设置
         </div>
         <div class="setting-wrap">
             <el-form ref="form" class="setting-form" :model="form" :rules="dataRule" status-icon >
@@ -81,7 +81,7 @@
     </div>
 </template>
 <script>
-import { requestUpdateSetting,requestUploadImage } from '@/services/service';
+import { requestUpdateSetting,requestUploadImage,requestGetAccountInfo } from '@/services/service';
 import { Message } from 'element-ui'
 import defaultImage from '@/assets/images/icon_logo.png'
 export default {
@@ -102,7 +102,7 @@ export default {
                     {
                         label: '江苏',
                         cities: []
-                    }, 
+                    },
                     {
                         label: '浙江',
                         cities: []
@@ -125,9 +125,9 @@ export default {
     methods: {
         init(){
             setTimeout(()=>{
-                let obj = {}
+                let obj = {};
                 if(!this.$store.state.userInfo.sex){
-                    obj.sex = '1' 
+                    obj.sex = '1'
                 }
                 if(!this.$store.state.userInfo.adminHeadPath){
                     obj.adminHeadPath=defaultImage
@@ -193,16 +193,24 @@ export default {
                         city: this.form.city,
                         adminHeadPath: this.form.adminHeadPath,
                         shopLogoPath: this.form.shopLogoPath
-                    }
+                    };
                     requestUpdateSetting(params).then(function(res){
                         if(res.data.code == '0000'){
                             Message.success('修改成功');
+                            _this.handleUpdateShop()
                         }else{
                             Message.error(res.data.msg);
                         }
                     }).catch(function(){
                         Message.error('修改失败');
                     })
+                }
+            })
+        },
+        handleUpdateShop(){
+            requestGetAccountInfo().then(res=>{
+                if(res.data.code == '0000'){
+                    this.$store.dispatch('updataUserInfo',res.data.data)
                 }
             })
         },
@@ -221,7 +229,7 @@ export default {
     .section-position{
         padding: 20px 30px;
         span{
-            color:#ababab; 
+            color:#ababab;
         }
     }
     .setting-wrap{
@@ -299,10 +307,10 @@ export default {
                         margin: 30px 0 0 40%;
                     }
                 }
-                
+
             }
         }
-    } 
+    }
 </style>
 <style lang='scss'>
     .setting-wrap{

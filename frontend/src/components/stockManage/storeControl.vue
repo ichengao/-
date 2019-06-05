@@ -58,7 +58,7 @@
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">查看库存</el-button>
+                        @click="handleSelectStock(scope.row)">查看库存</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -79,6 +79,7 @@ import { requestGetWarehouselist,requestDelwarehouse,requestUpdatewarehouse } fr
 import { Message } from 'element-ui';
 import EventBus from '@/components/eventEmitter/eventEmitter';
 import { CREATE_STORE_CONTROL } from '@/components/eventEmitter/eventName';
+
 export default {
     data(){
         return{
@@ -197,6 +198,10 @@ export default {
                     });
                 }
             })
+        },
+        // 查看库存
+        handleSelectStock(item){
+            this.$store.dispatch('openCheckStockModal',item);
         }
     }
 }
@@ -248,11 +253,11 @@ export default {
                         }
                         &:first-child{
                             background: url('../../assets/images/icon_edit.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(2){
                             background: url('../../assets/images/icon_import.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                     }
                 }

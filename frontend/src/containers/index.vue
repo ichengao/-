@@ -5,16 +5,19 @@
 </template>
 
 <script>
-import { requestGetAccountInfo } from '@/services/service'
+import { requestGetAccountInfo,requestGetDictList } from '@/services/service'
 export default {
-  name: 'App',
-  mounted(){
-    let _this = this
-    requestGetAccountInfo().then(function(res){
-      if(res.data.code == '0000'){
-        _this.$store.dispatch('updataUserInfo',res.data.data)
-      }
-    })
-  }
+    name: 'App',
+    mounted(){
+        let _this = this;
+        requestGetAccountInfo().then(function(res){
+          if(res.data.code == '0000'){
+            _this.$store.dispatch('updataUserInfo',res.data.data)
+          }
+        });
+          requestGetDictList().then(res=>{
+              this.$store.dispatch('setDictList',res.data.data);
+          });
+    }
 }
 </script>

@@ -42,9 +42,8 @@
             <li class="item6">
                 AI营销
                 <div class="tab-router-list">
-                    <router-link to="/"><p>短信营销</p></router-link>
-                    <router-link to="/"><p>优惠卷</p></router-link>
-                    <router-link to="/"><p>推荐制度</p></router-link>
+                    <router-link :to="'/AIMarketing/'+currentId+'/msg/msgSending'"><p>短信营销</p></router-link>
+                    <router-link :to="'/AIMarketing/'+currentId+'/coupon/couponManage'"><p>优惠卷</p></router-link>
                 </div>
             </li>
             <li class="item7">
@@ -64,6 +63,7 @@
     </div>
 </template>
 <script>
+    import { requestGetShopGetcontent } from '@/services/service'
 export default {
     data(){
         return{
@@ -72,6 +72,16 @@ export default {
     },
     mounted(){
         this.currentId = this.$route.params.id
+    },
+    methods: {
+        initData(){
+            let params = {
+                shopId: this.$route.params.id
+            };
+            requestGetShopGetcontent(params).then(res=>{
+
+            });
+        }
     }
 }
 </script>

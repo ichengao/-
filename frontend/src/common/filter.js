@@ -1,5 +1,7 @@
 // 时间戳转化
 let timeStampTrans = value => {
+    value = Number(value);
+    if(value < 0 ){return ''}
     let dateArr = new Date(value).toLocaleDateString().split('/');
     let newDateArr = [];
     dateArr.map(item=>{

@@ -23,10 +23,10 @@
                 <el-form-item prop="businessBelong" label="所属行业" label-width="100px" class="form-select-box form-business-box">
                     <el-select v-model="form.businessBelong" placeholder="请选择" class="form-select">
                         <el-option
-                        v-for="item in form.businessBelongOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in businessBelongOptions"
+                        :key="item.dictKey"
+                        :label="item.dictValue"
+                        :value="item.dictKey">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -42,12 +42,7 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item prop="address" class="item-wrap form-item-box form-select-box" label="门店地址" label-width="100px">
-                    <el-cascader
-                        :options="form.cityOptions"
-                        @active-item-change="handleItemChange"
-                        :props="form.props"
-                        class="input-box"
-                    ></el-cascader>
+                    <cityCascader class="input-box" />
                     <div>
                         <el-input
                             type="textarea"
@@ -68,7 +63,10 @@
 </template>
 <script>
 import { requestaddShop } from '@/services/service';
-import { Message } from 'element-ui'
+import cityCascader from '@/components/common/cityCascader'
+import { Message } from 'element-ui';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { UPDATE_SHOP_LIST } from '@/components/eventEmitter/eventName'
 export default {
     data(){
         return{
@@ -84,36 +82,6 @@ export default {
                 city: '阿斯蒂芬',
                 address: '',
                 shopLogoPath: '',
-                cityOptions: [
-                    {
-                        label: '江苏',
-                        cities: []
-                    },
-                    {
-                        label: '浙江',
-                        cities: []
-                    }
-                ],
-                props: {
-                    value: 'label',
-                    children: 'cities'
-                },
-                businessBelongOptions: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                    }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                    }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                    }, {
-                    value: '选项4',
-                    label: '龙须面'
-                    }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
             },
             dataRule: {
                 shopName: [
@@ -137,7 +105,18 @@ export default {
             }
         }
     },
+    components: {
+        cityCascader
+    },
     computed: {
+        businessBelongOptions: {
+            get(){
+                return this.$store.state.dictList.SHOP_BELONG || []
+            },
+            set(){
+
+            }
+        },
         modalStatus: {
             get(){
                 return this.$store.state.createShopModalStatus || false
@@ -145,12 +124,16 @@ export default {
             set(){
 
             }
-        }
+        },
     },
     watch: {
         modalStatus(oldVal,newVal){
             this.modalStatus = this.$store.state.createShopModalStatus
-        }
+        },
+        businessBelongOptions(oldVal,newVal){
+            this.businessBelongOptions = this.$store.state.dictList.SHOP_BELONG;
+            console.log(this.businessBelongOptions)
+        },
     },
     methods: {
         handleItemChange(){},
@@ -172,11 +155,12 @@ export default {
                     }
                     requestaddShop(params).then(function(res){
                         _this.handleCloseModal()
-                        if(res.data.msg == 'success'){
+                        if(res.data.code == '0000'){
                             Message({
                                 message: '新建成功',
                                 type: 'success'
                             })
+                            EventBus.$emit(UPDATE_SHOP_LIST)
                         }else{
                             Message({
                                 message: res.data.msg,

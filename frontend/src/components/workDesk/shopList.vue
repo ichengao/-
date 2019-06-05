@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="section-position">
-            <span>当前位置：</span> 工作台 
+            <span>当前位置：</span> 工作台
         </div>
 
         <div class="section-shop-list">
@@ -18,10 +18,10 @@
                 <ul>
                     <li v-for="(item,idx) in shopList" :key="idx">
                         <div class="list-detail">
-                            <img src="../../assets/images/icon_logo.png" alt="">
+                            <img :src="item.shopLogoPath ? item.shopLogoPath : shopLogoPath" alt="">
                             <p class="list-name">{{item.shopName}}</p>
                             <p class="list-day">剩余天数：<span>{{item.remainDays}}</span>天</p>
-                            <router-link :to="'/shopdetail/'+item.shopId">进入门店</router-link>  
+                            <router-link :to="'/shopdetail/'+item.shopId">进入门店</router-link>
                         </div>
                     </li>
                 </ul>
@@ -30,7 +30,9 @@
     </div>
 </template>
 <script>
-import { requestShopList } from '../../services/service'
+import { requestShopList } from '../../services/service';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { UPDATE_SHOP_LIST } from '@/components/eventEmitter/eventName'
 export default {
     name: 'shopList',
     data(){
@@ -38,27 +40,39 @@ export default {
             shopList: [],     // 门店列表
         }
     },
-    mounted(){
+    created(){
         this.initData()
+    },
+    mounted(){
+        EventBus.$on(UPDATE_SHOP_LIST,res=>{
+            this.initData()
+        })
+    },
+    computed: {
+        shopLogoPath: {
+            get(){
+                return this.$store.state.userInfo.shopLogoPath
+            }
+        },
     },
     methods: {
         // 初始化数据，获取列表
         initData(){
-            let _this = this
-            requestShopList().then(function(res){
-                _this.shopList = res.data.data.shop
+            requestShopList().then(res=>{
+                this.shopList = res.data.data.shop;
+                this.$store.dispatch('UpdateShopList',[res.data.data.shop]);
             })
-        }
+        },
     }
 }
 </script>
 <style lang="scss" scoped>
     @import '../../assets/scss/common.scss';
-    
+
     .section-position{
         padding: 20px 30px;
         span{
-            color:#ababab; 
+            color:#ababab;
         }
     }
     .section-shop-list{

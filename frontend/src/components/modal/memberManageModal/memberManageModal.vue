@@ -33,7 +33,7 @@
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
     .member-manage-modal{
         .dialog-box{
             .el-dialog{

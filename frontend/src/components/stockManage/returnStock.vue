@@ -10,34 +10,34 @@
                 </router-link>
             </div>
             <div class="section-header-center">
-                <el-button class="header-button">新增退货</el-button>
+                <el-button class="header-button" v-if="currentStatus" @click="handleToggleStatus">新增退货</el-button>
                 <ul>
-                    <li>修改</li>
-                    <li>删除</li>
+                    <!--<li>修改</li>-->
+                    <!--<li>删除</li>-->
                 </ul>
             </div>
             <div class="section-header-rgt">
-                <el-input placeholder="请输入内容"  class="input-with-select">
+                <el-input placeholder="请输入内容" v-if="currentStatus" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
         </div>
-        <div class="section-content">
-            <el-table ref="multipleTable" :data="initData" tooltip-effect="dark" style="width: 100%"
-                      @selection-change="handleSelectionChange">
+        <div class="section-content" v-if="currentStatus">
+            <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
+            >
                 <el-table-column type="selection" width="25"> </el-table-column>
                 <el-table-column label="序号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="供应商" show-overflow-tooltip >
+                <el-table-column prop="gradeName" label="供应商" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="mobile" label="应付欠款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="gradeId" label="应收退款" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="integral" label="联系人" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" width="80" show-overflow-tooltip>
+                <el-table-column prop="balance" label="联系电话" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" width="80" show-overflow-tooltip>
+                <el-table-column prop="guestFromName" label="操作员" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="userName" label="备注" show-overflow-tooltip>
                 </el-table-column>
@@ -57,26 +57,46 @@
                             type="danger"
                             @click="handleDeleteMmeber(scope.row)">供货记录</el-button>
                     </template>
-
                 </el-table-column>
             </el-table>
         </div>
+
+        <returnPurchaseStock v-else />
     </div>
 </template>
 <script>
-    import { requestAddProduct } from '@/services/service';
+    import { requestStockReturnList } from '@/services/service';
+    import returnPurchaseStock from './purchaseStock/returnPurchaseStock';
     import { Message } from 'element-ui'
     export default {
         data(){
             return{
                 currentId: '',
+                initDataArray: [],
+                currentStatus: true,      // false 为新增进货状态
             }
+        },
+        components: {
+            returnPurchaseStock
+        },
+        created(){
+            this.initData()
         },
         mounted(){
             this.currentId = this.$route.params.id;
         },
         methods: {
-
+            initData(){
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestStockReturnList(params).then(res=>{
+                      this.initDataArray = res.data.data.list
+                })
+            },
+            handleToggleStatus(){
+                this.currentStatus = false
+            },
         }
     }
 </script>

@@ -1,13 +1,13 @@
 <template>
     <div class="container-header container-header-desk">
         <div class="container-header-lf">
-            <img src="../../../assets/images/icon_logo.png" alt="">
-            <span class="shop-name">合肥卡旺卡</span>
+            <img :src="shopLogoPath ? shopLogoPath : defaultImage" alt="">
+            <span class="shop-name">{{shopBrand}}</span>
             <div class="shop-type" >
                 <span v-if="shopNum == 1">单店版</span>
                 <span v-else>连锁版</span>
             </div>
-            <span class='shop-create' @click="openCreateShopModal">创建门店</span>
+            <span :class='shopList[0].length < shopNum ? "shop-create" : "shop-create disabled"' @click="openCreateShopModal" >创建门店</span>
         </div>
         <div class="container-header-center">
             <router-link to="/" :class="currentUrl == 0 ?'active' : ''">工作台</router-link>
@@ -25,7 +25,7 @@
                         <el-dropdown-item command="a">使用帮助</el-dropdown-item>
                         <el-dropdown-item command="b">在线客服</el-dropdown-item>
                         <el-dropdown-item command="c">电话客服</el-dropdown-item>
-                        <el-dropdown-item command="d" >退出</el-dropdown-item>
+                        <el-dropdown-item command="d">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -33,12 +33,15 @@
     </div>
 </template>
 <script>
+import defaultImage from '@/assets/images/icon_logo.png';
+import { Message } from 'element-ui'
 export default {
     data(){
         return{
             shopType: 0,     // 0 单店版  1连锁版
             currentUrl: 0,   // 0 工作台  1设置
             userMsg: {},     // 用户数据
+            defaultImage: defaultImage
         }
     },
     mounted(){
@@ -54,32 +57,65 @@ export default {
             get(){
                 return this.$store.state.userInfo.adminName
             }
+        },
+        shopBrand: {
+            get(){
+                return this.$store.state.userInfo.shopBrand
+            }
+        },
+        shopLogoPath: {
+            get(){
+                return this.$store.state.userInfo.shopLogoPath
+            }
+        },
+        shopList: {
+            get(){
+                return this.$store.state.shopList
+            },
+            set(){
+
+            }
         }
     },
     watch: {
         '$route': function(to, from) {
             this.currentUrl = this.$route.name == 'shopList' ? 0 : 1
+        },
+        shopList(){
+            return this.shopList = this.$store.state.shopList
         }
     },
     methods: {
         handleCommand(command) {
-            console.log(command)
+            switch (command) {
+                case 'd':
+                    this.handleExit()
+                    break;
+                default:;
+            }
         },
         initData(){
             this.currentUrl = this.$route.name == 'shopList' ? 0 : 1;
-            let userMsg = sessionStorage.getItem('userMsg')
+            let userMsg = sessionStorage.getItem('userMsg');
             this.userMsg = Object.assign({},JSON.parse(userMsg));
         },
         // 打开创建门店弹框
         openCreateShopModal(){
+            if(this.shopList[0].length == this.shopNum){
+                return Message.error('当前店铺数量已达上限')
+            }
             this.$store.dispatch('opencreateShopModal')
+        },
+        handleExit(){
+            localStorage.removeItem('access_token');
+            window.location.href='./login.html';
         }
     }
 }
 </script>
 <style lang="scss" scoped>
     @import '../../../assets/scss/common.scss';
-    
+
     .container-header{
         position: fixed;
         top: 0;
@@ -115,6 +151,12 @@ export default {
                 color: $color;
                 margin-left: 20px;
                 cursor: pointer;
+                &:hover{
+                    opacity: .7;
+                }
+                &.disabled{
+                    color: #ddd;
+                }
             }
         }
         .container-header-center{
@@ -135,7 +177,7 @@ export default {
                     color: $color;
                     &:first-child{
                         background: url('../../../assets/images/icon-desk-on.png') 0 0 no-repeat;
-                        background-size: 25px auto; 
+                        background-size: 25px auto;
                     }
                     &:last-child{
                         background: url('../../../assets/images/icon-set-on.png') 0 0 no-repeat;

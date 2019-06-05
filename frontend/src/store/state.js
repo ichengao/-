@@ -1,6 +1,8 @@
 const state = {
     userInfo: {},                            // 用户信息
     dictList: {},                            // 数据字典
+    shopList: [1],                           // 店铺头部
+    systemSettingConfig: {},                 // 设置项数据
     changePwdModalStatus1: false,            // 是否显示密码修改弹框changePwdModal
     changePhoneModalStatus: false,           // 是否显示修改手机号弹框
     createShopModalStatus: false,            // 是否显示新建店铺弹框
@@ -31,6 +33,19 @@ const state = {
     addResponsibilityManageStatus: false,                     // 新增岗位弹框
     updatePermissionModalStatus: {status: false, data: {}},   // 编辑岗位权限弹框
     permissionDetailModalStatus: {status: false, data: {}},   // 权限编辑详情弹框
+    selectMemberByHandModalStatus: false,                     // 手动选中会员弹框
+    fastInchargeModalStatus: false,                           // 快捷充值弹框
+    msgModuleForMemberChooseModalStatus: false,               // 优惠卷选择会员弹框
+    msgTemplateModal: {status: false,data: {}},               // 选择模板弹框
+    addCouponModalStatus: false,                              // 新建优惠卷
+    editCouponModalStatus: {status: false,data: {}},          // 编辑优惠卷
+    IssueCouponsModal: {status: false,data: {}},              // 发放优惠券
+    updateMsgTemplate:  {status: false,data: {}},             // 更新短信模板
+    UpdateProductModal: {status: false,data: {}},             // 更新商品
+    UpdateServiceModal: {status: false,data: {}},             // 更新服务
+    RepaymentModal: {status: false,data: {}},                 // 还款
+    CheckStockModal: {status: false,data: {}},                // 查看库存
+    StockorderModal: {status: false,data: {}},                // 供货记录
 };
 
 export default state;

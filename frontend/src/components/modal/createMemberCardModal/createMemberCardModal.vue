@@ -94,20 +94,28 @@
                     <el-form-item prop="payType" label="收款方式" label-width="100px" class="form-item-box form-item-phone">
                        <el-select v-model="form.payType" placeholder="请选择收款方式" class="form-select">
                             <el-option
-                            v-for="item in form.payTypeOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in payTypeOptions"
+                            :key="item.dictId"
+                            :label="item.dictValue"
+                            :value="item.dictId">
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item prop="referencesId" label="推荐人" label-width="100px" class="form-item-box form-item-phone">
-                       <el-select v-model="form.referencesId" placeholder="请选择推荐人"  class="form-select">
+                    <el-form-item label="推荐人" label-width="100px" class="form-item-box form-item-phone">
+                        <el-select
+                            v-model="form.referencesId"
+                            filterable
+                            class="form-select"
+                            remote
+                            reserve-keyword
+                            placeholder="请输入推荐人"
+                            :remote-method="remoteMethod"
+                            >
                             <el-option
-                            v-for="item in form.referencesIdOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                                v-for="item in referencesIdOptions"
+                                :key="item.memberId"
+                                :label="item.userName"
+                                :value="item.memberId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -138,9 +146,12 @@
     </div>
 </template>
 <script>
-import { requestCreateMemberCard,requestGetGradelist,requestGetTypelist } from '@/services/service';
+import { requestCreateMemberCard,
+    requestGetGradelist,
+    requestGetTypelist,
+    requestGetMemberList} from '@/services/service';
 import { Message } from 'element-ui'
-import { LEVEL_OPTIONS,SERVER_URL } from '@/common/config';
+import { LEVEL_OPTIONS } from '@/common/config';
 import EventBus from '@/components/eventEmitter/eventEmitter';
 import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName'
 export default {
@@ -171,10 +182,10 @@ export default {
                 balance: '',
                 giveBalance: '',
                 payType: '',
-                payTypeOptions: [],
                 referencesId: '',
                 headPicture: '',
             },
+            referencesIdOptions: [],
             dataRule: {
                 userName: [
                     { required: true, message: '顾客姓名不能为空', trigger: 'blur' },
@@ -205,30 +216,48 @@ export default {
             set(){
 
             }
+        },
+        payTypeOptions: {
+            get(){
+                console.log(this.$store.state.dictList.ZV_PAY)
+                return this.$store.state.dictList.ZV_PAY;
+            },
+            set(){}
         }
     },
     watch: {
         modalStatus(oldVal,newVal){
             this.modalStatus = this.$store.state.createMemberCardStatus
-        }
+        },
+        payTypeOptions(oldVal,newVal){
+            this.payTypeOptions = this.$store.state.dictList.ZV_PAY
+        },
     },
     mounted(){
         let params = {
             shopId: this.$route.params.id
-        }
+        };
         requestGetGradelist(params).then((res)=>{
             if(res.data.data.list.length == 0){
                 this.form.gradeIdOptions = [{label: 0,value: 0}]
             }else{
                 this.form.gradeIdOptions = res.data.data.list
             }
-
-        })
+        });
         requestGetTypelist(params).then((res)=>{
             this.form.memberTypeIdOptions = res.data.data.list
         })
     },
     methods: {
+        remoteMethod(query){
+            let params = {
+                shopId: this.$route.params.id,
+                keyword: query
+            }
+            requestGetMemberList(params).then(res=>{
+                this.referencesIdOptions = res.data.data.list
+            })
+        },
         handleItemChange(){},
         handleConfirm(){
             let _this = this;

@@ -11,6 +11,8 @@
         <deductionTimesModal />
         <memberManageModal />
         <selectMemberModal />
+        <selectMemberByHandModal />
+        <fastInchargeModal />
     </div>
 </template>
 <script>
@@ -23,6 +25,8 @@
     import deductionTimesModal from '@/components/modal/deductionTimesModal';
     import memberManageModal from '@/components/modal/memberManageModal';
     import selectMemberModal from '@/components/modal/selectMemberModal';
+    import selectMemberByHandModal from '@/components/modal/selectMemberByHandModal';
+    import fastInchargeModal from '@/components/modal/fastInchargeModal';
     export default {
         data(){
             return{
@@ -38,7 +42,9 @@
             unprocessedOrderListModal,
             deductionTimesModal,
             memberManageModal,
-            selectMemberModal
+            selectMemberModal,
+            selectMemberByHandModal,
+            fastInchargeModal
         }
     }
 </script>

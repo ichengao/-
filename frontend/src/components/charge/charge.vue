@@ -3,7 +3,7 @@
         <div class="section-header">
             <div class="section-header-lf">
                 <router-link :to="'/shopdetail/'+currentId+'/charge/chargeMoney'" active-class="active">
-                    <div>会员充值</div>   
+                    <div>会员充值</div>
                 </router-link>
                 <router-link :to="'/shopdetail/'+currentId+'/charge/chargeTimers'" active-class="active">
                     <div>会员充次</div>
@@ -29,7 +29,7 @@
                         <el-button slot="append" icon="el-icon-search" @click="initData"></el-button>
                     </el-input>
                 </div>
-                <div class="content-list"> 
+                <div class="content-list">
                     <ul>
                         <li v-for="(item,idx) in memberList" :key="idx" @click="checkMemberDetail(item.memberId)">
                             <div class="content-list-lf">
@@ -57,8 +57,7 @@
             <div class="content-rgt">
                 <div class="content-rgt-header" v-if="memberId">
                     <div class="user-img">
-                        <img src="../../assets/images/icon-user.png" alt="" v-if="memberDetail.headPicture">
-                        <img src="../../assets/images/icon-user.png" alt="">
+                        <img :src="memberDetail.headPicture ? memberDetail.headPicture : defaultImage" alt="">
                     </div>
                     <div class="user-detail-msg">
                         <ul>
@@ -90,6 +89,7 @@
 </template>
 <script>
 import {requestSearchMemberlist,requestGetMemberDetail} from '@/services/service';
+import defaultImage from '@/assets/images/icon-user.png'
 export default {
     data(){
         return{
@@ -98,6 +98,7 @@ export default {
             searchKey: '',     // 会员搜索数据字段
             memberId: '',      // 会员id
             memberDetail: [],  // 会员详情
+            defaultImage: defaultImage
         }
     },
     mounted(){
@@ -197,7 +198,7 @@ export default {
                                     border-radius: 50%;
                                     overflow: hidden;
                                     border: 1px solid #ddd;
-                                }                            
+                                }
                             }
                             .content-list-rgt{
                                 width: 100%;
@@ -237,7 +238,7 @@ export default {
                         height: 50px;
                         border-radius: 50%;
                         overflow: hidden;
-                        background: #ddd; 
+                        background: #ddd;
                         margin: 0 20px;
                         img{
                             width: 50px;

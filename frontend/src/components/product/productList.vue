@@ -7,7 +7,6 @@
             </div>
             <div class="section-header-center">
                 <ul>
-                    <li>修改</li>
                     <li>导入</li>
                     <li>导出</li>
                     <li>筛选</li>
@@ -24,11 +23,11 @@
                 <li class="item-birth">
                     <p>共有商品</p>
                     <div class="item-content">
-                        <span>{{baseData.inventoryCount}}</span>种
+                        <span>{{baseData.goodsCount}}</span>种
                     </div>
                     <div class="item-footer">
                         <div class="item-footer-lf">
-                            库存中商品共<span>{{baseData.goodsCount}}</span>件
+                            库存中商品共<span>{{baseData.inventoryCount}}</span>件
                         </div>
                         <span class="item-footer-rgt"></span>
                     </div>
@@ -40,7 +39,7 @@
                     </div>
                     <div class="item-footer">
                         <div class="item-footer-lf">
-                            库存中商品<span>{{parseInt(baseData.dayAddMember)}}</span>件，共<span>222</span>元
+                            库存中商品<span>{{parseInt(baseData.inventoryCount)}}</span>件，共<span>{{baseData.allStockPrice}}</span>元
                         </div>
                         <span></span>
                     </div>
@@ -101,7 +100,12 @@
                 show-overflow-tooltip>
                     <template slot-scope="scope">
                         <el-button
+                            size="mini"
+                            @click="handleEdit(scope.row)">编辑</el-button>
+                        <br>
+                        <el-button
                         size="mini"
+                        class="btn-delete"
                         type="danger"
                         @click="handleDelete(scope.row)">删除</el-button>
                     </template>
@@ -120,12 +124,14 @@
     </div>
 </template>
 <script>
-import { 
+import {
     requestGetProductData,
     requestGetProductList,
     requestDeleteGoods
 } from '@/services/service';
 import { Message } from 'element-ui';
+import EventBus from '@/components/eventEmitter/eventEmitter';
+import { UPDATE_PRODUCT_LIST } from '@/components/eventEmitter/eventName';
 export default {
     data(){
         return{
@@ -138,7 +144,10 @@ export default {
     },
     mounted(){
         this.currentId = this.$route.params.id;
-        this.init()
+        this.init();
+        EventBus.$on(UPDATE_PRODUCT_LIST,()=>{
+            this.init();
+        })
     },
     methods: {
         handleSelectionChange(){},
@@ -219,6 +228,9 @@ export default {
                 }
             });
         },
+        handleEdit(item){
+            this.$store.dispatch('openUpdateProduct',item);
+        }
     }
 }
 </script>
@@ -284,10 +296,10 @@ export default {
                 display: flex;
                 justify-content: flex-start;
                 padding: 0;
-                margin-top: 20px;
+                margin-top: 10px;
                 >li{
-                    width: 22%;
-                    margin-right: 4%;
+                    width: 24.25%;
+                    margin-right: 1%;
                     background: #fff;
                     font-size: 12px;
                     p{
@@ -340,7 +352,10 @@ export default {
             }
         }
         .section-footer{
-            margin-top: 20px;
+            margin-top: 10px;
+            .btn-delete{
+                margin-top: 5px;
+            }
             .pagenation{
                 padding: 20px 0;
                 background: #fff;

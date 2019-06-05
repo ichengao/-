@@ -247,6 +247,100 @@ const actions = {
     closePermissionDetailModal({state,commit}){
         commit('permissionDetailModalStatus',{status: false,data: {}})
     },
-};
-
+    // 手动选择会员
+    openSelectMemberByHandModalStatus({state,commit}){
+        commit('selectMemberByHandModalStatus',true)
+    },
+    closeSelectMemberByHandModalStatus({state,commit}){
+        commit('selectMemberByHandModalStatus',false)
+    },
+    // 快捷充值
+    openFastInchargeModal({state,commit}){
+        commit('fastInchargeModalStatus',true)
+    },
+    closeFastInchargeModal({state,commit}){
+        commit('fastInchargeModalStatus',false)
+    },
+    // 优惠卷选择会员
+    openMsgModuleForMemberChooseModalStatus({state,commit}){
+        commit('msgModuleForMemberChooseModalStatus',true)
+    },
+    closeMsgModuleForMemberChooseModalStatus({state,commit}){
+        commit('msgModuleForMemberChooseModalStatus',false)
+    },
+    // 选择短信模板
+    openMsgTemplateModal({state,commit},params){
+        commit('msgTemplateModalStatus',{status: true,data: {type: params}})
+    },
+    closeMsgTemplateModal({state,commit}){
+        commit('msgTemplateModalStatus',{status: false,data: {type: ''}})
+    },
+    // 新增优惠卷
+    openAddCouponModal({state,commit}){
+        commit('addCouponModalStatus',true)
+    },
+    closeAddCouponModal({state,commit}){
+        commit('addCouponModalStatus',false)
+    },
+    // 编辑优惠券
+    openEditCouponModal({state,commit},params){
+        commit('editCouponModalStatus',{status: true,data: params})
+    },
+    closeEditCouponModal({state,commit}){
+        commit('editCouponModalStatus',{status: false,data: {}})
+    },
+    // 发放优惠券
+    openIssueCouponsModal({state,commit},params){
+        commit('IssueCouponsModal',{status: true,data: params})
+    },
+    closeIssueCouponsModal({state,commit}){
+        commit('IssueCouponsModal',{status: false,data: {}})
+    },
+    // 更新短信模板
+    openUpdateMsgTemplate({state,commit},params){
+        commit('updateMsgTemplate',{status: true,data: params})
+    },
+    closeUpdateMsgTemplate({state,commit},params){
+        commit('updateMsgTemplate',{status: false,data: {}})
+    },
+    // 更新店铺
+    UpdateShopList({state,commit},params){
+        commit('UpdateShopList',params)
+    },
+    // 更新商品
+    openUpdateProduct({state,commit},params){
+        commit('UpdateProduct',{status: true,data: params})
+    },
+    closeUpdateProduct({state,commit}){
+        commit('UpdateProduct',{status: false,data: {}})
+    },
+    // 更新商品
+    openUpdateService({state,commit},params){
+        commit('UpdateService',{status: true,data: params})
+    },
+    closeUpdateService({state,commit}){
+        commit('UpdateService',{status: false,data: {}})
+    },
+    // 还款
+    openRepaymentModal({state,commit},params){
+        commit('RepaymentModal',{status: true,data: params})
+    },
+    closeRepaymentModal({state,commit}){
+        commit('RepaymentModal',{status: false,data: {}})
+    },
+    // 查看库存
+    openCheckStockModal({state,commit},params){
+        commit('CheckStockModal',{status: true,data: params})
+    },
+    closeCheckStockModal({state,commit}){
+        commit('CheckStockModal',{status: false,data: {}})
+    },
+    // 供货记录
+    openStockorderModal({state,commit},params){
+        commit('StockorderModal',{status: true,data: params})
+    },
+    closeStockorderModal({state,commit}){
+        commit('StockorderModal',{status: false,data: {}})
+    },
+}
 export default actions;

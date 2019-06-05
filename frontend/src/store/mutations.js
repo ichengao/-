@@ -95,6 +95,48 @@ const mutations = {
     updateAdminStaffModal(state,payload){
         state.updateAdminStaffModal = Object.assign({},state.updateAdminStaffModal,payload);
     },
+    selectMemberByHandModalStatus(state,payload){
+        state.selectMemberByHandModalStatus = payload;
+    },
+    fastInchargeModalStatus(state,payload){
+        state.fastInchargeModalStatus = payload;
+    },
+    msgModuleForMemberChooseModalStatus(state,payload){
+        state.msgModuleForMemberChooseModalStatus = payload;
+    },
+    msgTemplateModalStatus(state,payload){
+        state.msgTemplateModal =  Object.assign({},state.msgTemplateModal,payload);
+    },
+    addCouponModalStatus(state,payload){
+        state.addCouponModalStatus =  payload;
+    },
+    editCouponModalStatus(state,payload){
+        state.editCouponModalStatus =  payload;
+    },
+    IssueCouponsModal(state,payload){
+        state.IssueCouponsModal =   Object.assign({},state.IssueCouponsModal,payload);
+    },
+    updateMsgTemplate(state,payload){
+        state.updateMsgTemplate =   Object.assign({},state.updateMsgTemplate,payload);
+    },
+    UpdateShopList(state,payload){
+        state.shopList =   Object.assign({},state.shopList,payload);
+    },
+    UpdateProduct(state,payload){
+        state.UpdateProductModal = Object.assign({},state.UpdateProductModal,payload);
+    },
+    UpdateService(state,payload){
+        state.UpdateServiceModal = Object.assign({},state.UpdateServiceModal,payload);
+    },
+    RepaymentModal(state,payload){
+        state.RepaymentModal = Object.assign({},state.RepaymentModal,payload);
+    },
+    CheckStockModal(state,payload){
+        state.CheckStockModal = Object.assign({},state.CheckStockModal,payload);
+    },
+    StockorderModal(state,payload){
+        state.StockorderModal = Object.assign({},state.StockorderModal,payload);
+    },
 }
 
 export default mutations;

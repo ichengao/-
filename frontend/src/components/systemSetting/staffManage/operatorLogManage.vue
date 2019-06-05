@@ -48,7 +48,8 @@
         methods: {
             initData(){
                 let params = {
-                    shopId: this.$route.params.id
+                    shopId: this.$route.params.id,
+                    operateType: '02'
                 };
                 requestGetStaffAccesslog(params).then((res)=>{
                     this.initDataArray = res.data.data.list;

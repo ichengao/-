@@ -36,9 +36,9 @@
                         </el-table>
                     </div>
                     <div class="section2-footer">
-                        <span>会员: 王大牛</span>
-                        <span>余额: ￥123</span>
-                        <span class="btn-charge">充值</span>
+                        <span>会员: {{memberData.userName}}</span>
+                        <span>余额: ￥{{memberData.balance}}</span>
+                        <span class="btn-charge" @click="handleFastInchargeModal">充值</span>
                     </div>
                     <div class="section2-btn">
                         <el-button @click="handleSelectMemberModal">选择会员</el-button>
@@ -62,31 +62,113 @@
         </div>
         <div class="section-rgt">
             <div class="section-header">
-                <swiper :options="swiper1.swiperOption" ref="mySwiper" >
-                    <!-- slides @someSwiperEvent="callback"-->
-                    <swiper-slide class="slide-list">
-                        <el-button class="btn-all">所有分类</el-button>
-                    </swiper-slide>
-                    <swiper-slide class="slide-list" v-for="(item,idx) in swiper1.typeList" :key="idx">
-                        <el-button>{{item.name}}</el-button>
-                    </swiper-slide>
-                </swiper>
+                <!--<swiper :options="swiper1.swiperOption" ref="mySwiper" >-->
+                    <!--&lt;!&ndash; slides @someSwiperEvent="callback"&ndash;&gt;-->
+                    <!--<swiper-slide class="slide-list">-->
+                        <!--<el-button class="btn-all">所有分类</el-button>-->
+                    <!--</swiper-slide>-->
+                    <!--<swiper-slide class="slide-list" v-for="(item,idx) in swiper1.typeList" :key="idx">-->
+                        <!--<el-button>{{item.name}}</el-button>-->
+                    <!--</swiper-slide>-->
+                <!--</swiper>-->
             </div>
             <div class="section-content">
-                <swiper :options="swiper2.swiperOption" ref="mySwiper2" >
-                    <!-- slides @someSwiperEvent="callback"-->
-                    <swiper-slide class="slide-list" v-for="(item,idx) in swiper2.goodsList" :key="idx">
-                        <div class="product-detail" @click="handleAddProduct(item)">
-                            <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
-                            <div class="product-text">
-                                <p>{{item.goodsName}}</p>
-                                <div class="product-footer">
-                                    <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                <div class="scroll-box">
+                    <happy-scroll hide-vertical top color="rgba(51,51,51,0.2)" size="8">
+                        <div class="list-box">
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-detail" @click="handleAddProduct(item)" v-for="(item,idx) in swiper2.goodsList" :key="idx">
+                                <img :src="item.goodsPicture ? item.goodsPicture : defaultImg" alt="">
+                                <div class="product-text">
+                                    <p>{{item.goodsName}}</p>
+                                    <div class="product-footer">
+                                        <span>￥{{item.salePrice}}</span><span>{{item.count>99 ? '99+' : item.count}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </swiper-slide>
-                </swiper>
+                    </happy-scroll>
+                </div>
             </div>
             <div class="section-footer">
                 <div class="pay-header">
@@ -105,15 +187,16 @@
     </div>
 </template>
 <script>
-    import 'swiper/dist/css/swiper.css';
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
+    import { HappyScroll } from 'vue-happy-scroll'
+    import 'vue-happy-scroll/docs/happy-scroll.css'
     import { requestGetProductList } from '@/services/service';
     import defaultImg from '../../assets/images/alipayImg.png';
     import { Message } from 'element-ui';
     import EventBus from '@/components/eventEmitter/eventEmitter';
     import {
         UPDATE_PRODUCT_DISCOUNT,
-        UPDATE_PRODUCT_PRICE
+        UPDATE_PRODUCT_PRICE,
+        UPDATE_SELECT_MEMBER
     } from '@/components/eventEmitter/eventName';
     export default {
         data(){
@@ -124,6 +207,7 @@
                     selectedDataArray: [],      // 列表
                     selectedRow: {},            // 当前选中行
                 },
+                memberData: {},                  // 选择的会员数据
                 swiper1: {
                     swiperOption: {
                         width: 100
@@ -135,25 +219,12 @@
                     ]
                 },
                 swiper2: {
-                    swiperOption: {
-                        slidesPerColumn: 6,
-                        width: 300
-                    },
                     goodsList: []        // 商品列表
                 }
             }
         },
         components: {
-            swiper,
-            swiperSlide
-        },
-        computed: {
-            swiper() {
-                this.swiper1.swiperOption = {
-                    width: (this.swiper1.typeList.length + 1) * 50
-                };
-                return this.$refs.mySwiper.swiper
-            }
+            HappyScroll
         },
         created(){
             this.initData();
@@ -164,7 +235,10 @@
             });
             EventBus.$on(UPDATE_PRODUCT_PRICE,(res)=>{
                 this.handleChangePriceNum(res);
-            })
+            });
+            EventBus.$on(UPDATE_SELECT_MEMBER,memberData=>{
+                this.memberData = memberData;
+            });
         },
         methods: {
             initData(){
@@ -335,6 +409,10 @@
             // 选择会员
             handleSelectMemberModal(){
                 this.$store.dispatch('openSelectMemberModal');
+            },
+            // 快捷充值
+            handleFastInchargeModal(){
+                this.$store.dispatch('openFastInchargeModal');
             }
         }
 
@@ -400,8 +478,9 @@
             }
         }
         .section-rgt{
-            margin: 0 10px;
-            flex-grow:1;
+            margin: 0 0 0 10px;
+            /*flex-grow:1;*/
+            width: 100%;
             .section-header{
                 margin-top: 10px;
                 background: #fff;
@@ -419,40 +498,55 @@
             }
             .section-content{
                 margin-top: 10px;
-                .product-detail{
-                    background: #fff;
-                    width: 193px;
-                    height: 70px;
-                    display: flex;
-                    cursor: pointer;
-                    margin-bottom: 10px;
-                    img{
-                        width: 70px;
-                        height: 70px;
-                    }
-                    .product-text{
-                        flex: 1;
-                        p{
-                            margin: 0;
-                            padding-top: 3px;
-                            height: 45px;
-                            overflow: hidden;
-                        }
-                        .product-footer{
+                .scroll-box{
+                    height: 400px;
+                    width: 95%;
+                    overflow: hidden;
+                    .list-box{
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+                        height: 400px;
+                        width: 900px;
+                        .product-detail{
+                            background: #fff;
+                            width: 193px;
+                            height: 70px;
                             display: flex;
-                            justify-content: space-between;
-                            span{
-                                &:first-child{
-                                    color: $color;
-                                    font-weight: bold;
+                            cursor: pointer;
+                            margin-bottom: 10px;
+                            margin-right: 10px;
+                            img{
+                                width: 70px;
+                                height: 70px;
+                            }
+                            .product-text{
+                                flex: 1;
+                                p{
+                                    margin: 0;
+                                    padding-top: 3px;
+                                    height: 45px;
+                                    overflow: hidden;
                                 }
-                                &:last-child{
-                                    margin-right: 5px;
+                                .product-footer{
+                                    display: flex;
+                                    justify-content: space-between;
+                                    span{
+                                        &:first-child{
+                                            color: $color;
+                                            font-weight: bold;
+                                        }
+                                        &:last-child{
+                                            margin-right: 5px;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
+
             }
             .section-footer{
                 display: flex;

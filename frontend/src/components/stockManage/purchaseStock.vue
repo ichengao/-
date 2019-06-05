@@ -12,8 +12,8 @@
             <div class="section-header-center" v-if="currentStatus">
                 <el-button class="header-button" @click="handleToggleStatus">新增进货</el-button>
                 <ul>
-                    <li>修改</li>
-                    <li>删除</li>
+                    <!--<li>修改</li>-->
+                    <!--<li @click="handleDelete">删除</li>-->
                 </ul>
             </div>
             <div class="section-header-rgt">
@@ -26,19 +26,29 @@
             <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
-                <el-table-column prop="gradeName" label="供应商" show-overflow-tooltip >
+                <!--<el-table-column prop="gradeName" label="序号" show-overflow-tooltip >-->
+                <!--</el-table-column>-->
+                <el-table-column prop="bizId" label="单据编号" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="mobile" label="应付欠款" show-overflow-tooltip>
+                <el-table-column prop="supplierName" label="供应商" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" label="应收退款" show-overflow-tooltip>
+                <el-table-column prop="name" label="商品名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" label="联系人" show-overflow-tooltip>
+                <el-table-column prop="count" label="数量" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="联系电话" show-overflow-tooltip>
+                <el-table-column label="单价" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        {{ (scope.row.totalAmount / scope.row.count).toFixed(2) }}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="操作员" show-overflow-tooltip>
+                <el-table-column prop="totalAmount" label="合计金额" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="userName" label="备注" show-overflow-tooltip>
+                <el-table-column prop="realAmount" label="实付金额" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="userName" label="入库状态" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        {{ scope.row.state == 0 ? '未入库' : '已入库' }}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="操作"
@@ -46,19 +56,14 @@
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">还款</el-button>
+                            @click="handleEdit(scope.row)">详情</el-button>
                         <br>
                         <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDeleteMmeber(scope.row)">还款记录</el-button>
-                        <br>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDeleteMmeber(scope.row)">供货记录</el-button>
+                            class="btn-control"
+                            @click="handleCopyAdd(scope.row)">复制新增</el-button>
                     </template>
-
                 </el-table-column>
             </el-table>
         </div>
@@ -66,7 +71,7 @@
     </div>
 </template>
 <script>
-    import { requestAddProduct } from '@/services/service';
+    import { requestStockorder,requestStockorderdetail } from '@/services/service';
     import { Message } from 'element-ui'
     import addPurchaseStock from '@/components/stockManage/purchaseStock/addPurchaseStock'
     export default {
@@ -75,6 +80,8 @@
                 currentId: '',
                 initDataArray: [],
                 currentStatus: true,      // false 为新增进货状态
+                selectedDetailArr: [],
+                selectedIdsArr: []
             }
         },
         components: {
@@ -83,13 +90,73 @@
         mounted(){
             this.currentId = this.$route.params.id;
         },
+        watch: {
+            currentStatus(newVal,oldVal){
+                newVal && this.initData()
+            }
+        },
+        created(){
+            this.initData()
+        },
         methods: {
             initData(){
-
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestStockorder(params).then(res=>{
+                    this.initDataArray = res.data.data.list
+                })
             },
-            handleSelectionChange(){},
+            handleSelectionChange(params){
+                let selectedIdsArr = [];
+                this.selectedDetailArr = params;
+                params.map(item=>{
+                    selectedIdsArr.push(item.staffId);
+                });
+                this.selectedIdsArr = selectedIdsArr;
+            },
             handleToggleStatus(){
                 this.currentStatus = false
+            },
+            handleCopyAdd(item){
+                let params = {
+                    shopId: this.$route.params.id,
+                    bizId: `${item.bizId}`
+                };
+                requestStockorderdetail(params).then(res=>{
+
+                });
+            },
+            // 删除
+            handleDelete(){
+                if(!this.selectedIdsArr.length){
+                    Message.error('至少选择一个');
+                    return
+                }
+                let params = {
+                    shopId: this.$route.params.id,
+                    staffIds: this.selectedIdsArr
+                };
+                return
+                requestDeleteStaff(params).then((res)=>{
+                    if(res.data.code == '0000'){
+                        Message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.initData()
+                    }else{
+                        Message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch(function(){
+                    Message({
+                        message:'删除失败',
+                        type: 'error'
+                    });
+                })
             }
         }
     }
@@ -153,6 +220,9 @@
         }
         .section-content{
             margin-top: 10px;
+            .btn-control{
+                margin-top: 5px;
+            }
         }
     }
 </style>

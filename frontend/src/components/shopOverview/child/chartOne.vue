@@ -46,7 +46,7 @@
             <div class="item-content">
                 <p>{{initDataArray.payCount}}</p>
                 <div class="item-chart">
-                    <ve-histogram :data="chartData" :settings="chartSettings" :extend="chartExtend" height="60px"></ve-histogram>
+                    <ve-histogram :data="chartData1" :settings="chartSettings" :extend="chartExtend" height="60px"></ve-histogram>
                 </div>
             </div>
             <div class="item-footer">
@@ -106,12 +106,13 @@
                 chartData: {
                     columns: ['日期', '客户数量'],
                     rows: [
-                        { '日期': '1/1', '客户数量': 1393 },
-                        { '日期': '1/2', '客户数量': 3530 },
-                        { '日期': '1/3', '客户数量': 2923},
-                        { '日期': '1/4', '客户数量': 1723 },
-                        { '日期': '1/5', '客户数量': 3792 },
-                        { '日期': '1/6', '客户数量': 4593}
+                        // { '日期': '1/1', '客户数量': 1393 },
+                    ]
+                },
+                chartData1: {
+                    columns: ['日期', '支付笔数'],
+                    rows: [
+                        // { '日期': '1/1', '支付笔数': 1393 },
                     ]
                 },
                 progress: 10,
@@ -133,7 +134,21 @@
                 };
                 requestStatisticsData1(params).then((res)=>{
                     this.initDataArray = res.data.data;
-                })
+                    let trend1 = res.data.data.trend1;
+                    let trend2 = res.data.data.trend2;
+                    trend1.forEach(item=>{
+                        this.chartData.rows.push({
+                            '日期': item.dayOrMonth,
+                            '客户数量': item.count
+                        })
+                    });
+                    trend2.forEach(item=>{
+                        this.chartData1.rows.push({
+                            '日期': item.dayOrMonth,
+                            '支付笔数': item.count
+                        })
+                    });
+                });
             }
         }
     }

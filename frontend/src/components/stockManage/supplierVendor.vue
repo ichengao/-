@@ -48,19 +48,23 @@
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">还款</el-button>
+                        @click="handleRepayment(scope.row)">还款</el-button>
+                        <br>
+                        <!--<el-button-->
+                            <!--size="mini"-->
+                            <!--@click="handleMarkCollections(scope.row)" class="table-btn">收款</el-button>-->
+                        <!--<br>-->
+                        <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDeleteMmeber(scope.row)" class="table-btn">账款记录</el-button>
                         <br>
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDeleteMmeber(scope.row)" class="table-btn">还款记录</el-button>
-                        <br>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDeleteMmeber(scope.row)" class="table-btn">供货记录</el-button>
-                    </template> 
-                
+                        @click="handleStockorder(scope.row)" class="table-btn">供货记录</el-button>
+                    </template>
+
                 </el-table-column>
             </el-table>
             <div class="pagenation">
@@ -182,6 +186,15 @@ export default {
                 }
             });
         },
+        // 还款
+        handleRepayment(item){
+            item = Object.assign({},item,{currentControlType: '0'});
+            this.$store.dispatch('openRepaymentModal',item)
+        },
+        handleStockorder(item){
+            item = Object.assign({},item,{currentControlType: '0'});
+            this.$store.dispatch('openStockorderModal',item)
+        },
     }
 }
 </script>
@@ -232,11 +245,11 @@ export default {
                         }
                         &:first-child{
                             background: url('../../assets/images/icon_edit.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(2){
                             background: url('../../assets/images/icon_import.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                     }
                 }

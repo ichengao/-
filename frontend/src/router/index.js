@@ -52,6 +52,14 @@ const achievementAnalysis = ()=>import('@/components/intelligentAnalysis/shopAna
 const memberAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/memberAnalysis');
 const storeValueAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/storeValueAnalysis');
 const timersAnalysis = ()=>import('@/components/intelligentAnalysis/shopAnalysis/timersAnalysis');
+const AIMarketing = ()=>import('@/components/AIMarketing/AIMarketing');
+const msg = ()=>import('@/components/AIMarketing/msg');
+const msgSending = ()=>import('@/components/AIMarketing/msg/msgSending');
+const msgList = ()=>import('@/components/AIMarketing/msg/msgList');
+const msgConfig = ()=>import('@/components/AIMarketing/msg/msgConfig');
+const coupon = ()=>import('@/components/AIMarketing/coupon');
+const couponManage = ()=>import('@/components/AIMarketing/coupon/couponManage');
+const couponList = ()=>import('@/components/AIMarketing/coupon/couponList');
 
 export default new Router(
     {
@@ -320,6 +328,47 @@ export default new Router(
 
                 ]
             },
+            {
+                path: '/AIMarketing/:id',
+                component: AIMarketing,
+                redirect: '/AIMarketing/:id/msg/msgSending',
+                children: [
+                    {
+                        component: msg,
+                        path: 'msg',
+                        children: [
+                            {
+                                component: msgSending,
+                                path: 'msgSending',
+                                name: 'msgSending'
+                            },{
+                                component: msgList,
+                                path: 'msgList',
+                                name: 'msgList'
+                            },{
+                                component: msgConfig,
+                                path: 'msgConfig',
+                                name: 'msgConfig'
+                            }
+                        ]
+                    },
+                    {
+                        component: coupon,
+                        path: 'coupon',
+                        children: [
+                            {
+                                path: 'couponManage',
+                                name: 'couponManage',
+                                component: couponManage
+                            },{
+                                path: 'couponList',
+                                name: 'couponList',
+                                component: couponList
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
     },
 )

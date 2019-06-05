@@ -9,13 +9,14 @@
                 <div class="section-rgt">
                     <el-switch
                         v-model="form1.stockWarn"
+                        @change="handleUpdate('zv_low_inventory',true)"
                         active-text="启用"
                         inactive-text="关闭">
                     </el-switch>
                 </div>
             </div>
             <div class="section2">
-                <el-form :model="form1" :rules="dataRule1" status-icon ref="form1" >
+                <el-form :model="form1" status-icon ref="form1" >
                     <ul>
                         <li>
                             <span class="list-title">预值设置</span>
@@ -45,7 +46,7 @@
                     </ul>
                 </el-form>
                 <div class="btn-group">
-                    <el-button class="btn-save">保存</el-button>
+                    <el-button class="btn-save" @click="handleUpdate('zv_low_inventory')">保存</el-button>
                 </div>
             </div>
         </div>
@@ -55,7 +56,8 @@
             </div>
             <div class="section-rgt">
                 <el-switch
-                    v-model="form1.autoCreateCode"
+                    @change="handleUpdate('zv_auto_goods_id',true)"
+                    v-model="form2.autoCreateCode"
                     active-text="启用"
                     inactive-text="关闭">
                 </el-switch>
@@ -68,35 +70,143 @@
             </el-tooltip>
             <div class="units-list">
                 <ul>
-                    <li>
-                        个
-                        <span class="el-icon-edit"></span>
-                        <span class="el-icon-delete"></span>
+                    <li v-for="(item,idx) in form3.list" :key="idx">
+                        {{item}}
+                        <span class="el-icon-edit" @click="handleEdit(item,idx)"></span>
+                        <span class="el-icon-delete" @click="handleDelete(idx)"></span>
                     </li>
-                    <li>
-                        支
-                        <span class="el-icon-edit"></span>
-                        <span class="el-icon-delete"></span>
-                    </li>
-                    <li class="el-icon-plus btn-add"></li>
+                    <li class="el-icon-plus btn-add" @click="handleAdd"></li>
                 </ul>
             </div>
         </div>
+
+        <el-dialog :title="dialogData.title == 0 ? '新增商品单位' : '修改选中的单位'" :visible.sync="dialogData.status" @close='handleCloseModal'>
+
+            <el-input v-model="dialogData.name"></el-input>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="handleCloseModal" class="dialog-btn">取 消</el-button>
+                <el-button type="primary" @click="handleConfirm"  class="dialog-btn">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
+    import { requestUpdateContent,requestGetContent,requestUpdateState } from '@/services/service';
+    import { Message } from 'element-ui'
     export default {
         data(){
             return{
                 form1: {
                     stockWarn: true,
                     productNum: '100',
-                    warnType: '1',      //提醒方式
+                    warnType: '1',           //提醒方式
                     timer: '',
+                },
+                form2: {
                     autoCreateCode: false,   //自动生成编码
                 },
-                dataRule1: {
-
+                form3: {
+                    list: []
+                },
+                dialogData: {
+                    status: false,
+                    title: '0',
+                    name: '',
+                    idx: '',
+                }
+            }
+        },
+        mounted(){
+            this.initData();
+        },
+        methods: {
+            initData(){
+                let params = {
+                    shopId: this.$route.params.id
+                };
+                requestGetContent(params).then(res=>{
+                    let data = res.data.data;
+                    this.form3.list = JSON.parse(data.zv_unit[0]);
+                })
+            },
+            handleUpdate(type,isStateBtn = false){
+                let params = {
+                    contentType: type,
+                    shopId: this.$route.params.id
+                };
+                if(!isStateBtn){
+                    this.handleUpdateContent(type,params);
+                }else{
+                    this.handleUpdateState(type,params);
+                }
+            },
+            // 更新内容
+            handleUpdateContent(type,params){
+                switch (type) {
+                    case 'zv_low_inventory':
+                        params = Object.assign({},params,{
+                            content: JSON.stringify(this.form1)
+                        });
+                        break;
+                    case 'zv_unit':
+                        params = Object.assign({},params,{
+                            content: JSON.stringify(this.form3.list)
+                        });
+                        break;
+                    default:;
+                }
+                requestUpdateContent(params).then(res=>{
+                    if(res.data.code == '0000'){
+                        Message.success('保存成功');
+                    }else{
+                        Message.error('保存失败');
+                    }
+                })
+            },
+            // 更新状态
+            handleUpdateState(type,params){
+                requestUpdateState(params).then(res=>{
+                    if(res.data.code == '0000'){
+                        Message.success('保存成功');
+                    }else{
+                        Message.error('保存失败');
+                    }
+                })
+            },
+            handleCloseModal(){
+                this.dialogData.status = false;
+            },
+            handleConfirm(){
+                if(!this.dialogData.name){
+                    Message.error('请先输入');
+                }
+                if(this.dialogData.title == '1'){
+                    this.form3.list.splice(this.dialogData.idx,1,this.dialogData.name)
+                }else{
+                    this.form3.list.push(this.dialogData.name)
+                }
+                this.handleUpdate('zv_unit');
+                this.handleCloseModal();
+            },
+            handleEdit(item,idx){
+                this.dialogData = {
+                    status: true,
+                    title: '1',
+                    name: item,
+                    idx: idx
+                }
+            },
+            handleDelete(idx){
+                this.form3.list.splice(idx,1);
+                this.handleUpdate('zv_unit');
+            },
+            handleAdd(){
+                this.dialogData = {
+                    status: true,
+                    title: '0',
+                    name: '',
+                    idx: ''
                 }
             }
         }

@@ -20,21 +20,21 @@
         </div>
         <div :class=" filterMode ? 'section-filter active' : 'section-filter' ">
             <ul>
-                <li>
-                    <div class="filter-lf">
-                        员工查询
-                    </div>
-                    <div class="filter-rgt">
-                        <el-select v-model="filterParams.member" placeholder="请选择">
-                            <el-option
-                                v-for="item in optionsParams.staffOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </div>
-                </li>
+                <!--<li>-->
+                    <!--<div class="filter-lf">-->
+                        <!--员工查询-->
+                    <!--</div>-->
+                    <!--<div class="filter-rgt">-->
+                        <!--<el-select v-model="filterParams.member" placeholder="请选择">-->
+                            <!--<el-option-->
+                                <!--v-for="item in optionsParams.staffOptions"-->
+                                <!--:key="item.value"-->
+                                <!--:label="item.label"-->
+                                <!--:value="item.value">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</div>-->
+                <!--</li>-->
                 <li>
                     <div class="filter-lf">
                         会员来源
@@ -55,17 +55,14 @@
                         会员等级
                     </div>
                     <div class="filter-rgt">
-                        <span>全部</span>
-                        <span>默认等级</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="filter-lf">
-                        会员标签
-                    </div>
-                    <div class="filter-rgt">
-                        <span>全部</span>
-                        <span>默认等级</span>
+                        <span :class="searchParams.gradeId === '' ? 'active' : '' "
+                              @click="handleSetMemberLevel('')">全部</span>
+                        <span v-for="(item,idx) in optionsParams.gradeIdOptions"
+                              :key="idx"
+                              @click="handleSetMemberLevel(item.value)"
+                              :class="searchParams.gradeId === item.value ? 'active' : '' ">
+                            {{item.label}}
+                        </span>
                     </div>
                 </li>
                 <li>
@@ -73,11 +70,14 @@
                         客户流失
                     </div>
                     <div class="filter-rgt">
-                        <span>全部</span>
-                        <span>1个月没购买</span>
-                        <span>3个月没购买</span>
-                        <span>半年没购买</span>
-                        <span>一年没购买</span>
+                        <span :class="searchParams.buyDay === '' ? 'active' : '' "
+                              @click="handleSetBuyDay('')">全部</span>
+                        <span v-for="(item,idx) in optionsParams.buyDayOptions"
+                              :key="idx"
+                              @click="handleSetBuyDay(item.value)"
+                              :class="searchParams.buyDay === item.value ? 'active' : '' ">
+                            {{item.label}}
+                        </span>
                     </div>
                 </li>
                 <li>
@@ -85,9 +85,9 @@
                         欠款会员
                     </div>
                     <div class="filter-rgt">
-                        <span>全部</span>
-                        <span>正常</span>
-                        <span>欠款</span>
+                        <span @click="handleSetAppera('')" :class="searchParams.isArrears === '' ? 'active' : '' ">全部</span>
+                        <span @click="handleSetAppera(true)" :class="searchParams.isArrears == true ? 'active' : '' ">正常</span>
+                        <span @click="handleSetAppera(false)" :class="searchParams.isArrears === false ? 'active' : '' ">欠款</span>
                     </div>
                 </li>
                 <li>
@@ -95,14 +95,14 @@
                         过期时间
                     </div>
                     <div class="filter-rgt">
-                        <span>全部</span>
-                        <span>近一个月内过期</span>
-                        <span>已过期会员</span>
+                        <span @click="handleSetdeadDay('')" :class="searchParams.deadDay === '' ? 'active' : '' ">全部</span>
+                        <span @click="handleSetdeadDay(30)" :class="searchParams.deadDay === 30 ? 'active' : '' ">近一个月内过期</span>
+                        <span @click="handleSetdeadDay(0)" :class="searchParams.deadDay === 0 ? 'active' : '' ">已过期会员</span>
                     </div>
                 </li>
             </ul>
             <div class="filter-btn-group">
-                <el-button class="filter-btn">搜索</el-button>
+                <el-button class="filter-btn" @click="handleSearch">搜索</el-button>
             </div>
         </div>
         <div class="section-content" v-show="!filterMode">
@@ -163,17 +163,17 @@
                 @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="25"> </el-table-column>
                 <el-table-column label="卡号" show-overflow-tooltip prop="accountId"></el-table-column>
-                <el-table-column prop="gradeName" width="80" label="会员姓名" show-overflow-tooltip >
+                <el-table-column prop="gradeName" label="会员姓名" show-overflow-tooltip >
                 </el-table-column>
-                <el-table-column prop="mobile" width="80" label="手机号码" show-overflow-tooltip>
+                <el-table-column prop="mobile" label="手机号码" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="gradeId" width="80" label="会员等级" show-overflow-tooltip>
+                <el-table-column prop="gradeId" label="会员等级" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="integral" width="80" label="可用积分" show-overflow-tooltip>
+                <el-table-column prop="integral" label="可用积分" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="balance" label="卡内余额" width="80" show-overflow-tooltip>
+                <el-table-column prop="balance" label="卡内余额" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="guestFromName" label="来源" width="80" show-overflow-tooltip>
+                <el-table-column prop="guestFromName" label="来源" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="userName" label="开卡员工" show-overflow-tooltip>
                 </el-table-column>
@@ -186,8 +186,10 @@
                         <el-button
                         size="mini"
                         @click="handleEditMember(scope.$index, scope.row)">编辑</el-button>
+                        <br>
                         <el-button
                         size="mini"
+                        class="btn-delete"
                         type="danger"
                         @click="handleDeleteMmeber(scope.row)">删除</el-button>
                     </template>
@@ -205,17 +207,19 @@
     </div>
 </template>
 <script>
-import { 
+import {
     requestGetMemberbaseData,
     requestSearchMemberlist,
     requestGetMemberList,
     requestDeleteMember,
-    requestGetDictList
+    requestGetDictList,
+    requestGetGradelist
 } from '@/services/service';
 import { Message } from 'element-ui';
 import EventBus from '@/components/eventEmitter/eventEmitter';
 import { CREATE_MEMEBR_CARD } from '@/components/eventEmitter/eventName';
-import { timeStampTrans } from '@/common/utils'
+import { timeStampTrans } from '@/common/utils';
+import { BUY_DAY } from '@/common/config'
 export default {
     data(){
         return{
@@ -228,9 +232,17 @@ export default {
                 member: '',
                 memberOrigin: '',
             },
+            searchParams: {
+                gradeId: '',
+                buyDay: '',
+                isArrears: '',
+                deadDay: ''
+            },
             optionsParams: {
                 staffOptions: [],
                 memberOriginOptions: [],
+                gradeIdOptions: [],
+                buyDayOptions: BUY_DAY
             },
             filterMode: false,
         }
@@ -304,21 +316,22 @@ export default {
                 shopId: this.$route.params.id,
                 pageNum: 1,
             };
-            if(this.searchKey){
+            params = Object.assign({},params,this.searchParams);
+            // if(this.searchKey){
                 requestSearchMemberlist(params).then(function(res){
                     if(res.data.code == '0000'){
                         _this.initData = res.data.data.list;
                         _this.totalCount = res.data.data.totalCount;
                     }
                 })
-            }else{
-                requestGetMemberList(params).then(function(res){
-                    if(res.data.code == '0000'){
-                        _this.initData = res.data.data.list;
-                        _this.totalCount = res.data.data.totalCount;
-                    }
-                })
-            };
+            // }else{
+            //     requestGetMemberList(params).then(function(res){
+            //         if(res.data.code == '0000'){
+            //             _this.initData = res.data.data.list;
+            //             _this.totalCount = res.data.data.totalCount;
+            //         }
+            //     })
+            // };
         },
         // 分页
         pageChange(params1){
@@ -329,6 +342,7 @@ export default {
                 shopId: this.$route.params.id,
                 birthday: this.birthdayParams
             };
+            params = Object.assign({},params,this.searchParams);
             requestGetMemberList(params).then(function(res){
                 if(res.data.code == '0000'){
                     _this.initData = res.data.data.list;
@@ -344,6 +358,35 @@ export default {
         // 切换筛选模式
         toggleFilterMode(){
             this.filterMode = !this.filterMode;
+            if(this.optionsParams.gradeIdOptions.length != 0){
+                return
+            }
+            let params = {
+                shopId: this.$route.params.id
+            };
+            requestGetGradelist(params).then((res)=>{
+                if(res.data.data.list.length == 0){
+                    this.optionsParams.gradeIdOptions = [{label: 0,value: 0}]
+                }else{
+                    this.optionsParams.gradeIdOptions = res.data.data.list
+                }
+            });
+        },
+        // 设置会员卡等级
+        handleSetMemberLevel(params){
+            this.searchParams.gradeId = params;
+        },
+        // 设置客户流失
+        handleSetBuyDay(params){
+            this.searchParams.buyDay = params;
+        },
+        // 设置客户欠款
+        handleSetAppera(params){
+            this.searchParams.isArrears = params;
+        },
+        // 设置过期时间
+        handleSetdeadDay(params){
+            this.searchParams.deadDay = params;
         }
     }
 }
@@ -386,19 +429,19 @@ export default {
                         }
                         &:first-child{
                             background: url('../../assets/images/icon_edit.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(2){
                             background: url('../../assets/images/icon_import.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(3){
                             background: url('../../assets/images/icon_export.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                         &:nth-child(4){
                             background: url('../../assets/images/icon_type.png') 10px center no-repeat;
-                            background-size: 18px; 
+                            background-size: 18px;
                         }
                     }
                 }
@@ -406,13 +449,13 @@ export default {
         }
         .section-filter{
             background: #fff;
-            height: 0;
             overflow: hidden;
-            margin-top: 10px;
+            height: 0;
+            margin-top: 0;
             &.active{
-                height: 100%;
-                transition: all 1s;
                 padding: 20px;
+                height: 100%;
+                margin-top: 10px;
             }
             ul{
                 background: rgb(247,247,247);
@@ -439,9 +482,8 @@ export default {
                             cursor: pointer;
                             &.active{
                                 border-color: $color;
-                                &:active{
-                                    background: $color;
-                                }
+                                color: $color;
+                                border-radius: 3px;
                             }
                         }
                     }
@@ -457,6 +499,7 @@ export default {
             }
         }
         .section-content{
+            margin-top: 10px;
             .section-content-box{
                 display: flex;
                 justify-content: flex-start;
@@ -517,6 +560,9 @@ export default {
         }
         .section-footer{
             margin-top: 10px;
+            .btn-delete{
+                margin-top: 5px;
+            }
             .pagenation{
                 text-align: right;
                 margin-bottom: 20px;

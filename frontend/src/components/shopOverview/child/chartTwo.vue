@@ -8,56 +8,21 @@
                 <el-row :gutter="20" v-if="activeName == 'first'">
                     <el-col :span="16">
                         <p class="sectopn-title">销售额趋势</p>
-                        <ve-histogram :data="chartData" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
+                        <ve-histogram :data="chartData0" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
                     </el-col>
                     <el-col :span="8">
                         <div class="section-rgt">
                             <p class="sectopn-title">商品销售额排名</p>
                             <ul class="ranking-list">
-                                <li>
+                                <li v-for="(item,idx) in initDataArray0">
                                     <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
+                                        <b>{{idx+1}}</b>
+                                        <span>{{item.name}}</span>
                                     </div>
                                     <div>
-                                        123，123
+                                        {{item.amount}}
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li><li>
-                                <div class="ranking-list-lf">
-                                    <b>1</b>
-                                    <span>工作的一号店</span>
-                                </div>
-                                <div>
-                                    123，123
-                                </div>
-                            </li>
 
                             </ul>
                         </div>
@@ -66,57 +31,21 @@
                 <el-row :gutter="20" v-else-if="activeName == 'second'">
                     <el-col :span="16">
                         <p class="sectopn-title">会员消费</p>
-                        <ve-histogram :data="chartData" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
+                        <ve-histogram :data="chartData1" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
                     </el-col>
                     <el-col :span="8">
                         <div class="section-rgt">
                             <p class="sectopn-title">商品消费排名</p>
                             <ul class="ranking-list">
-                                <li>
+                                <li v-for="(item,idx) in initDataArray1" :key="idx">
                                     <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
+                                        <b>{{idx+1}}</b>
+                                        <span>{{item.name}}</span>
                                     </div>
                                     <div>
-                                        123，123
+                                        {{item.amount}}
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li><li>
-                                <div class="ranking-list-lf">
-                                    <b>1</b>
-                                    <span>工作的一号店</span>
-                                </div>
-                                <div>
-                                    123，123
-                                </div>
-                            </li>
-
                             </ul>
                         </div>
                     </el-col>
@@ -124,57 +53,21 @@
                 <el-row :gutter="20" v-else>
                     <el-col :span="16">
                         <p class="sectopn-title">其它数据</p>
-                        <ve-histogram :data="chartData" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
+                        <ve-histogram :data="chartData2" :settings="chartSettings" :extend="chartExtend" height="200px"></ve-histogram>
                     </el-col>
                     <el-col :span="8">
                         <div class="section-rgt">
                             <p class="sectopn-title">员工销售额排名</p>
                             <ul class="ranking-list">
-                                <li>
+                                <li v-for="(item,idx) in initDataArray2" :key="idx">
                                     <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
+                                        <b>{{idx+1}}</b>
+                                        <span>{{item.name}}</span>
                                     </div>
                                     <div>
-                                        123，123
+                                        {{item.amount}}
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="ranking-list-lf">
-                                        <b>1</b>
-                                        <span>工作的一号店</span>
-                                    </div>
-                                    <div>
-                                        123，123
-                                    </div>
-                                </li><li>
-                                <div class="ranking-list-lf">
-                                    <b>1</b>
-                                    <span>工作的一号店</span>
-                                </div>
-                                <div>
-                                    123，123
-                                </div>
-                            </li>
-
                             </ul>
                         </div>
                     </el-col>
@@ -215,40 +108,88 @@
             };
             return{
                 activeName: 'first',
-                chartData: {
-                    columns: ['日期', '客户数量'],
+                chartData0: {
+                    columns: ['日期', '销售额'],
                     rows: [
-                        { '日期': '1/1', '客户数量': 1393 },
-                        { '日期': '1/2', '客户数量': 3530 },
-                        { '日期': '1/3', '客户数量': 2923},
-                        { '日期': '1/4', '客户数量': 1723 },
-                        { '日期': '1/5', '客户数量': 3792 },
-                        { '日期': '1/6', '客户数量': 4593}
+                        // { '日期': '1/1', '销售额': 1393 },
                     ]
                 },
                 chartData1: {
+                    columns: ['日期', '销售额'],
+                    rows: [
+                        // { '日期': '1/1', '销售额': 1393 },
+                    ]
                 },
                 chartData2: {
+                    columns: ['支付方式', '数量'],
+                    rows: [
+                        // { '日期': '1/1', '销售额': 1393 },
+                    ]
                 },
                 valueDate: '',
-                initDataArray: {}
+                initDataArray0: [],
+                initDataArray1: [],
+                initDataArray2: []
             }
         },
         mounted(){
             this.initData();
         },
         methods: {
-            handleClick(){
-                this.chartData1 = this.chartData;
+            handleClick(name){
+                switch (name.index) {
+                    case '1':
+                        if(this.initDataArray1.length != 0){return}
+                        let params = {
+                            shopId: this.$route.params.id,
+                            type: '02'
+                        };
+                        requestStatisticsData2(params).then((res)=>{
+                            this.initDataArray1 = res.data.data.entity1;
+                            let trend = res.data.data.trend;
+                            trend.forEach(item=>{
+                                this.chartData1.rows.push({
+                                    '日期': item.dayOrMonth,
+                                    '销售额': item.amount
+                                })
+                            })
+                        });
+                        break;
+                    case '2':
+                        if(this.initDataArray1.length != 0){return}
+                        let params1 = {
+                            shopId: this.$route.params.id,
+                            type: '03'
+                        };
+                        requestStatisticsData2(params1).then((res)=>{
+                            this.initDataArray2 = res.data.data.entity1;
+                            let trend = res.data.data.entity2;
+                            trend.forEach(item=>{
+                                this.chartData2.rows.push({
+                                    '支付方式': item.name,
+                                    '数量': item.amount
+                                })
+                            })
+                        });
+                        break;
+                }
             },
             initData(){
                 let params = {
-                    shopId: this.$route.params.id
+                    shopId: this.$route.params.id,
+                    type: '01'
                 };
                 requestStatisticsData2(params).then((res)=>{
-                    this.initDataArray = res.data.data;
+                    this.initDataArray0 = res.data.data.entity1;
+                    let trend = res.data.data.trend;
+                    trend.forEach(item=>{
+                        this.chartData0.rows.push({
+                            '日期': item.dayOrMonth,
+                            '销售额': item.amount
+                        })
+                    })
                 })
-            }
+            },
         },
         components: {
             VeHistogram

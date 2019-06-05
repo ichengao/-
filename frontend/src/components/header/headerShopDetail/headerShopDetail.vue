@@ -1,8 +1,8 @@
 <template>
     <div class="container-header container-header-desk">
         <div class="container-header-lf">
-            <img src="../../../assets/images/icon_logo_white.png" alt="">
-            <span class="shop-name">合肥卡旺卡</span>
+            <img :src="shopLogoPath ? shopLogoPath : defaultImage" alt="">
+            <span class="shop-name">{{shopBrand}}</span>
         </div>
         <div class="container-header-center">
             <ul>
@@ -32,11 +32,13 @@
     </div>
 </template>
 <script>
+import defaultImage from '@/assets/images/icon_logo.png';
 export default {
     data(){
         return{
             userMsg: {},     // 用户数据
             currentPage: true,
+            defaultImage: defaultImage
         }
     },
     mounted(){
@@ -48,11 +50,26 @@ export default {
             get(){
                 return this.$store.state.userInfo.adminName
             }
-        }
+        },
+        shopBrand: {
+            get(){
+                return this.$store.state.userInfo.shopBrand
+            }
+        },
+        shopLogoPath: {
+            get(){
+                return this.$store.state.userInfo.shopLogoPath
+            }
+        },
     },
     methods: {
         handleCommand(command) {
-            console.log(command)
+            switch (command) {
+                case 'd':
+                    this.handleExit()
+                    break;
+                default:;
+            }
         },
         initData(){
             let userMsg = sessionStorage.getItem('userMsg')
@@ -74,13 +91,17 @@ export default {
                 let params = this.$route.params.id;
                 this.$router.push(`/cashier/${params}`);
             }
+        },
+        handleExit(){
+            localStorage.removeItem('access_token');
+            window.location.href='./login.html';
         }
     }
 }
 </script>
 <style lang="scss" scoped>
     @import '../../../assets/scss/common.scss';
-    
+
     .container-header{
         position: fixed;
         top: 0;
@@ -131,18 +152,18 @@ export default {
                     align-items: center;
                     &.tab-money{
                         background: url('../../../assets/images/icon_desk.png') 10px center no-repeat;
-                        background-size: 25px; 
+                        background-size: 25px;
                     }
                     &.tab-card{
                         background: url('../../../assets/images/icon_card.png') 10px center no-repeat;
-                        background-size: 25px; 
+                        background-size: 25px;
                     }
                     &.tab-pay{
                         background: url('../../../assets/images/icon_pay.png') 10px center no-repeat;
-                        background-size: 25px; 
+                        background-size: 25px;
                     }
                     &:hover{
-                        background-color: rgba(255,255,255,.2); 
+                        background-color: rgba(255,255,255,.2);
                     }
                 }
             }
@@ -153,7 +174,7 @@ export default {
                     color: $color;
                     &:first-child{
                         background: url('../../../assets/images/icon-desk-on.png') 0 0 no-repeat;
-                        background-size: 25px auto; 
+                        background-size: 25px auto;
                     }
                     &:last-child{
                         background: url('../../../assets/images/icon-set-on.png') 0 0 no-repeat;

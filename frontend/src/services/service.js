@@ -5,6 +5,10 @@ import { SERVER_URL } from '../common/config'
 export function requestLogin(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/action/login`,params)
 }
+// 退出登录
+export function requestLogout(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/action/logout`,params)
+}
 // 注册
 export function requestRegister(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/action/register`,params)
@@ -13,7 +17,10 @@ export function requestRegister(params){
 export function requestGetRegisterCode(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/msg/register`,params)
 }
-
+// 获取功能列表
+export function requestGetShopGetcontent(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/getcontent`,params)
+}
 /**
  * 字典模块
  */
@@ -21,7 +28,22 @@ export function requestGetRegisterCode(params){
 export function requestGetDictList(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/dict/list`,params)
 }
-
+// 获取字典
+export  function requestGetDictShopList(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/dict/shopdict`,params)
+}
+// 获取省
+export function requestGetProvice(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/common/province`,params)
+}
+// 获取市
+export function requestGetCity(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/common/city`,params)
+}
+// 获取区
+export function requestGetDistrict(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/common/district`,params)
+}
 /**
  * 首页
  */
@@ -88,6 +110,10 @@ export function requestUpdateMemberDetail(params){
 export function requestGetGradelist(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/card/gradelist`,params)
 }
+// 更新会员卡等级
+export function requestUpdateGradelist(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/card/updategrade`,params)
+}
 // 获取会员卡类型
 export function requestGetTypelist(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/card/typelist`,params)
@@ -138,6 +164,10 @@ export function requestGetProductList(params){
 export function requestAddProduct(params){
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/add`,params)
 }
+// 更新商品
+export function requestUpdateProduct(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/update`,params)
+}
 // 添加商品大类
 export function requestAddcategory(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/addcategory`,params)
@@ -153,6 +183,10 @@ export function requestDeleteGoods(params) {
 // 获取服务列表
 export function requestGetServerlist(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/goods/serverlist`,params)
+}
+// 还款
+export function requestGetRefund(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/refund`,params)
 }
 
 /**
@@ -243,7 +277,26 @@ export function requestUpdateInventory(params) {
 export function requestInventoryLog(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/purchase/inventorylog`,params)
 }
-
+// 查看库存
+export function requestGoodsstockprice(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/goods/goodsstockprice`,params)
+}
+// 供货记录
+export function requestStockorder(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/stockorder`,params)
+}
+// 采购进货订单详情
+export function requestStockorderdetail(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/stockorderdetail`,params)
+}
+// 采购退货
+export function requestStockReturn(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/return`,params)
+}
+// 采购退货订单列表
+export function requestStockReturnList(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/purchase/returnorder`,params)
+}
 
 /**
  * 系统设置模块
@@ -308,6 +361,19 @@ export function requestGetRoleList(params) {
 export function requestDeleteRole(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/staff/delrole`,params)
 }
+// 获取设置
+export function requestGetContent(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/getcontent`,params)
+}
+// 更新设置内容
+export function requestUpdateContent(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/updatecontent`,params)
+}
+// 更新设置状态
+export function requestUpdateState(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/shop/updatestate`,params)
+}
+
 
 /**
  * 门店概况
@@ -318,7 +384,12 @@ export function requestStatisticsData1(params) {
 export function requestStatisticsData2(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/statistics/data2`,params)
 }
-
+export function requestStatisticsData3(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/statistics/data3`,params)
+}
+export function requestStatisticsData4(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/statistics/data4`,params)
+}
 
 /**
  * 收银台模块
@@ -329,10 +400,66 @@ export function requestGetUnprocessedOrderList(params) {
 }
 
 
+/**
+ * 报表模块
+ */
+// 业绩汇总报表
+export function requestGetReportPerformance(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/report/performance`,params)
+}
+// 业绩汇总报表导出
+export function requestExportReportPerformance() {
+    return '/zv-member/zv/report/performanceexport'
+}
 
-
-
-
-
-
-
+/**
+ * ai营销模块
+ */
+// 获取剩余短信条数
+export function requestGetMsgReamin(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/msgremain`,params)
+}
+// 获取短信模板
+export function requestGetMsgTemplate(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/msgtemplate`,params)
+}
+// 发送短信
+export function requestSendMsg(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/sendmsg`,params)
+}
+// 获取短信配置列表
+export function requestGetMsgConfig(params){
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/msgconfig`,params)
+}
+// 获取优惠券列表
+export function requestGetCouponList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/couponrecord`,params)
+}
+// 获取优惠卷
+export function requestGetCoupon(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/getcoupon`,params)
+}
+// 优惠券发放记录data
+export function requestGetCouponData(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/couponredata`,params)
+}
+// 新增优惠卷
+export function requestAddCoupon(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/addcoupon`,params)
+}
+// 删除优惠券
+export function requestDelCoupon(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/delcoupon`,params)
+}
+// 更新优惠卷
+export function requestUpdateCoupon(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/updatecoupon`,params)
+}
+// 发放优惠券
+export function requestGrantCoupon(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/grantcoupon`,params)
+}
+// 优惠券发放纪录
+export function requestCouponRecord(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/market/couponrecord`,params)
+}
