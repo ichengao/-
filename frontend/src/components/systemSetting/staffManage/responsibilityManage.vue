@@ -11,7 +11,7 @@
                 </el-table-column>
                 <el-table-column label="设置权限" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <el-button class="el-icon-plus btn-add-permission" @click="handleUpdatePermission"></el-button>
+                        <el-button class="el-icon-plus btn-add-permission" @click="handleUpdatePermission(scope.row.roleId)"></el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="备注" prop="remark" show-overflow-tooltip></el-table-column>
@@ -90,7 +90,7 @@
                 this.$store.dispatch('openAddResponsibilityManage')
             },
             handleUpdatePermission(params){
-                this.$store.dispatch('openUpdatePermissionModal','123');
+                this.$store.dispatch('openUpdatePermissionModal',params);
             }
         }
     }

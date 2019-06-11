@@ -1,11 +1,11 @@
 <template>
     <div class="staff-detail-container">
-        <div class="section-header">
+        <div class="section-header" v-if="!currentStatus">
             <el-button class="header-button" @click="handleCreate">新增</el-button>
             <el-button class="header-button" @click="handleDelete">批量删除</el-button>
             <el-button class="header-button" @click="handEdit">编辑</el-button>
         </div>
-        <div class="section-content">
+        <div class="section-content" v-if="!currentStatus">
             <el-table ref="multipleTable" :data="initDataArray" tooltip-effect="dark" style="width: 100%"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection"> </el-table-column>
@@ -26,11 +26,6 @@
                         {{scope.row.createDate | timeStampTrans}}
                     </template>
                 </el-table-column>
-                <el-table-column label="薪资操作" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <el-button class="btn-control">提成明细</el-button>
-                    </template>
-                </el-table-column>
             </el-table>
             <div class="pagenation">
                 <el-pagination
@@ -42,6 +37,8 @@
                 </el-pagination>
             </div>
         </div>
+
+        <!--<DetailOfRoyalties v-if="currentStatus" :id="currentSelectId" :currentStatus="currentStatus" />-->
     </div>
 </template>
 <script>
@@ -49,6 +46,7 @@
     import { ADD_STAFF } from '@/components/eventEmitter/eventName';
     import EventBus from '@/components/eventEmitter/eventEmitter';
     import { Message } from 'element-ui';
+    import DetailOfRoyalties from '@/components/systemSetting/staffManage/child/DetailsOfRoyalties';
     export default {
         data(){
             return{
@@ -56,7 +54,12 @@
                 selectedIdsArr: [],     //  选中id列表
                 selectedDetailArr: '',  //  选中详细信息
                 totalCount: 0,
+                currentStatus: false,
+                currentSelectId: '',     // 当前选中的员工id
             }
+        },
+        components: {
+            DetailOfRoyalties
         },
         mounted(){
             this.initData();
@@ -140,7 +143,7 @@
                     keyword: this.keyword,
                     shopId: this.$route.params.id
                 };
-                requestGetWarehouseSupplierlist(params).then(function(res){
+                requestGetAllStaff(params).then(function(res){
                     if(res.data.code == '0000'){
                         _this.initDataArray = res.data.data.list;
                         _this.totalCount = res.data.data.totalCount;
@@ -149,6 +152,10 @@
             },
             handleCreate(){
                 this.$store.dispatch('openCreateStaffModal')
+            },
+            handleDetail(id){
+                this.currentStatus = true;
+                this.currentSelectId = id;
             }
         }
     }

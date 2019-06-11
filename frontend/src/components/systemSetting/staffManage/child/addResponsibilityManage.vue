@@ -54,7 +54,7 @@
                     </div>
                     <div class="section3-content">
                         <div>
-                            <el-form-item prop="userName" label="业绩提成" label-width="100px" class="form-item-box">
+                            <el-form-item label="业绩提成" label-width="100px" class="form-item-box">
                                 <el-select v-model="section2Option" placeholder="请选择">
                                     <el-option
                                         v-for="item in section2Options"
@@ -120,67 +120,54 @@
                     <div class="section3-content">
                         <div>
                             <el-form-item prop="userName" label="业绩提成" label-width="100px" class="form-item-box">
-                                <el-select v-model="section2Option" placeholder="请选择">
+                                <el-select v-model="section3Option" placeholder="请选择">
                                     <el-option
-                                        v-for="item in section2Options"
+                                        v-for="item in section3Options"
                                         :key="item.value"
                                         :label="item.label"
-                                        :value="item.value">
+                                        :value="item.value"
+                                        :disabled="item.disabled"
+                                    >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                             <div></div>
                         </div>
-                        <div>
-                            <el-form-item prop="userName" label="提成区段" label-width="100px" class="form-item-box">
-                                <span class="area-money">￥0</span>
-                                <el-input placeholder="请输入金额" class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
+                        <div v-for="(item,idx) in shopCommition" :key="idx">
+                            <el-form-item label="提成区段" label-width="100px" class="form-item-box">
+                                <span class="area-money">￥{{item.low}}至</span>
+                                <el-input placeholder="请输入金额" class="input-box" v-model="item.high" maxlength="20" @change="handleShopChange($event,idx)" @blur="handleShopBlur($event,idx)" v-if="(idx+1) != shopCommition.length"></el-input>
+                                <span v-else>无穷大</span>
                             </el-form-item>
-                            <el-form-item prop="userName" label="此区段提成比例" label-width="120px" class="form-item-box">
-                                <el-input placeholder="请输入0-100的提成比例"  class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
+                            <el-form-item label="此区段提成比例" label-width="120px" class="form-item-box">
+                                <el-input placeholder="请输入0-100的提成比例" v-model="item.rate" maxlength="20" >
+                                    <template slot="append">%</template>
+                                </el-input>
                             </el-form-item>
-                            <el-button class="el-icon-plus btn-add"></el-button>
-                        </div>
-                        <div>
-                            <el-form-item prop="userName" label="提成区段" label-width="100px" class="form-item-box">
-                                <span class="area-money">￥0</span>
-                                <el-input placeholder="请输入金额" class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
-                            </el-form-item>
-                            <el-form-item prop="userName" label="此区段提成比例" label-width="120px" class="form-item-box">
-                                <el-input placeholder="请输入0-100的提成比例"  class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
-                            </el-form-item>
-                            <el-button class="el-icon-minus btn-add"></el-button>
-                        </div>
-                        <div>
-                            <el-form-item prop="userName" label="提成区段" label-width="100px" class="form-item-box">
-                                <span class="area-money">￥0</span>
-                                <el-input placeholder="请输入金额" class="pwd input-box" v-model="form.userName" readonly maxlength="20" ></el-input>
-                            </el-form-item>
-                            <el-form-item prop="userName" label="此区段提成比例" label-width="120px" class="form-item-box">
-                                <el-input placeholder="请输入0-100的提成比例"  class="pwd input-box" v-model="form.userName" maxlength="20" ></el-input>
-                            </el-form-item>
+                            <el-button class="el-icon-plus btn-add" v-if="idx == 0" @click="handleShopalAdd"></el-button>
+                            <el-button class="el-icon-minus btn-add" v-else-if="idx == shopCommition.length -2" @click="handleShopaldelete"></el-button>
                         </div>
                         <div class="section3-btn">
-                            <el-button class="btn-ensure">确定</el-button>
+                            <el-button class="btn-ensure" @click="handleSaveShopData">确定</el-button>
                         </div>
                         <div class="section3-list">
                             <ul>
-                                <li>
+                                <li v-for="(item,idx) in shopTypeList" :key="idx">
                                     <div class="section-list-header">
-                                        <div class="section-lf">充值业绩</div>
+                                        <div class="section-lf">
+                                            <span v-if="item.type == '01'">开卡业绩</span>
+                                            <span v-else-if="item.type == '02'">充值业绩</span>
+                                            <span v-else-if="item.type == '03'">充次业绩</span>
+                                            <span v-else>商品业绩</span>
+                                        </div>
                                         <div class="section-rgt">
                                             <span class="el-icon-close"></span>
                                         </div>
                                     </div>
-                                    <div class="section-list-content">
-                                        <span>提成区段¥0至</span>
-                                        <span>至¥2</span>
-                                        <span>此区段提成比例：2%</span>
-                                    </div>
-                                    <div class="section-list-content">
-                                        <span>提成区段¥3至</span>
-                                        <span>至¥无限</span>
-                                        <span>此区段提成比例：2%</span>
+                                    <div class="section-list-content" v-for="(simItem,simIdx) in item.list" :idx="simIdx">
+                                        <span>提成区段¥{{simItem.low}}至</span>
+                                        <span>至¥{{simItem.high}}</span>
+                                        <span>此区段提成比例：{{simItem.rate}}%</span>
                                     </div>
                                 </li>
                             </ul>
@@ -315,6 +302,55 @@
                     // }
                 ],
 
+                shopCommition: [
+                    {
+                        low: 0,
+                        rate: '',
+                        high: '',
+                        "type":"01",
+                        "commissionId":'',
+                        businessType: '01',
+                    },
+                    {
+                        low: 0,
+                        rate: '',
+                        high: 100000000000,
+                        "type":"01",
+                        "commissionId":'',
+                        businessType: '01',
+                    }
+                ],
+                shopCommitionInit: [
+                    {
+                        low: 0,
+                        rate: '',
+                        high: '',
+                        "type":"01",
+                        "commissionId":'',
+                        businessType: '01',
+                    },
+                    {
+                        low: 0,
+                        rate: '',
+                        high: 1000000000,
+                        "type":"01",
+                        "commissionId":'',
+                        businessType: '01',
+                    }
+                ],         // 选项数据初始化
+                shopTypeList:[
+                    // {
+                    //     type: '01',
+                    //     list: [
+                    //         {
+                    //             low: 0,
+                    //             rate: 0,
+                    //             high: 0
+                    //         }
+                    //     ]
+                    // }
+                ],
+
                 form: {
                     roleName: '',
                     remark: '',
@@ -401,6 +437,52 @@
                 });
                 this.section2Option = '';
                 this.personalCommition = this.personalCommitionInit;
+            },
+
+            // 个人汇总新增
+            handleShopalAdd(){
+                this.shopCommition.splice(this.shopCommition.length - 2, 0,{
+                    "type":"01",
+                    "commissionId":'',
+                    "low": "",
+                    businessType: '01',
+                    rate: '',
+                    "high":"",
+                });
+            },
+            // 个人汇总删除
+            handleShopaldelete(){
+                this.shopCommition.splice(this.shopCommition.length - 2, 1);
+            },
+            handleShopChange(val,idx){
+                if(this.shopCommition.length == idx +1 ){
+                    return
+                }
+                this.$set(this.shopCommition[idx+1],'low',val);
+            },
+            handleShopBlur(val,idx){
+                if(this.shopCommition[idx].high <= this.shopCommition[idx].low){
+                    return Message.error('请输入正确的提成区间');
+                }
+            },
+            handleSaveShopData(){
+                if(!this.section3Option){
+                    return Message.error('请选择提成类型');
+                }
+                let filterArr = this.shopCommition.filter(item=>{
+                    return (item.rate != '' && item.high != '')
+                });
+                this.shopTypeList.push({
+                    type: this.section3Option,
+                    list: filterArr
+                });
+                this.section3Options.forEach((item,idx)=>{
+                    if(item.value == this.section3Option){
+                        return this.$set(this.section3Options[idx],'disabled',true);
+                    }
+                });
+                this.section3Option = '';
+                this.shopCommition = this.shopCommitionInit;
             }
         }
     }

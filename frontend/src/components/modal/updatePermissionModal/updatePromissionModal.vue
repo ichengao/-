@@ -2,41 +2,9 @@
     <div class="modal-container update-permission-modal" v-if="modalStatus">
         <el-dialog title="设置权限" :visible.sync="modalStatus" @close='handleCloseModal' >
             <ul class="permission-list">
-                <li @click="handleClick(1)">
+                <li v-for="(item,idx) in initDataArray" :key="idx" @click="handleClick(item.authId)">
                     <div></div>
-                    <span>会员管理</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>商品管理</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>库存管理</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>日常支出</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>智能分析</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>营销工具</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>系统管理</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>前台收银</span>
-                </li>
-                <li @click="handleClick(1)">
-                    <div></div>
-                    <span>数据权限管理</span>
+                    <span>{{ item.authName }}</span>
                 </li>
             </ul>
 
@@ -47,7 +15,7 @@
     </div>
 </template>
 <script>
-    import { requestGetUnprocessedOrderList } from '@/services/service';
+    import { requestGetStaffMenu } from '@/services/service';
     export default {
         data(){
             return{
@@ -77,15 +45,15 @@
                 let params = {
                     shopId: this.$route.params.id
                 };
-                requestGetUnprocessedOrderList(params).then((res)=>{
-                    this.initDataArray = res.data.data.list;
+                requestGetStaffMenu(params).then((res)=>{
+                    this.initDataArray = res.data.data;
                 })
             },
             handleCloseModal(){
                 this.$store.dispatch('closeUpdatePermissionModal');
             },
             handleClick(params){
-                this.$store.dispatch('openPermissionDetailModal','11');
+                this.$store.dispatch('openPermissionDetailModal',params);
             }
         }
     }

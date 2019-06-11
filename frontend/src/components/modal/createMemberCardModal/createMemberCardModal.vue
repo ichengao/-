@@ -219,7 +219,6 @@ export default {
         },
         payTypeOptions: {
             get(){
-                console.log(this.$store.state.dictList.ZV_PAY)
                 return this.$store.state.dictList.ZV_PAY;
             },
             set(){}

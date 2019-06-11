@@ -361,6 +361,22 @@ export function requestGetRoleList(params) {
 export function requestDeleteRole(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/staff/delrole`,params)
 }
+// 获取岗位权限
+export function requestGetAuthList(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/authlist`,params)
+}
+// 获取级别菜单一级权限
+export function requestGetStaffMenu(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/menu`,params)
+}
+// 获取级别菜单二级权限
+export function requestGetStaffAllMenu(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/allmenu`,params)
+}
+// 添加岗位权限信息
+export function requestAddcommission(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/addauth`,params)
+}
 // 获取设置
 export function requestGetContent(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/shop/getcontent`,params)
@@ -373,7 +389,10 @@ export function requestUpdateContent(params) {
 export function requestUpdateState(params) {
     return axios.post(`${SERVER_URL}/zv-member/zv/shop/updatestate`,params)
 }
-
+//  获取当前员工详情
+export function requestGetRolestaff(params) {
+    return axios.post(`${SERVER_URL}/zv-member/zv/staff/rolestaff`,params)
+}
 
 /**
  * 门店概况
